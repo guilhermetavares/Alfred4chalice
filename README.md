@@ -35,3 +35,14 @@ Após adicionar o walrus no projeto, você deve adicionar a sua conexação com 
 ```
 ALFRED_REDIS_HOST=sua-conexao-com-redis
 ```
+
+## Field para Password
+
+Para quem usa o sqlalchemy e precisar de um campo de password
+```
+from alfred.sqlalchemy_utils.fields.password import PasswordType
+
+class SeuModel:
+    password = Column(PasswordType, nullable=True)
+
+```
