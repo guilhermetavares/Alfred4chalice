@@ -8,7 +8,7 @@ services:
     ports:
       - "6379"
 
-  api:
+  app:
     build:
       context: .
       dockerfile: .
@@ -16,6 +16,7 @@ services:
       - .:/code/
     environment: &environment
       - ALFRED_REDIS_HOST=redis
+      - ALFRED_PASSWORD_SALT=esquilo
     ports:
       - "8108:8108"
     depends_on:

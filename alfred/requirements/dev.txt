@@ -41,6 +41,7 @@ certifi==2021.5.30
     # via
     #   requests
     #   sentry-sdk
+sqlalchemy==1.3.24
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip

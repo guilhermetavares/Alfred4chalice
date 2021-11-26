@@ -18,7 +18,7 @@ class Cache:
 
     @classmethod
     def _cache(self):
-        return Walrus(host=REDIS_HOST, port=6379, db=0).cache()
+        return Walrus(host=ALFRED_REDIS_HOST, port=6379, db=0).cache()
 
     @classmethod
     def set(self, cache_key, value, expires_in):

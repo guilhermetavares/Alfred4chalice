@@ -10,8 +10,19 @@ Sabe-se ainda de um passado como ator competente, tendo essa experiência na dra
 
 Demonstra também muitas outras habilidades úteis, como conhecimentos médicos básicos, por exemplo. Contudo, fica-se com a impressão que nem Bruce Wayne conhece totalmente esse passado de seu mordomo. Muitas vezes, as palavras de Alfred são sugestões quase que subliminares que ajudam o "cruzado mascarado" na solução de enigmas complexos de crimes. Mesmo assim, Alfred, várias vezes, faz o papel de ingênuo.
 
+## Rodando o projeto local
 
-## Cache
+Primeiramente você deve instanciar o docker com o comando
+```
+make build
+```
+
+Após o build, é só rodar os testes
+```
+make test
+```
+
+## Setup para o Cache
 
 Para utilizar a classe de cache do Alfred, primeiramente deve adicionar o walrus (https://walrus.readthedocs.io/en/latest/api.html) no seu requirements, recomendamos versões maiores que a **0.8.2**
 

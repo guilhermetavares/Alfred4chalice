@@ -18,10 +18,14 @@ help:
 	@python3 -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
 build:
-	docker-compose build
+	docker-compose -f alfred/docker-compose.yml build
 
 test: ## run tests quickly with the default Python
-	docker-compose run api pytest
+	docker-compose -f alfred/docker-compose.yml run app pytest
+
+bash: ## run tests quickly with the default Python
+	docker-compose -f alfred/docker-compose.yml run app bash
+
 
 
 clean-build: ## remove build artifacts
@@ -43,10 +47,10 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr .pytest_cache
 
 lint: ## check style with flake8
-	flake8 chalice_utils tests
+	flake8 alfred tests
 
 coverage: ## check code coverage quickly with the default Python
-	coverage run --source chalice_utils -m pytest
+	coverage run --source alfred -m pytest
 
 install: clean ## install the package to the active Python's site-packages
 	python setup.py install
