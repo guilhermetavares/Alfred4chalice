@@ -17,6 +17,13 @@ export PRINT_HELP_PYSCRIPT
 help:
 	@python3 -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
+build:
+	docker-compose build
+
+test: ## run tests quickly with the default Python
+	docker-compose run api pytest
+
+
 clean-build: ## remove build artifacts
 	rm -fr build/
 	rm -fr dist/
@@ -37,9 +44,6 @@ clean-test: ## remove test and coverage artifacts
 
 lint: ## check style with flake8
 	flake8 chalice_utils tests
-
-test: ## run tests quickly with the default Python
-	pytest
 
 coverage: ## check code coverage quickly with the default Python
 	coverage run --source chalice_utils -m pytest

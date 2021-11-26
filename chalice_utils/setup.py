@@ -7,7 +7,9 @@ with open('README.md') as readme_file:
 
 # Define your dependencies here
 requirements = []
-setup_requirements = []
+setup_requirements = [
+    
+]
 
 setup(
     author="MaisTODOS",
