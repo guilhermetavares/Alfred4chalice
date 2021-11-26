@@ -36,9 +36,26 @@ Após adicionar o walrus no projeto, você deve adicionar a sua conexação com 
 ALFRED_REDIS_HOST=sua-conexao-com-redis
 ```
 
+Como utilizar
+```
+from alfred.cache import Cache
+
+value = 100
+Cache.set("cache_key", value, 60)
+Cache.get("cache_key")
+Cache.delete("cache_key")
+```
+
+
 ## Field para Password
 
-Para quem usa o sqlalchemy e precisar de um campo de password
+Para quem usa o sqlalchemy e precisar de um campo de password, pode utilizar o campo do alfred, que já faz as validações de senha.
+
+Primeiro deve definir a sua chave de criptografia
+```
+ALFRED_PASSWORD_SALT = very-numric-key
+```
+
 ```
 from alfred.sqlalchemy_utils.fields.password import PasswordType
 
