@@ -14,23 +14,19 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     netcat
 
-# Creates ssh directory to save the ssh keys
-RUN mkdir -p -m 0600 ~/.ssh && ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
-
 # Upgrade pip if necessary
 RUN pip install --upgrade pip
 
-COPY . /code/
-
 # Install packages that help in development
-COPY ./requirements/dev.txt /tmp/requirements-dev.txt
-RUN pip install -r /tmp/requirements-dev.txt
+COPY ./requirements/dev.txt /tmp/requirements/dev.txt
+RUN pip install -r /tmp/requirements/dev.txt
 
 # Install any needed packages to run the tests
-COPY ./requirements/test.txt /tmp/requirements-test.txt
-RUN pip install -r /tmp/requirements-test.txt
+COPY ./requirements/test.txt /tmp/requirements/test.txt
+RUN pip install -r /tmp/requirements/test.txt
 
-WORKDIR /code/
+# Sets the working directory for our project in the container
+WORKDIR /var/task/
 
-# # Adds our working directory to the Python path
-# ENV PYTHONPATH "${PYTHONPATH}:/var/task:/var/task/wallet"
+# Adds our working directory to the Python path
+ENV PYTHONPATH "${PYTHONPATH}:/var/task:/var/task/alfred"

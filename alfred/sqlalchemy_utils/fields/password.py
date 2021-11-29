@@ -1,7 +1,7 @@
 import hashlib
 import os
-from sqlalchemy import types
 
+from sqlalchemy import types
 
 ALFRED_PASSWORD_SALT = os.environ.get("ALFRED_PASSWORD_SALT", "esquilo")
 

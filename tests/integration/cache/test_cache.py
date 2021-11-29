@@ -1,6 +1,7 @@
 from unittest.mock import patch
 
 from walrus.cache import Cache as LibCache
+
 from alfred.cache.walrus_cache import Cache
 
 

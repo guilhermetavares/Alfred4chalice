@@ -1,4 +1,4 @@
-from alfred.sqlalchemy_utils.fields.password import types, PasswordType
+from alfred.sqlalchemy_utils.fields.password import PasswordType, types
 
 
 def test_password_type_impl():

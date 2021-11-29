@@ -1,7 +1,8 @@
 import os
-from alfred.sentry import sentry_sdk
+
 from walrus import Walrus
 
+from alfred.sentry import sentry_sdk
 
 ALFRED_REDIS_HOST = os.environ.get("ALFRED_REDIS_HOST", "")
 
@@ -34,7 +35,7 @@ class Cache:
         except Exception:  # noqa
             self._capture_sentry()
             return default
-    
+
     @classmethod
     def delete(self, cache_key):
         try:
