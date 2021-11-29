@@ -15,7 +15,9 @@ black==21.11b1
 blessed==1.19.0
     # via inquirer
 botocore==1.23.15
-    # via chalice
+    # via
+    #   chalice
+    #   pynamodb
 certifi==2021.10.8
     # via sentry-sdk
 cfgv==3.3.1
@@ -28,7 +30,9 @@ click==8.0.3
     #   chalice
     #   pip-tools
 decorator==5.1.0
-    # via ipython
+    # via
+    #   ipdb
+    #   ipython
 deprecated==1.2.13
     # via redis
 distlib==0.3.3
@@ -39,8 +43,12 @@ identify==2.4.0
     # via pre-commit
 inquirer==2.8.0
     # via chalice
-ipython==7.30.0
+ipdb==0.13.9
     # via -r dev.in
+ipython==7.30.0
+    # via
+    #   -r dev.in
+    #   ipdb
 jedi==0.18.1
     # via ipython
 jmespath==0.10.0
@@ -79,6 +87,8 @@ ptyprocess==0.7.0
     # via pexpect
 pygments==2.10.0
     # via ipython
+pynamodb==5.1.0
+    # via -r dev.in
 python-dateutil==2.8.2
     # via botocore
 python-editor==1.0.4
@@ -104,7 +114,9 @@ six==1.16.0
 sqlalchemy==1.3.24
     # via -r dev.in
 toml==0.10.2
-    # via pre-commit
+    # via
+    #   ipdb
+    #   pre-commit
 tomli==1.2.2
     # via
     #   black

@@ -8,6 +8,14 @@ services:
     ports:
       - "6379"
 
+  dynamodb:
+    build:
+      context: .
+      dockerfile: docker/dynamodb/Dockerfile
+    command: -jar DynamoDBLocal.jar --inMemory
+    ports:
+      - "8002:8000"
+
   app:
     build:
       context: .
@@ -15,12 +23,16 @@ services:
     volumes:
       - ./:/var/task
     environment: &environment
+      - AWS_ACCESS_KEY_ID=aws_access_key
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_SECRET_ACCESS_KEY=aws_access_secret
       - ALFRED_REDIS_HOST=redis
       - ALFRED_PASSWORD_SALT=esquilo
+      - PYNAMODB_CONFIG=/var/task/alfred/pynamodb_settings.py
     ports:
       - "8108:8108"
     depends_on:
       - "redis"
-
+      - "dynamodb"
 volumes:
   redis-data:

@@ -1,5 +1,11 @@
 import pytest
 
+from alfred.dynamodb_create_table import dynamodb_create_tables
+
+
+def pytest_configure(config):
+    dynamodb_create_tables()
+
 
 @pytest.fixture(scope="module")
 def hash_password_1234():

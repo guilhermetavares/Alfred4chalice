@@ -71,6 +71,6 @@ coverage: ## check code coverage quickly with the default Python
 install: clean ## install the package to the active Python's site-packages
 	python setup.py install
 
-install-requirements: clean ## installs requirements locally
+install-requirements: ## installs requirements locally
 	pip install -r requirements/dev.txt
 	pip install -r requirements/test.txt
