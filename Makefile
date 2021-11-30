@@ -18,15 +18,31 @@ help:
 	@python3 -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
 build:
-	docker-compose -f alfred/docker-compose.yml build
+	@echo "--> Building base image"
+	docker build -t alfred4chalice_app -f docker/app/Dockerfile .
+	@echo "--> Building Compose"
+	docker-compose build
 
-test: ## run tests quickly with the default Python
-	docker-compose -f alfred/docker-compose.yml run app pytest
+build-no-cache:
+	@echo "--> Building base image"
+	docker build -t alfred4chalice_app -f docker/app/Dockerfile . --no-cache
+	@echo "--> Building Compose"
+	docker-compose build
 
-bash: ## run tests quickly with the default Python
-	docker-compose -f alfred/docker-compose.yml run app bash
+test:
+	@echo "--> Testing on Docker."
+	docker-compose run app pytest $(path) -s --cov-report term-missing --cov-fail-under 100
 
+bash:
+	docker-compose run app bash
 
+compile-requirements:
+	@echo "--> Compiling requirements"
+	ssh-add
+	docker-compose run app bash -c	" \
+	cd requirements && \
+	pip-compile dev.in && \
+	pip-compile test.in "
 
 clean-build: ## remove build artifacts
 	rm -fr build/
@@ -55,6 +71,6 @@ coverage: ## check code coverage quickly with the default Python
 install: clean ## install the package to the active Python's site-packages
 	python setup.py install
 
-install-requirements: clean ## installs requirements locally
+install-requirements: ## installs requirements locally
 	pip install -r requirements/dev.txt
 	pip install -r requirements/test.txt

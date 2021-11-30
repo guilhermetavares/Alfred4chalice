@@ -1,0 +1,34 @@
+from datetime import datetime
+
+from pynamodb.attributes import ListAttribute, UnicodeAttribute, UTCDateTimeAttribute
+from pynamodb.exceptions import DoesNotExist
+from pynamodb.models import Model
+
+
+class BasicAuthUser(Model):
+    class Meta:
+        table_name = "basicauth_user"
+
+    username = UnicodeAttribute(hash_key=True)
+    password = UnicodeAttribute()
+    routes = ListAttribute(null=True)
+    created_at = UTCDateTimeAttribute(default=datetime.utcnow)
+
+    @property
+    def to_json(self):
+        return {
+            "username": self.username,
+            "routes": self.routes,
+            "created_at": str(self.created_at),
+        }
+
+    @classmethod
+    def login(self, username, password):
+        routes = []
+
+        try:
+            user = self.get(username)
+            routes = user.routes if user.password == password else []
+        except DoesNotExist:
+            pass
+        return routes
