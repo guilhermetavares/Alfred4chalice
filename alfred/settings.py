@@ -1,0 +1,10 @@
+import os
+
+# AUTH SETTINGS
+ALFRED_PASSWORD_SALT = os.environ.get("ALFRED_PASSWORD_SALT", "esquilo")
+
+# CACHE SETTINGS
+ALFRED_REDIS_HOST = os.environ.get("ALFRED_REDIS_HOST", "")
+
+# SENTRY SETTINGS
+SENTRY_DSN = os.environ.get("SENTRY_DSN", "")

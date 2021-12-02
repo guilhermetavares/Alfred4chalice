@@ -1,9 +1,8 @@
 import hashlib
-import os
 
 from sqlalchemy import types
 
-ALFRED_PASSWORD_SALT = os.environ.get("ALFRED_PASSWORD_SALT", "esquilo")
+from alfred.settings import ALFRED_PASSWORD_SALT
 
 
 def hash_password(raw_password):
