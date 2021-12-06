@@ -36,9 +36,14 @@ test:
 bash:
 	docker-compose run app bash
 
-compile-requirements:
+delete-requirements:
+	@echo "--> Deleting old requirements files"
+	cd requirements && \
+	rm -f dev.txt && \
+	rm -f test.txt
+
+compile-requirements: delete-requirements
 	@echo "--> Compiling requirements"
-	ssh-add
 	docker-compose run app bash -c	" \
 	cd requirements && \
 	pip-compile dev.in && \

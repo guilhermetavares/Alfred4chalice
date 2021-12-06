@@ -1,10 +1,7 @@
-import os
-
 from walrus import Walrus
 
 from alfred.sentry import sentry_sdk
-
-ALFRED_REDIS_HOST = os.environ.get("ALFRED_REDIS_HOST", "")
+from alfred.settings import ALFRED_REDIS_HOST
 
 
 class WallrusException(Exception):

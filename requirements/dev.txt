@@ -12,12 +12,14 @@ black==21.11b1
     # via -r dev.in
 blessed==1.19.0
     # via inquirer
-botocore==1.23.15
+botocore==1.23.18
     # via
     #   chalice
     #   pynamodb
 certifi==2021.10.8
     # via sentry-sdk
+cffi==1.15.0
+    # via cryptography
 cfgv==3.3.1
     # via pre-commit
 chalice==1.26.1
@@ -27,6 +29,8 @@ click==8.0.3
     #   black
     #   chalice
     #   pip-tools
+cryptography==36.0.0
+    # via -r dev.in
 deprecated==1.2.13
     # via redis
 distlib==0.3.3
@@ -57,7 +61,11 @@ platformdirs==2.4.0
     # via
     #   black
     #   virtualenv
-pre-commit==2.15.0
+pre-commit==2.16.0
+    # via -r dev.in
+pycparser==2.21
+    # via cffi
+pyjwt==2.3.0
     # via -r dev.in
 pynamodb==5.1.0
     # via -r dev.in
@@ -91,7 +99,7 @@ tomli==1.2.2
     # via
     #   black
     #   pep517
-typing-extensions==4.0.0
+typing-extensions==4.0.1
     # via black
 urllib3==1.26.7
     # via
