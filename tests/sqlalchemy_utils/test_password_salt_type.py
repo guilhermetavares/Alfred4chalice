@@ -15,12 +15,15 @@ def test_password_salt_type_process_bind_param():
     password = pw.process_bind_param("1234", None)
 
     password_decode = password.decode()
-    password_salt, password_hash = password_decode.split("-")
+    password_salt, password_interations, password_hash = password_decode.split("-")
 
     assert len(password_salt) == 32
+    assert len(password_interations) == 5
     assert len(password_hash) == 128
 
-    assert hash_password("1234", password_salt) == password_hash
+    assert (
+        hash_password("1234", password_salt, int(password_interations)) == password_hash
+    )
 
 
 def test_password_salt_type_process_bind_param_with_value_as_none():
