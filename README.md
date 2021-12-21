@@ -173,3 +173,19 @@ from alfred.auth import encode_auth
 
 token = encode_auth(id, token, date)
 ```
+
+## SQS
+
+Para utilizar o `sqs`, primeiro você deve adicionar o endereço de sua fila default na AWS as variáveis de ambiente do projeto:
+
+```python
+SQS_QUEUE_URL=endereço-da-sua-fila-default
+```
+
+Como utilizar
+
+```python
+@app.on_sqs_message(queue=SQS_QUEUE_URL)
+def handle_sqs_message(event):
+     alfred.sqs.handle_sqs_message(event)
+```
