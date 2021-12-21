@@ -5,9 +5,9 @@ import boto3
 
 from alfred.sentry import sentry_sdk
 from alfred.settings import (
+    AWS,
     AWS_SHORTEN_ACCESS_KEY_ID,
     AWS_SHORTEN_SECRET_ACCESS_KEY,
-    SQS_QUEUE_URL,
 )
 
 sqs_client = boto3.client(
@@ -26,7 +26,7 @@ class SQSTaskMaxRetriesExceededError(Exception):
 
 
 class SQSTask:
-    queue_url = SQS_QUEUE_URL
+    queue_url = AWS["sqs"]["queue_url"]
     default_delay = 5
     max_retries = 3
     default_retry_delay = 60 * 3

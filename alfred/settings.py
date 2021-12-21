@@ -19,4 +19,9 @@ SENTRY_DSN = os.environ.get("SENTRY_DSN", "")
 # AWS
 AWS_SHORTEN_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SHORTEN_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-SQS_QUEUE_URL = os.environ.get("SQS_QUEUE_URL")
+AWS = {
+    "sqs": {
+        "queue_url": os.environ.get("SQS_QUEUE_URL"),
+        "queue_name": os.environ.get("SQS_QUEUE_URL").split("/")[-1],
+    }
+}
