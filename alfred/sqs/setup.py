@@ -1,7 +1,7 @@
 import logging
 
 from alfred.settings import AWS
-from alfred.sqs import SQSHandler
+from alfred.sqs.sqs import SQSHandler
 
 logger = logging.getLogger("base")
 

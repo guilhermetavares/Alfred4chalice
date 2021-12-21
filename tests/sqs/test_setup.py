@@ -4,8 +4,8 @@ from unittest.mock import patch
 import pytest
 from chalice.app import SQSEvent
 
-from alfred.sqs import SQSTask, SQSTaskError
 from alfred.sqs.setup import handle_sqs_message
+from alfred.sqs.sqs import SQSTask, SQSTaskError
 
 
 @SQSTask()

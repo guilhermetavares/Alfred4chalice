@@ -1,7 +1,5 @@
-from .sqs import SQSHandler, SQSTask, SQSTaskError
+from .setup import handle_sqs_message
 
 __all__ = [
-    "SQSHandler",
-    "SQSTask",
-    "SQSTaskError",
+    "handle_sqs_message",
 ]
