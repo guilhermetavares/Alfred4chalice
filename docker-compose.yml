@@ -34,6 +34,7 @@ services:
       - JWT_SECRET=fake_secret
       - PYNAMODB_CONFIG=/var/task/alfred/pynamodb_settings.py
       - SQS_QUEUE_URL=${SQS_QUEUE_URL}
+      - SENTRY_DSN=1234
     ports:
       - "8108:8108"
     depends_on:
