@@ -33,9 +33,6 @@ services:
       - JWT_EXP_DELTA_SECONDS=604800
       - JWT_SECRET=fake_secret
       - PYNAMODB_CONFIG=/var/task/alfred/pynamodb_settings.py
-      - SQS_QUEUE_URL=${SQS_QUEUE_URL}
-      - SENTRY_DSN=https://012ef51739634faba1b75114cf41b449@o396301.ingest.sentry.io/5257916
-      - SQS_QUEUE_URL=https://sqs.us-east-1.amazonaws.com/292107540214/wallet-isa
     ports:
       - "8108:8108"
     depends_on:

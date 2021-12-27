@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 import pytest
 
-from alfred.settings import AWS
+from alfred.settings import SQS_QUEUE_URL
 from alfred.sqs.sqs import (
     SQSHandler,
     SQSTask,
@@ -23,7 +23,7 @@ def test_sqs_task_max_retries_exceeded_error():
 
 
 def test_sqs_task_queue_url_property():
-    assert SQSTask.queue_url == AWS["sqs"]["queue_url"]
+    assert SQSTask.queue_url == SQS_QUEUE_URL
 
 
 def test_sqs_task_default_delay_property():

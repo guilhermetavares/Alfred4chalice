@@ -1,6 +1,6 @@
 import logging
 
-from alfred.settings import AWS
+from alfred.settings import SQS_QUEUE_URL
 from alfred.sqs.sqs import SQSHandler
 
 logger = logging.getLogger("base")
@@ -39,4 +39,4 @@ def handle_sqs_message(event):
                 }
             )
         finally:
-            handler.sqs_delete_message(AWS["sqs"]["queue_url"], record.receipt_handle)
+            handler.sqs_delete_message(SQS_QUEUE_URL, record.receipt_handle)
