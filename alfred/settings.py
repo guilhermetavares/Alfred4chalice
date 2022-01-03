@@ -15,3 +15,8 @@ ALFRED_REDIS_HOST = os.environ.get("ALFRED_REDIS_HOST", "")
 
 # SENTRY SETTINGS
 SENTRY_DSN = os.environ.get("SENTRY_DSN", "")
+
+# AWS SETTINGS
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+SQS_QUEUE_URL = os.environ.get("SQS_QUEUE_URL", "")
