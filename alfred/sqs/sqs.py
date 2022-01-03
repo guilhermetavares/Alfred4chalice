@@ -4,16 +4,12 @@ import json
 import boto3
 
 from alfred.sentry import sentry_sdk
-from alfred.settings import (
-    AWS_SHORTEN_ACCESS_KEY_ID,
-    AWS_SHORTEN_SECRET_ACCESS_KEY,
-    SQS_QUEUE_URL,
-)
+from alfred.settings import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, SQS_QUEUE_URL
 
 sqs_client = boto3.client(
     "sqs",
-    aws_access_key_id=AWS_SHORTEN_ACCESS_KEY_ID,
-    aws_secret_access_key=AWS_SHORTEN_SECRET_ACCESS_KEY,
+    aws_access_key_id=AWS_ACCESS_KEY_ID,
+    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
 )
 
 
