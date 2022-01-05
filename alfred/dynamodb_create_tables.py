@@ -8,7 +8,7 @@ class DynamoDBException(Exception):
 
 def dynamodb_create_tables():
     if not DYNAMO_PREFIX:
-        raise DynamoDBException("DYNAMO_PREFIX enviroment variable must be set")
+        raise DynamoDBException("DYNAMO_PREFIX environment variable must be set")
 
     if not BasicAuthUser.exists():
         BasicAuthUser.create_table(
