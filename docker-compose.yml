@@ -33,6 +33,7 @@ services:
       - JWT_EXP_DELTA_SECONDS=604800
       - JWT_SECRET=fake_secret
       - PYNAMODB_CONFIG=/var/task/alfred/pynamodb_settings.py
+      - BUCKET_S3=fake_bucket
     ports:
       - "8108:8108"
     depends_on:
