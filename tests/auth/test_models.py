@@ -4,6 +4,7 @@ from freezegun import freeze_time
 from pynamodb.models import Model
 
 from alfred.auth.models import BasicAuthUser
+from alfred.settings import DYNAMO_PREFIX
 
 
 def test_user_is_instance():
@@ -11,7 +12,7 @@ def test_user_is_instance():
 
 
 def test_user_tablename():
-    assert BasicAuthUser.Meta.table_name == "basicauth_user"
+    assert BasicAuthUser.Meta.table_name == f"{DYNAMO_PREFIX}_basicauth_user"
 
 
 @freeze_time("2021-01-01 00:00:01")
@@ -21,13 +22,16 @@ def test_user_to_json():
         password="1234",
         routes=["/v1/foo"],
         created_at=datetime.utcnow(),
+        metadata={"foo": "bar"},
     )
 
     expected_json = {
         "username": "Esquilo",
         "routes": ["/v1/foo"],
         "created_at": "2021-01-01 00:00:01",
+        "metadata": {"foo": "bar"},
     }
+
     assert user.to_json == expected_json
 
 
