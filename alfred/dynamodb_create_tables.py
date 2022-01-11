@@ -1,5 +1,5 @@
 from alfred.auth.models import BasicAuthUser
-from alfred.settings import DYNAMO_PREFIX
+from alfred.settings import DYNAMODB_PREFIX
 
 
 class DynamoDBException(Exception):
@@ -7,8 +7,8 @@ class DynamoDBException(Exception):
 
 
 def dynamodb_create_tables():
-    if not DYNAMO_PREFIX:
-        raise DynamoDBException("DYNAMO_PREFIX environment variable must be set")
+    if not DYNAMODB_PREFIX:
+        raise DynamoDBException("DYNAMODB_PREFIX environment variable must be set")
 
     if not BasicAuthUser.exists():
         BasicAuthUser.create_table(
