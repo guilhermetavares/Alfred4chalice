@@ -96,15 +96,15 @@ Primeiro, é necessário criar a tabela do `BasicAuthUser`, com o seguinte scrip
 
 ```python
 from alfred.auth.models import BasicAuthUser
-from alfred.settings import DYNAMO_PREFIX
+from alfred.settings import DYNAMODB_PREFIX
 
 class DynamoDBException(Exception):
     pass
 
 
 def dynamodb_create_tables():
-    if not DYNAMO_PREFIX:
-        raise DynamoDBException("DYNAMO_PREFIX enviroment variable must be set")
+    if not DYNAMODB_PREFIX:
+        raise DynamoDBException("DYNAMODB_PREFIX enviroment variable must be set")
 
     if not BasicAuthUser.exists():
         BasicAuthUser.create_table(

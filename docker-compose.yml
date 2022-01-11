@@ -8,7 +8,7 @@ services:
     ports:
       - "6379"
 
-  dynamodb:
+  dynamodb-test:
     build:
       context: .
       dockerfile: docker/dynamodb/Dockerfile
@@ -29,16 +29,16 @@ services:
       - AWS_DEFAULT_REGION=us-east-1
       - AWS_SECRET_ACCESS_KEY=aws_access_secret
       - BUCKET_S3=fake_bucket
-      - DYNAMO_PREFIX=alfred
+      - DYNAMODB_HOST=http://dynamodb-test:8000
+      - DYNAMODB_PREFIX=alfred
       - FERNET_CRYPT_KEY=ank2C0xNzXJn6rfdJ3nS5zMkClU0I34tuQMXpVmX6yM=
       - JWT_ALGORITHM=HS256
       - JWT_EXP_DELTA_SECONDS=604800
       - JWT_SECRET=fake_secret
-      - PYNAMODB_CONFIG=/var/task/alfred/pynamodb_settings.py
     ports:
       - "8108:8108"
     depends_on:
       - "redis"
-      - "dynamodb"
+      - "dynamodb-test"
 volumes:
   redis-data:

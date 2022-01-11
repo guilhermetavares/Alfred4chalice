@@ -9,12 +9,13 @@ from pynamodb.attributes import (
 from pynamodb.exceptions import DoesNotExist
 from pynamodb.models import Model
 
-from alfred.settings import DYNAMO_PREFIX
+from alfred.settings import DYNAMODB_HOST, DYNAMODB_PREFIX
 
 
 class BasicAuthUser(Model):
     class Meta:
-        table_name = f"{DYNAMO_PREFIX}_basicauth_user"
+        host = DYNAMODB_HOST
+        table_name = f"{DYNAMODB_PREFIX}_basicauth_user"
 
     username = UnicodeAttribute(hash_key=True)
     password = UnicodeAttribute()
