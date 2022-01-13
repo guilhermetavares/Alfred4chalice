@@ -1,7 +1,4 @@
-from .cardcvv import CardCvvField
-from .cardexpdate import CardExpDateField
-from .cardholder import CardHolderField
-from .cardnumber import CardNumberField
+from .card import CardCvvField, CardExpDateField, CardHolderField, CardNumberField
 from .password import PasswordNumberField
 
 __all__ = [
