@@ -1,4 +1,5 @@
 from .card import CardCvvField, CardExpDateField, CardHolderField, CardNumberField
+from .contact import EmailField
 from .password import PasswordNumberField
 
 __all__ = [
@@ -6,5 +7,6 @@ __all__ = [
     "CardExpDateField",
     "CardHolderField",
     "CardNumberField",
+    "EmailField",
     "PasswordNumberField",
 ]
