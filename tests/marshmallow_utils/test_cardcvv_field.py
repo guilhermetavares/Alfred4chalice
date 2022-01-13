@@ -40,14 +40,14 @@ def test_cardcvv_invalid_size_default_message():
 
 
 def test_cardcvv_invalid_size_custom_message():
-    not_numeric_error_msg = "Some error message"
-    field = CardCvvField(size_error_msg=not_numeric_error_msg)
+    size_error_msg = "Some error message"
+    field = CardCvvField(size_error_msg=size_error_msg)
     card_cvv = "12"
 
     with pytest.raises(ValidationError) as err:
         field._deserialize(card_cvv, "cvv", {"cvv": card_cvv})
 
-    assert err.value.args[0] == not_numeric_error_msg
+    assert err.value.args[0] == size_error_msg
 
 
 def test_cardcvv_valid():

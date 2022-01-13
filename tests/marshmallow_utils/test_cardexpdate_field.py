@@ -40,14 +40,14 @@ def test_cardexpdate_invalid_expired_default_message():
 
 
 def test_cardexpdate_invalid_expired_custom_message():
-    format_error_msg = "Some error message"
-    field = CardExpDateField(expired_error_msg=format_error_msg)
+    expired_error_msg = "Some error message"
+    field = CardExpDateField(expired_error_msg=expired_error_msg)
     exp_date = "01/2001"
 
     with pytest.raises(ValidationError) as err:
         field._deserialize(exp_date, "exp_date", {"exp_date": exp_date})
 
-    assert err.value.args[0] == format_error_msg
+    assert err.value.args[0] == expired_error_msg
 
 
 def test_cardexpdate_valid():
