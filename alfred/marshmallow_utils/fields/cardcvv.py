@@ -1,7 +1,7 @@
 from marshmallow import ValidationError, fields
 
 
-class CardCvvField(fields.Str):
+class CardCvvField(fields.String):
     def _deserialize(self, value, attr, data, **kwargs):
         value = super()._deserialize(value, attr, data, **kwargs)
         if not value.isnumeric():
