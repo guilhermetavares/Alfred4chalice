@@ -2,6 +2,7 @@ black
 chalice==1.26.1
 cryptography==36.0.0
 marshmallow==3.14.1
+phonenumbers==8.12.41
 pip-tools==6.4.0
 pre-commit
 pyjwt==2.3.0
