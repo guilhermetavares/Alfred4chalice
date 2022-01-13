@@ -9,3 +9,6 @@ pynamodb
 sentry-sdk==1.3.1
 sqlalchemy==1.3.24
 walrus
+
+
+git+https://github.com/MaisTodos/python-creditcard/@v1.0.0

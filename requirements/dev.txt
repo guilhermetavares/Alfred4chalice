@@ -73,6 +73,8 @@ pynamodb==5.2.0
     # via -r dev.in
 pyparsing==3.0.6
     # via packaging
+python-creditcard @ git+https://github.com/MaisTodos/python-creditcard/@v1.0.0
+    # via -r dev.in
 python-dateutil==2.8.2
     # via botocore
 python-editor==1.0.4
