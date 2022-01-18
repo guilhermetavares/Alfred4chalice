@@ -196,3 +196,48 @@ Como utilizar
 def handle_sqs_message(event):
      alfred.sqs.handle_sqs_message(event)
 ```
+
+## Feature Flag
+
+Classe `FeatureFlag`:
+
+```python
+class FeatureFlag(Model):
+    class Meta:
+        host = DYNAMODB_HOST
+        table_name = f"{DYNAMODB_PREFIX}_feature_flag"
+    
+    id = UnicodeAttribute(hash_key=True)
+    data = JSONAttribute()
+    
+    @classmethod
+    def get_data(cls, id):
+        try:
+            return cls.get(id).data
+        except (DoesNotExist, GetError):
+            return None
+```
+
+Para utilizar o `Feature Flag`, você deve instanciar a classe FeatureFlag passando como parâmetro o `id` e `data`. 
+
+```python
+FeatureFlag(id=1, data={"foo": "bar"}).save()
+```
+
+Como acessar as informações:
+
+- Passando o `id` no método `get_data`, você acessa os dados contido no campo `data`:
+
+```python
+flag = FeatureFlag.get_data(id=1)
+```
+
+Resposta:
+
+```python
+print(flag)
+
+# >>> {"foo": "bar"}
+```
+
+- Caso o parâmetro `id` seja **Nulo** ou **id que não existe** o método irá retornar **None**.
