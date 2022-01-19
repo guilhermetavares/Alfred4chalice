@@ -199,28 +199,11 @@ def handle_sqs_message(event):
 
 ## Feature Flag
 
-Classe `FeatureFlag`:
-
-```python
-class FeatureFlag(Model):
-    class Meta:
-        host = DYNAMODB_HOST
-        table_name = f"{DYNAMODB_PREFIX}_feature_flag"
-    
-    id = UnicodeAttribute(hash_key=True)
-    data = JSONAttribute()
-    
-    @classmethod
-    def get_data(cls, id):
-        try:
-            return cls.get(id).data
-        except (DoesNotExist, GetError):
-            return None
-```
-
 Para utilizar o `Feature Flag`, você deve instanciar a classe FeatureFlag passando como parâmetro o `id` e `data`. 
 
 ```python
+from alfred.feature_flag.models import FeatureFlag
+
 FeatureFlag(id=1, data={"foo": "bar"}).save()
 ```
 
