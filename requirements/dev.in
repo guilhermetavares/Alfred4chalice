@@ -5,11 +5,11 @@ marshmallow==3.14.1
 phonenumbers==8.12.41
 pip-tools==6.4.0
 pre-commit
+pycpfcnpj==1.5.1
 pyjwt==2.3.0
 pynamodb
 sentry-sdk==1.3.1
 sqlalchemy==1.3.24
-validate-docbr==1.10.0
 walrus
 
 
