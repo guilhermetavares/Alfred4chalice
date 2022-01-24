@@ -10,7 +10,7 @@ black==21.12b0
     # via -r dev.in
 blessed==1.19.1
     # via inquirer
-botocore==1.23.41
+botocore==1.23.42
     # via
     #   chalice
     #   pynamodb
@@ -69,6 +69,8 @@ pre-commit==2.17.0
     # via -r dev.in
 pycparser==2.21
     # via cffi
+pycpfcnpj==1.5.1
+    # via -r dev.in
 pyjwt==2.3.0
     # via -r dev.in
 pynamodb==5.2.0
@@ -111,8 +113,6 @@ urllib3==1.26.8
     # via
     #   botocore
     #   sentry-sdk
-validate-docbr==1.10.0
-    # via -r dev.in
 virtualenv==20.13.0
     # via pre-commit
 walrus==0.9.0
