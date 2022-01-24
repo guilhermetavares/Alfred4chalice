@@ -31,7 +31,7 @@ def _validate_settings():
 def encode_auth(id, date=None, device_id=None, token=None, verify_code=None):
     _validate_settings()
 
-    args = locals()
+    func_args = locals()
 
     if date is None:
         date = datetime.utcnow() + timedelta(seconds=JWT_EXP_DELTA_SECONDS)
@@ -39,9 +39,10 @@ def encode_auth(id, date=None, device_id=None, token=None, verify_code=None):
     payload = {"id": str(id), "exp": date}
 
     f = Fernet(FERNET_CRYPT_KEY)
-    for context in JWT_CONTEXT_ARGS:
-        if args.get(context):
-            payload[context] = f.encrypt(payload[context].encode()).decode()
+
+    for context_arg in JWT_CONTEXT_ARGS:
+        if func_args.get(context_arg):
+            payload[context_arg] = f.encrypt(func_args[context_arg].encode()).decode()
 
     return jwt.encode(payload, JWT_SECRET, JWT_ALGORITHM)
 
