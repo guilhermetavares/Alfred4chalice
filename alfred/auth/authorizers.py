@@ -1,6 +1,8 @@
 import jwt
 from chalice import AuthResponse
 
+from alfred.settings import JWT_CONTEXT_ARGS
+
 from .models import BasicAuthUser
 from .utils import decode_auth, get_credentials
 
@@ -21,6 +23,12 @@ def jwt_authorizer(auth_request):
     except (jwt.ExpiredSignatureError, jwt.DecodeError):
         return AuthResponse(routes=[], principal_id="")
 
+    response_context = {}
+
+    for context in JWT_CONTEXT_ARGS:
+        if payload.get(context):
+            response_context[context] = payload[context]
+
     return AuthResponse(
-        routes=["*"], principal_id=payload["id"], context={"token": payload["token"]},
+        routes=["*"], principal_id=payload["id"], context=response_context,
     )
