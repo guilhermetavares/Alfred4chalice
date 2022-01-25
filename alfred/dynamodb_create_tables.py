@@ -1,4 +1,5 @@
 from alfred.auth.models import BasicAuthUser
+from alfred.feature_flag.models import FeatureFlag
 from alfred.settings import DYNAMODB_PREFIX
 
 
@@ -12,6 +13,11 @@ def dynamodb_create_tables():
 
     if not BasicAuthUser.exists():
         BasicAuthUser.create_table(
+            read_capacity_units=1, write_capacity_units=1, wait=True
+        )
+        
+    if not FeatureFlag.exists():
+        FeatureFlag.create_table(
             read_capacity_units=1, write_capacity_units=1, wait=True
         )
 
