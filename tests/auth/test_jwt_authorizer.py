@@ -7,17 +7,17 @@ from freezegun import freeze_time
 from jwt import DecodeError, ExpiredSignatureError
 
 from alfred.auth import JWTException, decode_auth, encode_auth, jwt_authorizer
-from alfred.settings import JWT_CONTEXT_ARGS
 
 
-def test_jwt_context_args():
-    expected_context_args = ["device_id", "verify_code", "token"]
-    assert expected_context_args == JWT_CONTEXT_ARGS
-
-
+@pytest.mark.parametrize(
+    "key, value",
+    [("any", "arg"), ("token", "fake_token"), ("verify_code", "1234"), ("foo", "bar")],
+)
 @freeze_time("2021-01-01")
-def test_jwt_authorizer_authorized():
-    token = encode_auth(id="fake_id")
+def test_jwt_authorizer_authorized_with_kwargs(key, value):
+
+    kwargs = {key: value}
+    token = encode_auth(id="fake_id", **kwargs)
 
     auth_request = AuthRequest(auth_type="GET", token=token, method_arn="")
 
@@ -25,52 +25,11 @@ def test_jwt_authorizer_authorized():
 
     assert auth_response.routes == ["*"]
     assert auth_response.principal_id == "fake_id"
-
-
-freeze_time("2021-01-01")
-
-
-def test_jwt_authorizer_authorized_with_token():
-    token = encode_auth(id="fake_id", token="fake_token")
-
-    auth_request = AuthRequest(auth_type="GET", token=token, method_arn="")
-
-    auth_response = jwt_authorizer(auth_request=auth_request)
-
-    expected_context = {"token": "fake_token"}
-    assert auth_response.routes == ["*"]
-    assert auth_response.principal_id == "fake_id"
-    assert auth_response.context == expected_context
-
-
-def test_jwt_authorizer_authorized_with_verify_code():
-    token = encode_auth(id="fake_id", verify_code="1234")
-
-    auth_request = AuthRequest(auth_type="GET", token=token, method_arn="")
-
-    auth_response = jwt_authorizer(auth_request=auth_request)
-
-    expected_context = {"verify_code": "1234"}
-    assert auth_response.routes == ["*"]
-    assert auth_response.principal_id == "fake_id"
-    assert auth_response.context == expected_context
-
-
-def test_jwt_authorizer_authorized_with_device_id():
-    token = encode_auth(id="fake_id", device_id="1234")
-
-    auth_request = AuthRequest(auth_type="GET", token=token, method_arn="")
-
-    auth_response = jwt_authorizer(auth_request=auth_request)
-
-    expected_context = {"device_id": "1234"}
-    assert auth_response.routes == ["*"]
-    assert auth_response.principal_id == "fake_id"
-    assert auth_response.context == expected_context
+    assert auth_response.context[key] == value
 
 
 @patch("alfred.auth.authorizers.decode_auth")
-def test_jwt_authorizer_expirederror(mock_decode):
+def test_jwt_authorizer_expired_error(mock_decode):
     mock_decode.side_effect = ExpiredSignatureError("fake_error")
 
     token = encode_auth(id="fake_id")
@@ -83,7 +42,7 @@ def test_jwt_authorizer_expirederror(mock_decode):
 
 
 @patch("alfred.auth.authorizers.decode_auth")
-def test_jwt_authorizer_decodeerror(mock_decode):
+def test_jwt_authorizer_decode_rror(mock_decode):
     mock_decode.side_effect = DecodeError("fake_error")
 
     token = encode_auth(id="fake_id")

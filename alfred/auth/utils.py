@@ -1,4 +1,5 @@
 import base64
+from copy import deepcopy
 from datetime import datetime, timedelta
 
 import jwt
@@ -7,7 +8,6 @@ from cryptography.fernet import Fernet
 from alfred.settings import (
     FERNET_CRYPT_KEY,
     JWT_ALGORITHM,
-    JWT_CONTEXT_ARGS,
     JWT_EXP_DELTA_SECONDS,
     JWT_SECRET,
 )
@@ -28,21 +28,19 @@ def _validate_settings():
         raise JWTException({"error": "Missing JWT settings."})
 
 
-def encode_auth(id, date=None, device_id=None, token=None, verify_code=None):
+def encode_auth(id, date=None, **kwargs):
     _validate_settings()
-
-    func_args = locals()
 
     if date is None:
         date = datetime.utcnow() + timedelta(seconds=JWT_EXP_DELTA_SECONDS)
 
     payload = {"id": str(id), "exp": date}
 
-    f = Fernet(FERNET_CRYPT_KEY)
-
-    for context_arg in JWT_CONTEXT_ARGS:
-        if func_args.get(context_arg):
-            payload[context_arg] = f.encrypt(func_args[context_arg].encode()).decode()
+    extra_args = kwargs
+    if extra_args:
+        f = Fernet(FERNET_CRYPT_KEY)
+        for arg in extra_args:
+            payload[arg] = f.encrypt(extra_args[arg].encode()).decode()
 
     return jwt.encode(payload, JWT_SECRET, JWT_ALGORITHM)
 
@@ -53,8 +51,11 @@ def decode_auth(token):
     payload = jwt.decode(token, JWT_SECRET, algorithms=JWT_ALGORITHM)
     f = Fernet(FERNET_CRYPT_KEY)
 
-    for context in JWT_CONTEXT_ARGS:
-        if payload.get(context):
-            payload[context] = f.decrypt(payload[context].encode()).decode()
+    extra_args = deepcopy(payload)
+    extra_args.pop("id")
+    extra_args.pop("exp")
+
+    for key, value in extra_args.items():
+        payload[key] = f.decrypt(value.encode()).decode()
 
     return payload
