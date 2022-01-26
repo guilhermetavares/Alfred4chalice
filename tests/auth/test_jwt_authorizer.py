@@ -9,23 +9,55 @@ from jwt import DecodeError, ExpiredSignatureError
 from alfred.auth import JWTException, decode_auth, encode_auth, jwt_authorizer
 
 
-@pytest.mark.parametrize(
-    "key, value",
-    [("any", "arg"), ("token", "fake_token"), ("verify_code", "1234"), ("foo", "bar")],
-)
-@freeze_time("2021-01-01")
-def test_jwt_authorizer_authorized_with_kwargs(key, value):
+def test_jwt_authorizer_authorized_success_kwargs_encrypted():
 
-    kwargs = {key: value}
-    token = encode_auth(id="fake_id", **kwargs)
+    kwargs = {"foo": "bar"}
+    encrypted_fields = ["foo"]
 
+    token = encode_auth(id="fake_id", encrypted_fields=encrypted_fields, **kwargs)
     auth_request = AuthRequest(auth_type="GET", token=token, method_arn="")
 
-    auth_response = jwt_authorizer(auth_request=auth_request)
+    auth_response = jwt_authorizer(
+        auth_request=auth_request, encrypted_fields=encrypted_fields
+    )
 
     assert auth_response.routes == ["*"]
     assert auth_response.principal_id == "fake_id"
-    assert auth_response.context[key] == value
+    assert auth_response.context["foo"] == "bar"
+
+
+def test_jwt_authorizer_authorized_success_all_encrypted():
+
+    kwargs = {"foo": "bar"}
+    encrypted_fields = ["foo", "id", "date"]
+
+    token = encode_auth(id="fake_id", encrypted_fields=encrypted_fields, **kwargs)
+    auth_request = AuthRequest(auth_type="GET", token=token, method_arn="")
+
+    auth_response = jwt_authorizer(
+        auth_request=auth_request, encrypted_fields=encrypted_fields
+    )
+
+    assert auth_response.routes == ["*"]
+    assert auth_response.principal_id == "fake_id"
+    assert auth_response.context["foo"] == "bar"
+
+
+def test_jwt_authorizer_authorized_success_encrypted_not_found():
+
+    kwargs = {"foo": "bar"}
+    encrypted_fields = ["foo", "not_found_field"]
+
+    token = encode_auth(id="fake_id", encrypted_fields=encrypted_fields, **kwargs)
+    auth_request = AuthRequest(auth_type="GET", token=token, method_arn="")
+
+    auth_response = jwt_authorizer(
+        auth_request=auth_request, encrypted_fields=encrypted_fields
+    )
+
+    assert auth_response.routes == ["*"]
+    assert auth_response.principal_id == "fake_id"
+    assert auth_response.context["foo"] == "bar"
 
 
 @patch("alfred.auth.authorizers.decode_auth")
@@ -42,7 +74,7 @@ def test_jwt_authorizer_expired_error(mock_decode):
 
 
 @patch("alfred.auth.authorizers.decode_auth")
-def test_jwt_authorizer_decode_rror(mock_decode):
+def test_jwt_authorizer_decode_error(mock_decode):
     mock_decode.side_effect = DecodeError("fake_error")
 
     token = encode_auth(id="fake_id")
@@ -66,7 +98,6 @@ def test_jwt_encode_decode_with_date():
     assert fake_decode["exp"] is not None
 
 
-@freeze_time("2021-01-01")
 def test_jwt_encode_decode_without_date():
     token = encode_auth(id="fake_id")
     assert token is not None
