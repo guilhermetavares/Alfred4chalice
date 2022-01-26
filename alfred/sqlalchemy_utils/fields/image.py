@@ -11,7 +11,7 @@ class ImageType(types.TypeDecorator):
 
         self.upload_to = upload_to
 
-    def process_bind_param(self, value):
+    def process_bind_param(self, value, dialect):
         success, file_name = S3File.upload_file(value, upload_to=self.upload_to)
 
         if not success:
@@ -19,7 +19,7 @@ class ImageType(types.TypeDecorator):
 
         return file_name
 
-    def process_result_value(self, value):
+    def process_result_value(self, value, dialect):
         url = S3File.get_presigned_url(value)
 
         return url
