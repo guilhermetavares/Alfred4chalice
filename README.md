@@ -157,12 +157,15 @@ FERNET_CRYPT_KEY
 
 Na sequencia, será necessário registrar o `jwt_authorizer` no seu app chalice.
 
+O argumento `encrypted_fields` aponta quais fields serão criptografados dentro do token
+
 ```python
 from alfred import auth
 
 @app.authorizer()
 def jwt_authorizer(auth_request):
-    return auth.jwt_authorizer(auth_request)
+    encrypted_fields = ["foo", "bar"]
+    return auth.jwt_authorizer(auth_request, encrypted_fields)
 ```
 
 Para utilizar o authorizer em seus endpoints:
