@@ -1,22 +1,13 @@
 name: Alfred4Chalice
 
-on: [push]
+on: push
 
 jobs:
-  build:
+  test:
 
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: Install dependencies
+    - name: Test with Docker
       run: |
-        python -m pip install --upgrade pip
-        pip install wheel
-    - name: Test with pytest
-      run: |
-        pip install -r requirements/test.txt
-        pytest -s --cov-fail-under 100 --cov-report term-missing
+        docker-compose run app pytest $(path) -s --cov-report term-missing --cov-fail-under 100
