@@ -6,7 +6,7 @@ from pynamodb.attributes import (
     UnicodeAttribute,
     UTCDateTimeAttribute,
 )
-from pynamodb.exceptions import DoesNotExist
+from pynamodb.exceptions import DoesNotExist, GetError
 from pynamodb.models import Model
 
 from alfred.settings import DYNAMODB_HOST, DYNAMODB_PREFIX
@@ -39,6 +39,6 @@ class BasicAuthUser(Model):
         try:
             user = self.get(username)
             routes = user.routes if user.password == password else []
-        except DoesNotExist:
+        except (DoesNotExist, GetError):
             pass
         return routes
