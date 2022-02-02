@@ -6,10 +6,12 @@ from pynamodb.attributes import (
     UnicodeAttribute,
     UTCDateTimeAttribute,
 )
-from pynamodb.exceptions import DoesNotExist
+from pynamodb.exceptions import DoesNotExist, GetError
 from pynamodb.models import Model
 
 from alfred.settings import DYNAMODB_HOST, DYNAMODB_PREFIX
+
+from .exceptions import InvalidMetadataException, InvalidRoutesException
 
 
 class BasicAuthUser(Model):
@@ -39,6 +41,25 @@ class BasicAuthUser(Model):
         try:
             user = self.get(username)
             routes = user.routes if user.password == password else []
-        except DoesNotExist:
+        except (DoesNotExist, GetError):
             pass
         return routes
+
+    def add_routes(self, new_routes=[]):
+        exit_conditions = (not new_routes, not isinstance(new_routes, list))
+        if any(exit_conditions):
+            raise InvalidRoutesException("New routes must be a valid list of routes")
+
+        self.routes.extend(new_routes)
+        self.save()
+
+    def add_metadata(self, new_metadata={}):
+        exit_conditions = (not new_metadata, not isinstance(new_metadata, dict))
+        if any(exit_conditions):
+            raise InvalidMetadataException("New metadata must be a valid dictionary")
+
+        if self.metadata:
+            self.metadata.update(new_metadata)
+        else:
+            self.metadata = new_metadata
+        self.save()
