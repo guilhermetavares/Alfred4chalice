@@ -1,8 +1,10 @@
 from datetime import datetime
 
+import pytest
 from freezegun import freeze_time
 from pynamodb.models import Model
 
+from alfred.auth.exceptions import InvalidMetadataException, InvalidRoutesException
 from alfred.auth.models import BasicAuthUser
 from alfred.settings import DYNAMODB_PREFIX
 
@@ -76,3 +78,54 @@ def test_user_login_empty_password(basic_auth_user):
 
 def test_user_login_does_not_exist():
     assert BasicAuthUser.login("fakeuser", "wrong_pass") == []
+
+
+def test_user_add_routes_success(basic_auth_user):
+    new_routes = ["foo", "bar"]
+    basic_auth_user.add_routes(new_routes)
+
+    assert new_routes[0] in basic_auth_user.routes
+    assert new_routes[1] in basic_auth_user.routes
+
+
+def test_user_add_routes_empty(basic_auth_user):
+    new_routes = []
+    with pytest.raises(InvalidRoutesException) as err:
+        basic_auth_user.add_routes(new_routes)
+
+    assert err.value.args[0] == "New routes must be a valid list of routes"
+
+
+def test_user_add_routes_invalid_routes(basic_auth_user):
+    new_routes = {}
+    with pytest.raises(InvalidRoutesException) as err:
+        basic_auth_user.add_routes(new_routes)
+
+    assert err.value.args[0] == "New routes must be a valid list of routes"
+
+
+def test_user_empty_metadata_add_metadata_success(basic_auth_user):
+    assert basic_auth_user.metadata is None
+
+    new_metadata = {"foo": "bar"}
+    basic_auth_user.add_metadata(new_metadata)
+
+    assert basic_auth_user.metadata["foo"] == "bar"
+
+
+def test_user_has_metadata_add_metadata_success(basic_auth_user):
+    basic_auth_user.metadata = {"key": "value"}
+    assert basic_auth_user.metadata is not None
+
+    new_metadata = {"foo": "bar"}
+    basic_auth_user.add_metadata(new_metadata)
+
+    assert basic_auth_user.metadata["foo"] == "bar"
+
+
+def test_user_add_metadata_invalid_metadata(basic_auth_user):
+    new_metadata = []
+    with pytest.raises(InvalidMetadataException) as err:
+        basic_auth_user.add_metadata(new_metadata)
+
+    assert err.value.args[0] == "New metadata must be a valid dictionary"

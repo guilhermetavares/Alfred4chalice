@@ -5,7 +5,7 @@ import pytest
 from alfred.auth import BasicAuthUser
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def basic_auth_user():
     BasicAuthUser(username="admin", password="1234", routes=["my_fake_route"],).save()
 
