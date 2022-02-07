@@ -22,3 +22,6 @@ SQS_QUEUE_URL = os.environ.get("SQS_QUEUE_URL", "")
 BUCKET_S3 = os.environ.get("BUCKET_S3", "")
 DYNAMODB_HOST = os.environ.get("DYNAMODB_HOST")
 DYNAMODB_PREFIX = os.environ.get("DYNAMODB_PREFIX")
+
+# IMAGE STORAGE SETTINGS
+DEFAULT_STORAGE = os.environ.get("DEFAULT_STORAGE")

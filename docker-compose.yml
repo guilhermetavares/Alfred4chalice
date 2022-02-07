@@ -29,6 +29,7 @@ services:
       - AWS_DEFAULT_REGION=us-east-1
       - AWS_SECRET_ACCESS_KEY=aws_access_secret
       - BUCKET_S3=fake_bucket
+      - DEFAULT_STORAGE=dummy
       - DYNAMODB_HOST=http://dynamodb-test:8000
       - DYNAMODB_PREFIX=alfred
       - FERNET_CRYPT_KEY=ank2C0xNzXJn6rfdJ3nS5zMkClU0I34tuQMXpVmX6yM=
