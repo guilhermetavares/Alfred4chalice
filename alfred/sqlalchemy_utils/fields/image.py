@@ -1,6 +1,7 @@
 from sqlalchemy import types
 
-from alfred.aws import S3File, S3UploadFileException
+from alfred.settings import DEFAULT_STORAGE
+from alfred.sqlalchemy_utils import STORAGE_SETTINGS
 
 
 class ImageType(types.TypeDecorator):
@@ -11,15 +12,20 @@ class ImageType(types.TypeDecorator):
 
         self.upload_to = upload_to
 
+        self.storage_config = STORAGE_SETTINGS[DEFAULT_STORAGE]
+        self.storage_error = self.storage_config["error"]
+        self.storage_class = self.storage_config["class"]
+        self.storage = self.storage_class()
+
     def process_bind_param(self, value, dialect):
-        success, file_name = S3File.upload_file(value, upload_to=self.upload_to)
+        success, file_name = self.storage.upload_file(value, upload_to=self.upload_to)
 
         if not success:
-            raise S3UploadFileException("Upload do arquivo não pode ser realizado")
+            raise self.storage_error("Upload do arquivo não pode ser realizado")
 
         return file_name
 
     def process_result_value(self, value, dialect):
-        url = S3File.get_presigned_url(value)
+        url = self.storage.get_presigned_url(value)
 
         return url
