@@ -17,8 +17,10 @@ class EmailField(fields.Str):
         self,
         accent_error_msg="Não é permitido acentuação",
         email_error_msg="Formato de e-mail inválido",
+        *args,
+        **kwargs
     ):
-        super().__init__()
+        super().__init__(*args, **kwargs)
         self.error_messages["accent_error_msg"] = accent_error_msg
         self.error_messages["email_error_msg"] = email_error_msg
 
@@ -38,8 +40,10 @@ class BRPhoneField(fields.Str):
         size=11,
         size_error_msg="Número de telefone deve conter 11 dígitos",
         phone_error_msg="Telefone inválido",
+        *args,
+        **kwargs
     ):
-        super().__init__()
+        super().__init__(*args, **kwargs)
         self.size = size
         self.error_messages["size_error_msg"] = size_error_msg
         self.error_messages["phone_error_msg"] = phone_error_msg

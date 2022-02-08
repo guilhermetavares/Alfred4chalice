@@ -1,7 +1,8 @@
 from marshmallow import ValidationError, fields
-
 from pycpfcnpj import cpf
+
 from alfred.tools import only_digits
+
 
 class BRDocumentField(fields.String):
     def _deserialize(self, value, attr, data, **kwargs):
@@ -14,7 +15,6 @@ class BRDocumentField(fields.String):
 
         return document
 
-    def __init__(self, document_error_msg="CPF inválido"):
-        super().__init__()
+    def __init__(self, document_error_msg="CPF inválido", *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.error_messages["document_error_msg"] = document_error_msg
-
