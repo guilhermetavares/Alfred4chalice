@@ -18,8 +18,10 @@ class CardCvvField(fields.String):
         self,
         not_numeric_error_msg="Apenas números são aceitos",
         size_error_msg="O CVV deve conter 3 ou 4 números",
+        *args,
+        **kwargs
     ):
-        super().__init__()
+        super().__init__(*args, **kwargs)
         self.error_messages["not_numeric_error_msg"] = not_numeric_error_msg
         self.error_messages["size_error_msg"] = size_error_msg
 
@@ -41,8 +43,10 @@ class CardExpDateField(fields.String):
         self,
         format_error_msg="O formato da data de expiração deve ser mm/YYYY",
         expired_error_msg="Cartão expirado",
+        *args,
+        **kwargs
     ):
-        super().__init__()
+        super().__init__(*args, **kwargs)
         self.error_messages["format_error_msg"] = format_error_msg
         self.error_messages["expired_error_msg"] = expired_error_msg
 
@@ -56,9 +60,12 @@ class CardHolderField(fields.String):
         return value
 
     def __init__(
-        self, size_error_msg="O titular deve conter mais do que 4 dígitos",
+        self,
+        size_error_msg="O titular deve conter mais do que 4 dígitos",
+        *args,
+        **kwargs
     ):
-        super().__init__()
+        super().__init__(*args, **kwargs)
         self.error_messages["size_error_msg"] = size_error_msg
 
 
@@ -70,6 +77,6 @@ class CardNumberField(fields.String):
             raise ValidationError(self.error_messages["card_error"])
         return cc.number
 
-    def __init__(self, card_error_msg="Cartão inválido"):
-        super().__init__()
+    def __init__(self, card_error_msg="Cartão inválido", *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.error_messages["card_error"] = card_error_msg
