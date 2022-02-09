@@ -1,4 +1,5 @@
-from alfred.aws import S3File, S3UploadFileException
+from alfred.aws.exceptions import S3UploadFileException
+from alfred.aws.s3 import S3File
 from alfred.storages import DummyStorage, DummyStorageException
 
 STORAGE_SETTINGS = {
