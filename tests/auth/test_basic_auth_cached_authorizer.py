@@ -1,7 +1,10 @@
-from chalice.app import AuthRequest
-from unittest.mock import patch
-from alfred.auth import basic_auth_cached_authorizer
 import base64
+from unittest.mock import patch
+
+from chalice.app import AuthRequest
+
+from alfred.auth.basic_auth_cached_authorizer import basic_auth_cached_authorizer
+
 
 def test_basic_auth_cached_authorizer_authorized(
     basic_auth_token_valid, basic_auth_user
@@ -16,9 +19,7 @@ def test_basic_auth_cached_authorizer_authorized(
     assert auth_response.principal_id == basic_auth_user.username
 
 
-def test_basic_auth_cached_authorizer_unauthorized(
-    basic_auth_token_invalid,
-):
+def test_basic_auth_cached_authorizer_unauthorized(basic_auth_token_invalid,):
     auth_request = AuthRequest(
         auth_type="GET", token=basic_auth_token_invalid, method_arn=""
     )
@@ -28,7 +29,7 @@ def test_basic_auth_cached_authorizer_unauthorized(
     assert auth_response.principal_id == "fake_user"
 
 
-@patch("alfred.auth.authorizers.Cache.get")
+@patch("alfred.auth.basic_auth_cached_authorizer.Cache.get")
 def test_basic_auth_cached_authorizer_cached_key(
     mock_cache_get, basic_auth_token_valid, basic_auth_user
 ):
@@ -49,10 +50,8 @@ def test_basic_auth_cached_authorizer_cached_key(
     assert auth_response.principal_id == basic_auth_user.username
 
 
-@patch("alfred.auth.authorizers.Cache.get")
-def test_basic_auth_cached_authorizer_wrong_password(
-    mock_cache_get, basic_auth_user
-):
+@patch("alfred.auth.basic_auth_cached_authorizer.Cache.get")
+def test_basic_auth_cached_authorizer_wrong_password(mock_cache_get, basic_auth_user):
     basic_auth = f"{basic_auth_user.username}:0000"
     auth64 = base64.b64encode(bytes(basic_auth, "utf-8"))
     token = f"Basic {auth64.decode('utf-8')}"
@@ -63,9 +62,7 @@ def test_basic_auth_cached_authorizer_wrong_password(
         "routes": basic_auth_user.routes,
     }
 
-    auth_request = AuthRequest(
-        auth_type="GET", token=token, method_arn=""
-    )
+    auth_request = AuthRequest(auth_type="GET", token=token, method_arn="")
 
     auth_response = basic_auth_cached_authorizer(auth_request=auth_request)
     CACHE_KEY = f"alfred_basic_auth_{basic_auth_user.username}"
@@ -74,7 +71,7 @@ def test_basic_auth_cached_authorizer_wrong_password(
     assert auth_response.principal_id == basic_auth_user.username
 
 
-@patch("alfred.auth.authorizers.Cache")
+@patch("alfred.auth.basic_auth_cached_authorizer.Cache")
 def test_basic_auth_cached_authorizer_has_no_cache(
     mock_cache, basic_auth_token_valid, basic_auth_user
 ):

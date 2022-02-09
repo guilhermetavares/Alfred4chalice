@@ -6,7 +6,9 @@ from chalice.app import AuthRequest
 from freezegun import freeze_time
 from jwt import DecodeError, ExpiredSignatureError
 
-from alfred.auth import JWTException, decode_auth, encode_auth, jwt_authorizer
+from alfred.auth.exceptions import JWTException
+from alfred.auth.jwt_authorizer import jwt_authorizer
+from alfred.auth.utils import decode_auth, encode_auth
 
 
 def test_jwt_authorizer_authorized_success_kwargs_encrypted():
@@ -60,7 +62,7 @@ def test_jwt_authorizer_authorized_success_encrypted_not_found():
     assert auth_response.context["foo"] == "bar"
 
 
-@patch("alfred.auth.authorizers.decode_auth")
+@patch("alfred.auth.jwt_authorizer.decode_auth")
 def test_jwt_authorizer_expired_error(mock_decode):
     mock_decode.side_effect = ExpiredSignatureError("fake_error")
 
@@ -73,7 +75,7 @@ def test_jwt_authorizer_expired_error(mock_decode):
     assert auth_response.context == {}
 
 
-@patch("alfred.auth.authorizers.decode_auth")
+@patch("alfred.auth.jwt_authorizer.decode_auth")
 def test_jwt_authorizer_decode_error(mock_decode):
     mock_decode.side_effect = DecodeError("fake_error")
 
