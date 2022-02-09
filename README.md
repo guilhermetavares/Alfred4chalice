@@ -49,37 +49,13 @@ Cache.get("cache_key")
 Cache.delete("cache_key")
 ```
 
-## Field para Password
+## SQLALCHEMY_UTILS
 
-Para quem usa o sqlalchemy e precisar de um campo de password, pode utilizar o campo do alfred, que já faz as validações de senha.
+Opções de campos personalizados para serem utilizados na definição de um Model do SqlAlchemy
 
-Primeiro deve definir a sua chave de criptografia
-
-```python
-ALFRED_PASSWORD_SALT = very-numric-key
-```
-
-```python
-from alfred.sqlalchemy_utils.fields.password import PasswordType
-
-class SeuModel:
-    password = Column(PasswordType, nullable=True)
-
-```
-
-## Field para PasswordSalt
-
-Para quem usa o sqlalchemy e precisar de um campo de password, pode utilizar o campo do PasswordSalt.
-O campo criptografa a senha baseado em um salt randômico que também é persistido no banco.
-O formato final do valor persistido contem: "password_salt-password_interations-password_hash", separados por um hifen "-".
-
-```python
-from alfred.sqlalchemy_utils.fields.password import PasswordSaltType
-
-class SeuModel:
-    password = Column(PasswordSaltType, nullable=True)
-
-```
+- [ImageType](/docs/sqlalchemy_utils/ImageType.md): para armazenar arquivos de imagem
+- [PasswordSaltType](/docs/sqlalchemy_utils/PasswordSaltType.md): para armazenar password com salt randômico
+- [PasswordType](/docs/sqlalchemy_utils/PasswordType.md): para armazenar password com salt fixo
 
 ## Basic Auth Authorizer
 
@@ -202,7 +178,7 @@ def handle_sqs_message(event):
 
 ## Feature Flag
 
-Para utilizar o `Feature Flag`, você deve instanciar a classe FeatureFlag passando como parâmetro o `id` e `data`. 
+Para utilizar o `Feature Flag`, você deve instanciar a classe FeatureFlag passando como parâmetro o `id` e `data`.
 
 ```python
 from alfred.feature_flag.models import FeatureFlag
