@@ -1,7 +1,7 @@
 import pytest
 from marshmallow import ValidationError, fields
 
-from alfred.marshmallow_utils.fields import CardExpDateField
+from alfred.marshmallow_utils.fields.card_exp_date import CardExpDateField
 
 
 def test_cardexpdate_is_subclass():

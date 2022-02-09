@@ -1,7 +1,7 @@
 import pytest
 from marshmallow import ValidationError, fields
 
-from alfred.marshmallow_utils.fields import BRPhoneField
+from alfred.marshmallow_utils.fields.br_phone import BRPhoneField
 
 
 def test_brphone_is_subclass():
