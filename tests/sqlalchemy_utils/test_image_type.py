@@ -4,7 +4,7 @@ import pytest
 from sqlalchemy import types
 
 from alfred.aws.exceptions import S3UploadFileException
-from alfred.sqlalchemy_utils.fields import ImageType
+from alfred.sqlalchemy_utils.fields.image import ImageType
 
 
 def test_image_type_as_type_decorator():
