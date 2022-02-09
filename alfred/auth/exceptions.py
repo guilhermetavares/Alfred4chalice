@@ -4,3 +4,7 @@ class InvalidRoutesException(Exception):
 
 class InvalidMetadataException(Exception):
     pass
+
+
+class JWTException(Exception):
+    pass

@@ -6,19 +6,13 @@ import boto3
 from alfred.sentry import sentry_sdk
 from alfred.settings import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, SQS_QUEUE_URL
 
+from .exceptions import SQSTaskMaxRetriesExceededError
+
 sqs_client = boto3.client(
     "sqs",
     aws_access_key_id=AWS_ACCESS_KEY_ID,
     aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
 )
-
-
-class SQSTaskError(Exception):
-    pass
-
-
-class SQSTaskMaxRetriesExceededError(Exception):
-    pass
 
 
 class SQSTask:

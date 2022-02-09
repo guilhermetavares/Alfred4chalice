@@ -1,7 +1,7 @@
 import pytest
 from marshmallow import ValidationError, fields
 
-from alfred.marshmallow_utils.fields import EmailField
+from alfred.marshmallow_utils.fields.email import EmailField
 
 
 def test_email_is_subclass():

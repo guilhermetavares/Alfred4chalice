@@ -1,8 +1,7 @@
-from alfred.sqlalchemy_utils.fields.password import (
-    PasswordSaltType,
-    hash_password,
-    types,
-)
+from sqlalchemy import types
+
+from alfred.sqlalchemy_utils.fields.password_salt import PasswordSaltType
+from alfred.sqlalchemy_utils.fields.utils import hash_password
 
 
 def test_password_salt_type_impl():

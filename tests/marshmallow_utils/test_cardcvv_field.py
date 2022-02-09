@@ -1,7 +1,7 @@
 import pytest
 from marshmallow import ValidationError, fields
 
-from alfred.marshmallow_utils.fields import CardCvvField
+from alfred.marshmallow_utils.fields.card_cvv import CardCvvField
 
 
 def test_cardcvv_is_subclass():

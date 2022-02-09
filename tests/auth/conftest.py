@@ -2,7 +2,7 @@ import base64
 
 import pytest
 
-from alfred.auth import BasicAuthUser
+from alfred.auth.models import BasicAuthUser
 
 
 @pytest.fixture(scope="function")

@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from botocore.exceptions import ClientError
 
-from alfred.aws import S3File
+from alfred.aws.s3 import S3File
 from alfred.settings import BUCKET_S3
 
 # this variable bellow represent a real image PNG semi transparent with

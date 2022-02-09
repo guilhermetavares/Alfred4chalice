@@ -24,30 +24,11 @@ Após o build, é só rodar os testes
 make test
 ```
 
-## Setup para o Cache
+## CACHE
 
-Para utilizar a classe de cache do Alfred, primeiramente deve adicionar o walrus (<https://walrus.readthedocs.io/en/latest/api.html>) no seu requirements, recomendamos versões maiores que a **0.8.2**
+Opções de gerenciadores de Cache para serem utilizados:
 
-```requirements
-walrus==X.X.X
-```
-
-Após adicionar o walrus no projeto, você deve adicionar a sua conexação com o redis nas variáveis de ambiente do projeto.
-
-```python
-ALFRED_REDIS_HOST=sua-conexao-com-redis
-```
-
-Como utilizar
-
-```python
-from alfred.cache import Cache
-
-value = 100
-Cache.set("cache_key", value, 60)
-Cache.get("cache_key")
-Cache.delete("cache_key")
-```
+- [Walrus Cache](/docs/cache/walrus_cache.md): gerenciador baseado na lib Walrus
 
 ## SQLALCHEMY_UTILS
 
@@ -57,108 +38,13 @@ Opções de campos personalizados para serem utilizados na definição de um Mod
 - [PasswordSaltType](/docs/sqlalchemy_utils/PasswordSaltType.md): para armazenar password com salt randômico
 - [PasswordType](/docs/sqlalchemy_utils/PasswordType.md): para armazenar password com salt fixo
 
-## Basic Auth Authorizer
+## AUTH
 
-Para utilizar o `basic_auth_authorizer`, serão necessários no seu requirements:
+Opções de authorizers para serem utilizados na definição de uma nova api
 
-```requirements
-pynamodb>=5.1.0
-```
-
-Será necessário também o acesso a um banco de dados Dynamodb. Detalhes da configuração
-do banco em: (<https://docs.aws.amazon.com/dynamodb/index.html>)
-
-Primeiro, é necessário criar a tabela do `BasicAuthUser`, com o seguinte script:
-
-```python
-from alfred.auth.models import BasicAuthUser
-from alfred.settings import DYNAMODB_PREFIX
-
-class DynamoDBException(Exception):
-    pass
-
-
-def dynamodb_create_tables():
-    if not DYNAMODB_PREFIX:
-        raise DynamoDBException("DYNAMODB_PREFIX enviroment variable must be set")
-
-    if not BasicAuthUser.exists():
-        BasicAuthUser.create_table(
-            read_capacity_units=1, write_capacity_units=1, wait=True
-        )
-
-
-if __name__ == "__main__":
-    dynamodb_create_tables()
-
-```
-
-Na sequencia, será necessário registrar o `basic_auth_authorizer` no seu app chalice.
-
-```python
-from alfred import auth
-
-@app.authorizer()
-def basic_auth_authorizer(auth_request):
-    return auth.basic_auth_authorizer(auth_request)
-```
-
-Agora basta popular o tabela de usuários e utilizar o authorizer em seus endpoints.
-
-```python
-@app.route("/ping", methods=["GET"], authorizer=basic_auth_authorizer)
-def login():
-    pass
-```
-
-## JWT Authorizer
-
-Para utilizar o `jwt_authorizer`, serão necessários:
-
-- Adicionar no seu requirements:
-
-```requirements
-pyjwt==2.3.0
-cryptography==36.0.0
-```
-
-- Adicionar as variáveis de ambiente:
-
-```env
-JWT_ALGORITHM
-JWT_EXP_DELTA_SECONDS
-JWT_SECRET
-FERNET_CRYPT_KEY
-```
-
-Na sequencia, será necessário registrar o `jwt_authorizer` no seu app chalice.
-
-O argumento `encrypted_fields` aponta quais fields serão criptografados dentro do token
-
-```python
-from alfred import auth
-
-@app.authorizer()
-def jwt_authorizer(auth_request):
-    encrypted_fields = ["foo", "bar"]
-    return auth.jwt_authorizer(auth_request, encrypted_fields)
-```
-
-Para utilizar o authorizer em seus endpoints:
-
-```python
-@app.route("/ping", methods=["GET"], authorizer=basic_auth_authorizer)
-def login():
-    pass
-```
-
-Para criar um token, utilize a função `encode_auth`:
-
-```python
-from alfred.auth import encode_auth
-
-token = encode_auth(id, token, date)
-```
+- [basic_auth_authorizer](/docs/auth/basic_auth_authorizer.md): para validação do tipo Basic Auth sem cache
+- [basic_auth_cached_authorizer](/docs/auth/basic_auth_cached_authorizer.md): para validação do tipo Basic Auth com cache
+- [jwt_authorizer](/docs/auth/jwt_authorizer.md): para validação do tipo token JWT
 
 ## SQS
 

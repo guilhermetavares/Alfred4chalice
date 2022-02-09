@@ -1,7 +1,7 @@
 import pytest
 from marshmallow import ValidationError, fields
 
-from alfred.marshmallow_utils.fields import PasswordNumberField
+from alfred.marshmallow_utils.fields.password import PasswordNumberField
 
 
 def test_passwordnumber_is_subclass():

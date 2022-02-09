@@ -1,7 +1,7 @@
 from marshmallow import ValidationError, fields
 from pycpfcnpj import cpf
 
-from alfred.tools import only_digits
+from alfred.tools.core import only_digits
 
 
 class BRDocumentField(fields.String):

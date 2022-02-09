@@ -3,8 +3,8 @@ from unittest.mock import patch
 import pytest
 from sqlalchemy import types
 
-from alfred.aws import S3UploadFileException
-from alfred.sqlalchemy_utils.fields import ImageType
+from alfred.aws.exceptions import S3UploadFileException
+from alfred.sqlalchemy_utils.fields.image import ImageType
 
 
 def test_image_type_as_type_decorator():

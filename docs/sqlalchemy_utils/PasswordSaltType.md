@@ -5,7 +5,7 @@ O campo criptografa a senha baseado em um salt randômico que também é persist
 O formato final do valor persistido contem: "password_salt-password_interations-password_hash", separados por um hifen "-".
 
 ```python
-from alfred.sqlalchemy_utils.fields.password import PasswordSaltType
+from alfred.sqlalchemy_utils.fields.password_salt import PasswordSaltType
 
 class SeuModel:
     password = Column(PasswordSaltType, nullable=True)

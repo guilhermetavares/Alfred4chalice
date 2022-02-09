@@ -1,7 +1,7 @@
 import pytest
 from marshmallow import ValidationError, fields
 
-from alfred.marshmallow_utils.fields import BRDocumentField
+from alfred.marshmallow_utils.fields.br_document import BRDocumentField
 
 
 def test_brdocument_is_subclass():
