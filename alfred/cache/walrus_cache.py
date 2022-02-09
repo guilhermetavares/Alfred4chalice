@@ -3,9 +3,7 @@ from walrus import Walrus
 from alfred.sentry import sentry_sdk
 from alfred.settings import ALFRED_REDIS_HOST
 
-
-class WallrusException(Exception):
-    pass
+from .exceptions import WallrusException
 
 
 class Cache:
