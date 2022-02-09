@@ -1,6 +1,6 @@
 from marshmallow import ValidationError, fields
 
-from alfred.tools import only_digits
+from alfred.tools.core import only_digits
 
 
 class PasswordNumberField(fields.String):

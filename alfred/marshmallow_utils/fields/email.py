@@ -1,6 +1,6 @@
 from marshmallow import ValidationError, fields
 
-from alfred.tools import has_accent, is_email_valid
+from alfred.tools.core import has_accent, is_email_valid
 
 
 class EmailField(fields.Str):

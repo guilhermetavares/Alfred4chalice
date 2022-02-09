@@ -1,6 +1,7 @@
 from marshmallow import ValidationError, fields
 
-from alfred.tools import is_br_phone_valid, only_digits
+from alfred.tools.br_phone_valid import is_br_phone_valid
+from alfred.tools.core import only_digits
 
 
 class BRPhoneField(fields.Str):
