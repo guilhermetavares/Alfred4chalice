@@ -11,15 +11,13 @@ from alfred.settings import (
     JWT_SECRET,
 )
 
+from .exceptions import JWTException
+
 
 def get_credentials(auth64):
     decoded = base64.b64decode(auth64).decode("utf-8")
     username, password = decoded.split(":")
     return username, password
-
-
-class JWTException(Exception):
-    pass
 
 
 def _validate_settings():
