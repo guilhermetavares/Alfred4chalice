@@ -24,30 +24,11 @@ Após o build, é só rodar os testes
 make test
 ```
 
-## Setup para o Cache
+## CACHE
 
-Para utilizar a classe de cache do Alfred, primeiramente deve adicionar o walrus (<https://walrus.readthedocs.io/en/latest/api.html>) no seu requirements, recomendamos versões maiores que a **0.8.2**
+Opções de gerenciadores de Cache para serem utilizados:
 
-```requirements
-walrus==X.X.X
-```
-
-Após adicionar o walrus no projeto, você deve adicionar a sua conexação com o redis nas variáveis de ambiente do projeto.
-
-```python
-ALFRED_REDIS_HOST=sua-conexao-com-redis
-```
-
-Como utilizar
-
-```python
-from alfred.cache import Cache
-
-value = 100
-Cache.set("cache_key", value, 60)
-Cache.get("cache_key")
-Cache.delete("cache_key")
-```
+- [Walrus Cache](/docs/cache/walrus_cache.md): gerenciador baseado na lib Walrus
 
 ## SQLALCHEMY_UTILS
 
