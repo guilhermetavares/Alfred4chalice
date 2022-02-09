@@ -5,12 +5,8 @@ from unittest.mock import patch
 import pytest
 
 from alfred.settings import SQS_QUEUE_URL
-from alfred.sqs.sqs import (
-    SQSHandler,
-    SQSTask,
-    SQSTaskError,
-    SQSTaskMaxRetriesExceededError,
-)
+from alfred.sqs.exceptions import SQSTaskError, SQSTaskMaxRetriesExceededError
+from alfred.sqs.sqs import SQSHandler, SQSTask
 from tests.tools import sqs_expected_params
 
 
