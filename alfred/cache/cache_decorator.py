@@ -1,25 +1,26 @@
 from alfred.cache.walrus_cache import Cache
 from functools import wraps
+from hashlib import md5
 
 
-def cache_memoize(cache_key, cache_time):
+def cache_memoize(cache_time=60*60):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
+
+            cache_key = f"{func.__module__}.{func.__name__}:{args}_{kwargs}"
+            hash_key = md5(cache_key.encode()).hexdigest()
+
             cache = Cache()
-            cached = cache.get(cache_key)
+            cached = cache.get(hash_key)
             if cached:
                 return cached
 
             result = func(*args, **kwargs)
-            cache.set()
-            return f"{cache_key} - {cache_time}"
+            cache.set(hash_key, result, cache_time)
+            return result
 
         wrapper._decorator_name = "cache_memoize"
         return wrapper
 
     return decorator
-
-@cache_memoize(cache_key="somar", cache_time=100)
-def somar(num1, num2):
-    return num1+num2
