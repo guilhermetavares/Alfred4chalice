@@ -1,0 +1,2 @@
+class WallrusException(Exception):
+    pass

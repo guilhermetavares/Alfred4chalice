@@ -24,152 +24,68 @@ Após o build, é só rodar os testes
 make test
 ```
 
-## Setup para o Cache
+## CACHE
 
-Para utilizar a classe de cache do Alfred, primeiramente deve adicionar o walrus (<https://walrus.readthedocs.io/en/latest/api.html>) no seu requirements, recomendamos versões maiores que a **0.8.2**
+Opções de gerenciadores de Cache para serem utilizados:
 
-```requirements
-walrus==X.X.X
-```
+- [Walrus Cache](/docs/cache/walrus_cache.md): gerenciador baseado na lib Walrus
 
-Após adicionar o walrus no projeto, você deve adicionar a sua conexação com o redis nas variáveis de ambiente do projeto.
+## SQLALCHEMY_UTILS
+
+Opções de campos personalizados para serem utilizados na definição de um Model do SqlAlchemy
+
+- [ImageType](/docs/sqlalchemy_utils/ImageType.md): para armazenar arquivos de imagem
+- [PasswordSaltType](/docs/sqlalchemy_utils/PasswordSaltType.md): para armazenar password com salt randômico
+- [PasswordType](/docs/sqlalchemy_utils/PasswordType.md): para armazenar password com salt fixo
+
+## AUTH
+
+Opções de authorizers para serem utilizados na definição de uma nova api
+
+- [basic_auth_authorizer](/docs/auth/basic_auth_authorizer.md): para validação do tipo Basic Auth sem cache
+- [basic_auth_cached_authorizer](/docs/auth/basic_auth_cached_authorizer.md): para validação do tipo Basic Auth com cache
+- [jwt_authorizer](/docs/auth/jwt_authorizer.md): para validação do tipo token JWT
+
+## SQS
+
+Para utilizar o `sqs`, primeiro você deve adicionar o endereço de sua fila default na AWS as variáveis de ambiente do projeto:
 
 ```python
-ALFRED_REDIS_HOST=sua-conexao-com-redis
+SQS_QUEUE_URL=endereço-da-sua-fila-default
 ```
 
 Como utilizar
 
 ```python
-from alfred.cache import Cache
-
-value = 100
-Cache.set("cache_key", value, 60)
-Cache.get("cache_key")
-Cache.delete("cache_key")
+@app.on_sqs_message(queue=SQS_QUEUE_URL)
+def handle_sqs_message(event):
+     alfred.sqs.handle_sqs_message(event)
 ```
 
-## Field para Password
+## Feature Flag
 
-Para quem usa o sqlalchemy e precisar de um campo de password, pode utilizar o campo do alfred, que já faz as validações de senha.
-
-Primeiro deve definir a sua chave de criptografia
+Para utilizar o `Feature Flag`, você deve instanciar a classe FeatureFlag passando como parâmetro o `id` e `data`.
 
 ```python
-ALFRED_PASSWORD_SALT = very-numric-key
+from alfred.feature_flag.models import FeatureFlag
+
+FeatureFlag(id=1, data={"foo": "bar"}).save()
 ```
+
+Como acessar as informações:
+
+- Passando o `id` no método `get_data`, você acessa os dados contido no campo `data`:
 
 ```python
-from alfred.sqlalchemy_utils.fields.password import PasswordType
-
-class SeuModel:
-    password = Column(PasswordType, nullable=True)
-
+flag = FeatureFlag.get_data(id=1)
 ```
 
-## Field para PasswordSalt
-
-Para quem usa o sqlalchemy e precisar de um campo de password, pode utilizar o campo do PasswordSalt.
-O campo criptografa a senha baseado em um salt randômico que também é persistido no banco.
-O formato final do valor persistido contem: "password_salt-password_interations-password_hash", separados por um hifen "-".
+Resposta:
 
 ```python
-from alfred.sqlalchemy_utils.fields.password import PasswordSaltType
+print(flag)
 
-class SeuModel:
-    password = Column(PasswordSaltType, nullable=True)
-
+# >>> {"foo": "bar"}
 ```
 
-## Basic Auth Authorizer
-
-Para utilizar o `basic_auth_authorizer`, serão necessários no seu requirements:
-
-```requirements
-pynamodb>=5.1.0
-```
-
-Será necessário também o acesso a um banco de dados Dynamodb. Detalhes da configuração
-do banco em: (<https://docs.aws.amazon.com/dynamodb/index.html>)
-
-Primeiro, é necessário criar a tabela do `BasicAuthUser`, com o seguinte script:
-
-```python
-from alfred.auth.models import BasicAuthUser
-
-
-def dynamodb_create_tables():
-    if not BasicAuthUser.exists():
-        BasicAuthUser.create_table(
-            read_capacity_units=1, write_capacity_units=1, wait=True
-        )
-
-
-if __name__ == "__main__":
-    dynamodb_create_tables()
-
-```
-
-Na sequencia, será necessário registrar o `basic_auth_authorizer` no seu app chalice.
-
-```python
-from alfred import auth
-
-@app.authorizer()
-def basic_auth_authorizer(auth_request):
-    return auth.basic_auth_authorizer(auth_request)
-```
-
-Agora basta popular o tabela de usuários e utilizar o authorizer em seus endpoints.
-
-```python
-@app.route("/ping", methods=["GET"], authorizer=basic_auth_authorizer)
-def login():
-    pass
-```
-
-## JWT Authorizer
-
-Para utilizar o `jwt_authorizer`, serão necessários:
-
-- Adicionar no seu requirements:
-
-```requirements
-pyjwt==2.3.0
-cryptography==36.0.0
-```
-
-- Adicionar as variáveis de ambiente:
-
-```env
-JWT_ALGORITHM
-JWT_EXP_DELTA_SECONDS
-JWT_SECRET
-FERNET_CRYPT_KEY
-```
-
-Na sequencia, será necessário registrar o `jwt_authorizer` no seu app chalice.
-
-```python
-from alfred import auth
-
-@app.authorizer()
-def jwt_authorizer(auth_request):
-    return auth.jwt_authorizer(auth_request)
-```
-
-Para utilizar o authorizer em seus endpoints:
-
-```python
-@app.route("/ping", methods=["GET"], authorizer=basic_auth_authorizer)
-def login():
-    pass
-```
-
-Para criar um token, utilize a função `encode_auth`:
-
-```python
-from alfred.auth import encode_auth
-
-token = encode_auth(id, token, date)
-```
+- Caso o parâmetro `id` seja **Nulo** ou **id que não existe** o método irá retornar **None**.
