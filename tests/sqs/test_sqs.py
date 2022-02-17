@@ -3,6 +3,7 @@ import uuid
 from unittest.mock import patch
 
 import pytest
+from botocore.exceptions import ClientError
 
 from alfred.settings import SQS_QUEUE_URL
 from alfred.sqs.exceptions import SQSTaskError, SQSTaskMaxRetriesExceededError
@@ -47,6 +48,16 @@ def test_sqs_task_init():
 def test_sqs_task_apply():
     response = foo.apply(args=["fubar"], kwargs={"param_b": 10})
     assert response == "bar"
+
+
+@patch("alfred.sqs.sqs.sentry_sdk")
+@patch("alfred.sqs.sqs.sqs_client")
+def test_apply_side_effect_async(mock_sqs_client, mock_sentry):
+    mock_sqs_client.send_message.side_effect = ClientError(
+        error_response={}, operation_name=""
+    )
+    foo.apply_async(args=["fubar"], kwargs={"param_b": 10})
+    mock_sentry.capture_message.assert_called_once()
 
 
 @patch("alfred.sqs.sqs.sqs_client")
