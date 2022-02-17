@@ -36,9 +36,7 @@ class SQSTask:
         self.func = func
         return self
 
-    def apply_async(
-        self, args=[], kwargs={}, queue_url=None, countdown=default_delay
-    ):
+    def apply_async(self, args=[], kwargs={}, queue_url=None, countdown=default_delay):
         body = {
             "_func_module": self.func.__module__,
             "_func_name": self.func.__name__,
@@ -46,7 +44,7 @@ class SQSTask:
             "kwargs": kwargs,
             "retries": self.retries,
         }
-        
+
         queue_url = queue_url or self.queue_url
         try:
             response = sqs_client.send_message(
@@ -56,9 +54,10 @@ class SQSTask:
         except ClientError as err:
             data_exception = {
                 "err": str(err),
-                "body": str(body),
+                # "body": str(body),
                 "queue_url": queue_url,
                 "aws_access_key_id": AWS_ACCESS_KEY_ID,
+                "aws_secret_access_key": AWS_SECRET_ACCESS_KEY,
             }
             sentry_sdk.capture_message(str(data_exception))
 
@@ -90,7 +89,7 @@ class SQSTask:
             raise SQSTaskMaxRetriesExceededError(
                 f"Task achieve the max retries possible: {max_retries}"
             )
-        
+
         queue_url = queue_url or self.queue_url
         self.apply_async(
             args=self.request_args,
