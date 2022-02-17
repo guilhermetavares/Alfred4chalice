@@ -6,7 +6,8 @@ from alfred.sqs.sqs import SQSHandler
 logger = logging.getLogger("base")
 
 
-def handle_sqs_message(event):
+def handle_sqs_message(event, queue_url=None):
+    queue_url = queue_url or SQS_QUEUE_URL
     for record in event:
         handler = SQSHandler(body=record.body)
         try:
@@ -39,4 +40,4 @@ def handle_sqs_message(event):
                 }
             )
         finally:
-            handler.sqs_delete_message(SQS_QUEUE_URL, record.receipt_handle)
+            handler.sqs_delete_message(queue_url, record.receipt_handle)

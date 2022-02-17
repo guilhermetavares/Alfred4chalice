@@ -59,8 +59,25 @@ Como utilizar
 ```python
 @app.on_sqs_message(queue=SQS_QUEUE_URL)
 def handle_sqs_message(event):
-     alfred.sqs.handle_sqs_message(event)
+     alfred.sqs.handle_sqs_message(event, queue=SQS_QUEUE_URL)
 ```
+
+Para multiplas filas
+```python
+
+from your.settings import SQS_SECOND_QUEUE_NAME, SQS_SECOND_QUEUE_URL
+
+@app.on_sqs_message(queue=SQS_SECOND_QUEUE_NAME)
+def handle_second_sqs_message(event):
+     alfred.sqs.handle_sqs_message(event, queue_url=SQS_SECOND_QUEUE_URL)
+
+# app.tasks.py
+@SQSTask(bind=True, queue_url=SQS_SECOND_QUEUE_URL)
+def task_very_important(self, charge_id):
+     # very important script
+
+```
+
 
 ## Feature Flag
 

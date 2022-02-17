@@ -19,11 +19,11 @@ def test_sqs_task_max_retries_exceeded_error():
 
 
 def test_sqs_task_queue_url_property():
-    assert SQSTask.queue_url == SQS_QUEUE_URL
+    assert SQSTask.default_queue_url == SQS_QUEUE_URL
 
 
 def test_sqs_task_default_delay_property():
-    assert SQSTask.default_delay == 5
+    assert SQSTask.default_delay == 1
 
 
 def test_sqs_task_max_retries_property():
