@@ -14,23 +14,29 @@ sqs_client = boto3.client(
     aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
 )
 
+DEFAULT_QUEUE_URL = SQS_QUEUE_URL
+DEFAULT_DELAY = 1
+DEFAULT_MAX_RETRIES = 3
+DEFAULT_RETRY_DELAY = 60 * 3
+
 
 class SQSTask:
-    queue_url = SQS_QUEUE_URL
-    default_delay = 5
-    max_retries = 3
-    default_retry_delay = 60 * 3
+    default_queue_url = DEFAULT_QUEUE_URL
+    default_delay = DEFAULT_DELAY
+    max_retries = DEFAULT_MAX_RETRIES
+    default_retry_delay = DEFAULT_RETRY_DELAY
 
-    def __init__(self, bind=False, retries=0):
+    def __init__(self, bind=False, retries=0, queue_url=None):
         self.retries = retries
         self.bind = bind
+        self.queue_url = queue_url or DEFAULT_QUEUE_URL
 
     def __call__(self, func):
         self.func = func
         return self
 
     def apply_async(
-        self, args=[], kwargs={}, queue_url=queue_url, countdown=default_delay
+        self, args=[], kwargs={}, queue_url=DEFAULT_QUEUE_URL, countdown=default_delay
     ):
         body = {
             "_func_module": self.func.__module__,
@@ -39,6 +45,8 @@ class SQSTask:
             "kwargs": kwargs,
             "retries": self.retries,
         }
+        
+        queue_url = queue_url or self.queue_url
         response = sqs_client.send_message(
             QueueUrl=queue_url, DelaySeconds=countdown, MessageBody=json.dumps(body)
         )
@@ -63,9 +71,9 @@ class SQSTask:
     def retry(
         self,
         err,
-        max_retries=max_retries,
-        countdown=default_retry_delay,
-        queue_url=queue_url,
+        max_retries=DEFAULT_MAX_RETRIES,
+        countdown=DEFAULT_RETRY_DELAY,
+        queue_url=None,
     ):
         self.retries += 1
 
@@ -73,6 +81,8 @@ class SQSTask:
             raise SQSTaskMaxRetriesExceededError(
                 f"Task achieve the max retries possible: {max_retries}"
             )
+        
+        queue_url = queue_url or self.queue_url
         self.apply_async(
             args=self.request_args,
             kwargs=self.request_kwargs,
