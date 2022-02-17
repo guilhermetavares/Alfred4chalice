@@ -51,6 +51,9 @@ Opções de authorizers para serem utilizados na definição de uma nova api
 Para utilizar o `sqs`, primeiro você deve adicionar o endereço de sua fila default na AWS as variáveis de ambiente do projeto:
 
 ```python
+ALFRED_AWS_ACCESS_KEY_ID=id
+ALFRED_AWS_SECRET_ACCESS_KEY=key
+
 SQS_QUEUE_URL=endereço-da-sua-fila-default
 ```
 
@@ -63,6 +66,7 @@ def handle_sqs_message(event):
 ```
 
 Para multiplas filas
+
 ```python
 
 from your.settings import SQS_SECOND_QUEUE_NAME, SQS_SECOND_QUEUE_URL
@@ -77,7 +81,6 @@ def task_very_important(self, charge_id):
      # very important script
 
 ```
-
 
 ## Feature Flag
 
