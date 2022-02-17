@@ -2,6 +2,7 @@ import importlib
 import json
 
 import boto3
+from botocore.exceptions import ClientError
 
 from alfred.sentry import sentry_sdk
 from alfred.settings import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, SQS_QUEUE_URL
@@ -36,7 +37,7 @@ class SQSTask:
         return self
 
     def apply_async(
-        self, args=[], kwargs={}, queue_url=DEFAULT_QUEUE_URL, countdown=default_delay
+        self, args=[], kwargs={}, queue_url=None, countdown=default_delay
     ):
         body = {
             "_func_module": self.func.__module__,
@@ -47,11 +48,20 @@ class SQSTask:
         }
         
         queue_url = queue_url or self.queue_url
-        response = sqs_client.send_message(
-            QueueUrl=queue_url, DelaySeconds=countdown, MessageBody=json.dumps(body)
-        )
-
-        return response["MessageId"]
+        try:
+            response = sqs_client.send_message(
+                QueueUrl=queue_url, DelaySeconds=countdown, MessageBody=json.dumps(body)
+            )
+        except ClientError as err:
+            data_exception = {
+                "err": str(err),
+                "body": str(body),
+                "queue_url": queue_url,
+                "aws_access_key_id": AWS_ACCESS_KEY_ID,
+            }
+            sentry_sdk.capture_message(str(data_exception))
+        finally:
+            return response["MessageId"]
 
     def apply(self, args=[], kwargs={}):
         return self._run(0, *args, **kwargs)
