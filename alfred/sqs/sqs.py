@@ -52,6 +52,7 @@ class SQSTask:
             response = sqs_client.send_message(
                 QueueUrl=queue_url, DelaySeconds=countdown, MessageBody=json.dumps(body)
             )
+            return response["MessageId"]
         except ClientError as err:
             data_exception = {
                 "err": str(err),
@@ -60,8 +61,6 @@ class SQSTask:
                 "aws_access_key_id": AWS_ACCESS_KEY_ID,
             }
             sentry_sdk.capture_message(str(data_exception))
-        finally:
-            return response["MessageId"]
 
     def apply(self, args=[], kwargs={}):
         return self._run(0, *args, **kwargs)
