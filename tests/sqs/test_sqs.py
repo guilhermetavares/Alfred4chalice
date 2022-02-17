@@ -1,6 +1,7 @@
 import json
 import uuid
 from unittest.mock import patch
+from botocore.exceptions import ClientError
 
 import pytest
 
@@ -47,6 +48,14 @@ def test_sqs_task_init():
 def test_sqs_task_apply():
     response = foo.apply(args=["fubar"], kwargs={"param_b": 10})
     assert response == "bar"
+
+
+@patch("alfred.sqs.sqs.sentry_sdk")
+@patch("alfred.sqs.sqs.sqs_client")
+def test_apply_side_effect_async(mock_sqs_client, mock_sentry):
+    response = foo.apply_async(args=["fubar"], kwargs={"param_b": 10})
+    mock_sqs_client.send_message.side_effect = ClientError
+    mock_sentry.assert_called_onde()
 
 
 @patch("alfred.sqs.sqs.sqs_client")
