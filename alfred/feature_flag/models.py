@@ -18,3 +18,8 @@ class FeatureFlag(Model):
         except (DoesNotExist, GetError):
             return None
         
+
+    @classmethod
+    def get_batch_feature_flag(cls, api_issues_keys):
+        for flag in FeatureFlag.batch_get(api_issues_keys):
+            return flag.data
