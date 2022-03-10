@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - python-requests/2.27.1
     method: GET
-    uri: https://apps.emaillistverify.com/api/verifyEmail?secret=fake_key&email=valid.email@maistodos.com.br
+    uri: https://apps.emaillistverify.com/api/verifyEmail?email=contato%40maistodos.com.br&secret=ANY_SECRET
   response:
     body:
       string: !!binary |
@@ -34,7 +34,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 09 Mar 2022 20:29:03 GMT
+      - Thu, 10 Mar 2022 19:42:28 GMT
       Expires:
       - Thu, 19 Nov 1981 08:52:00 GMT
       Pragma:
@@ -42,7 +42,7 @@ interactions:
       Server:
       - nginx
       Set-Cookie:
-      - emaillistverify=9ok5mhueebkahi49re7ej20suo; path=/; secure; HttpOnly
+      - emaillistverify=hp0tr1vsh1g01v20i7doavornt; path=/; secure; HttpOnly
       Transfer-Encoding:
       - chunked
       Vary:
