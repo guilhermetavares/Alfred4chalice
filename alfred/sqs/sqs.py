@@ -8,6 +8,9 @@ from alfred.sentry import sentry_sdk
 from alfred.settings import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, SQS_QUEUE_URL
 
 from .exceptions import SQSTaskMaxRetriesExceededError
+import logging
+
+logger = logging.getLogger("base")
 
 sqs_client = boto3.client(
     "sqs",
@@ -79,17 +82,31 @@ class SQSTask:
     def retry(
         self,
         err,
+        *args,
         max_retries=DEFAULT_MAX_RETRIES,
         countdown=DEFAULT_RETRY_DELAY,
         queue_url=None,
+        **kwargs,
     ):
         self.retries += 1
 
         if self.retries >= max_retries:
-            sentry_sdk.capture_message(str(err))
-            raise SQSTaskMaxRetriesExceededError(
-                f"Task achieve the max retries possible: {max_retries}"
+
+            logger.debug(
+                {
+                    "task_has_succeeded": False,
+                    "task_error_message": f"Task achieve the max retries possible: {max_retries}",
+                    "task_function_module": self.func.__module__,
+                    "task_function_name": self.func.__name__,
+                    "task_function_args": self.request_args,
+                    "task_function_kwargs": self.request_kwargs,
+                    "task_function_retries": self.retries,
+                    "task_queue_url": self.queue_url,
+                    "task_response": None,
+                }
             )
+
+            return None
 
         queue_url = queue_url or self.queue_url
         self.apply_async(

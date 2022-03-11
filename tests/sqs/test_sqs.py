@@ -189,9 +189,8 @@ def test_sqs_task_retry(sqs_stub):
 
     assert response is None
 
-
-@patch("alfred.sqs.sqs.sentry_sdk.capture_message")
-def test_sqs_task_retry_raise_max_retries_exceeded(sentry_sdk, sqs_stub):
+@patch("alfred.sqs.sqs.logger.debug")
+def test_sqs_task_retry_raise_max_retries_exceeded(mock_logger, sqs_stub):
     body = {
         "_func_module": foo_with_retry.func.__module__,
         "_func_name": foo_with_retry.func.__name__,
@@ -200,7 +199,18 @@ def test_sqs_task_retry_raise_max_retries_exceeded(sentry_sdk, sqs_stub):
         "retries": 2,
     }
     handler = SQSHandler(json.dumps(body))
-    with pytest.raises(SQSTaskMaxRetriesExceededError):
-        handler.apply()
+    handler.apply()
 
-    sentry_sdk.assert_called_once()
+    mock_logger.assert_called_once_with(
+        {
+            "task_has_succeeded": False,
+            "task_error_message": "Task achieve the max retries possible: 3",
+            "task_function_module": body['_func_module'],
+            "task_function_name": body['_func_name'],
+            "task_function_args": body['args'],
+            "task_function_kwargs": body['kwargs'],
+            "task_function_retries": body['retries'] + 1,
+            "task_queue_url": "",
+            "task_response": None,
+        }
+    )
