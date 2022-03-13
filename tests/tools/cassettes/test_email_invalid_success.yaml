@@ -34,7 +34,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Sun, 13 Mar 2022 18:30:48 GMT
+      - Sun, 13 Mar 2022 19:40:07 GMT
       Expires:
       - Thu, 19 Nov 1981 08:52:00 GMT
       Pragma:
@@ -42,7 +42,7 @@ interactions:
       Server:
       - nginx
       Set-Cookie:
-      - emaillistverify=dts0kpscvpterhlsqr8gcblvta; path=/; secure; HttpOnly
+      - emaillistverify=ni6lueipn48jk1o2bji9b8lhgv; path=/; secure; HttpOnly
       Transfer-Encoding:
       - chunked
       Vary:
