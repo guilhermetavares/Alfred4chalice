@@ -7,7 +7,7 @@ from alfred.tools.email_verify import EmailListVerifyOne, is_smtp_email_valid
 
 
 @pytest.mark.vcr
-def test_email_comtrol():
+def test_email_control():
     email = "contato@maistodos.com.br"
     assert EmailListVerifyOne.control(email) == "ok"
 
