@@ -22,3 +22,10 @@ def s3_stub():
     with Stubber(s3_client) as stubber:
         yield stubber
         stubber.assert_no_pending_responses()
+
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_query_parameters": [("secret", "ANY_SECRET")],
+    }

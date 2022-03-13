@@ -38,6 +38,15 @@ def test_feature_flag_get_date_with_wrong_id():
         id=1,
         data={"foo": "bar"},
     ).save()
-    flag = FeatureFlag.get_data(id=2)
+    flag = FeatureFlag.get_data(id=6)
 
     assert flag is None
+
+
+def test_feature_flag_get_batch():
+
+    with FeatureFlag.batch_write() as batch:
+        for i in range(5):
+            batch.save(FeatureFlag(id=i, data={"foo": f"bar{i}"}))
+    flag = FeatureFlag.get_batch_feature_flag([1, 2, 3, 4, 5])
+    assert flag == {"foo": "bar1"}

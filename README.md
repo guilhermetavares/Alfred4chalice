@@ -109,3 +109,9 @@ print(flag)
 ```
 
 - Caso o parâmetro `id` seja **Nulo** ou **id que não existe** o método irá retornar **None**.
+
+
+# Tools
+
+Verificação de e-mail:
+- [EmailListVerifyOne](/docs/tools/email_verify.md)
