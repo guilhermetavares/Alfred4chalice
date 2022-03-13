@@ -13,7 +13,9 @@ def test_email_valid_success():
 
 
 @pytest.mark.vcr
-def test_email_invalid_success():
+@patch("alfred.tools.email_verify.EmailListVerifyOne.control")
+def test_email_invalid_success(mock_control):
+    mock_control.return_value = "email_disabled"
     email = "invalid.email@maistodos.com.br"
     assert EmailListVerifyOne.verify(email) is False
 
