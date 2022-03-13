@@ -28,11 +28,13 @@ def test_email_valid_error(mock_get, err):
     assert EmailListVerifyOne.verify(email) is True
 
 
+@pytest.mark.vcr
 def test_is_smtp_email_valid_skip_api():
     assert is_smtp_email_valid("wrong valid email") is False
     assert is_smtp_email_valid("valid.email@maistodos.com.br") is True
 
 
+@pytest.mark.vcr
 def test_is_smtp_email_valid_rate_api():
     email = "contato@maistodos.com.br"
     assert is_smtp_email_valid(email, force=True) is True
