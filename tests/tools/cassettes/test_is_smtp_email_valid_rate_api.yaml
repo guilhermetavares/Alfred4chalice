@@ -11,11 +11,11 @@ interactions:
       User-Agent:
       - python-requests/2.27.1
     method: GET
-    uri: https://apps.emaillistverify.com/api/verifyEmail?email=invalid.email%40maistodos.com.br&secret=ANY_SECRET
+    uri: https://apps.emaillistverify.com/api/verifyEmail?email=contato%40maistodos.com.br&secret=ANY_SECRET
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA0vNTczMiU/JLE5MyklNAQCqcZiPDgAAAA==
+        H4sIAAAAAAAAA8vPBgBH3dx5AgAAAA==
     headers:
       Access-Control-Allow-Headers:
       - DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range
@@ -34,7 +34,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 10 Mar 2022 19:42:30 GMT
+      - Sun, 13 Mar 2022 19:29:27 GMT
       Expires:
       - Thu, 19 Nov 1981 08:52:00 GMT
       Pragma:
@@ -42,7 +42,7 @@ interactions:
       Server:
       - nginx
       Set-Cookie:
-      - emaillistverify=aipp4eco8ojsmeh80cauk354mh; path=/; secure; HttpOnly
+      - emaillistverify=ngrtaq5eqtshqmfjlinshlue5g; path=/; secure; HttpOnly
       Transfer-Encoding:
       - chunked
       Vary:
