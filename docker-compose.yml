@@ -23,6 +23,7 @@ services:
     volumes:
       - ./:/var/task
     environment: &environment
+      - ALFRED_EMAIL_VERIFY_TOKEN=${ALFRED_EMAIL_VERIFY_TOKEN}
       - ALFRED_PASSWORD_SALT=esquilo
       - ALFRED_REDIS_HOST=redis
       - AWS_ACCESS_KEY_ID=aws_access_key
