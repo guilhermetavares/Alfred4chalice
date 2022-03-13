@@ -22,8 +22,7 @@ class EmailListVerifyOne:
     @classmethod
     def control(self, email):
         url_ = self.BASE_URL.format(email=email, secret=ALFRED_EMAIL_VERIFY_TOKEN)
-        response = requests.get(url_)
-        return response.text
+        return requests.get(url_).text
 
     @classmethod
     def verify(self, email):

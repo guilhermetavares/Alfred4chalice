@@ -7,9 +7,11 @@ from alfred.tools.email_verify import EmailListVerifyOne, is_smtp_email_valid
 
 
 @pytest.mark.vcr
-def test_email_control():
+@patch("alfred.tools.email_verify.requests.get")
+def test_email_control(mock_get):
+    # mock_get.return_value = "ok"
     email = "contato@maistodos.com.br"
-    assert EmailListVerifyOne.control(email) == "ok"
+    assert EmailListVerifyOne.control(email) is not None
 
 
 @patch("alfred.tools.email_verify.EmailListVerifyOne.control")
