@@ -7,6 +7,7 @@ from botocore.exceptions import ClientError
 
 from alfred.settings import SQS_QUEUE_URL
 from alfred.sqs.exceptions import SQSTaskError, SQSTaskMaxRetriesExceededError
+from alfred.sqs.models import DeadTask
 from alfred.sqs.sqs import SQSHandler, SQSTask
 from tests.tools import sqs_expected_params
 
@@ -189,8 +190,11 @@ def test_sqs_task_retry(sqs_stub):
 
     assert response is None
 
-@patch("alfred.sqs.sqs.logger.debug")
-def test_sqs_task_retry_raise_max_retries_exceeded(mock_logger, sqs_stub):
+
+@patch("alfred.sqs.sqs.DeadTask.save")
+@patch("alfred.sqs.sqs.logger.error")
+def test_sqs_task_retry_raise_max_retries_exceeded(mock_logger, mock_save, sqs_stub):
+
     body = {
         "_func_module": foo_with_retry.func.__module__,
         "_func_name": foo_with_retry.func.__name__,
@@ -214,3 +218,5 @@ def test_sqs_task_retry_raise_max_retries_exceeded(mock_logger, sqs_stub):
             "task_response": None,
         }
     )
+
+    mock_save.assert_called_once()
