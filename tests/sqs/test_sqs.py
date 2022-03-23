@@ -2,12 +2,10 @@ import json
 import uuid
 from unittest.mock import patch
 
-import pytest
 from botocore.exceptions import ClientError
 
 from alfred.settings import SQS_QUEUE_URL
 from alfred.sqs.exceptions import SQSTaskError, SQSTaskMaxRetriesExceededError
-from alfred.sqs.models import DeadTask
 from alfred.sqs.sqs import SQSHandler, SQSTask
 from tests.tools import sqs_expected_params
 
@@ -209,11 +207,11 @@ def test_sqs_task_retry_raise_max_retries_exceeded(mock_logger, mock_save, sqs_s
         {
             "task_has_succeeded": False,
             "task_error_message": "Task achieve the max retries possible: 3",
-            "task_function_module": body['_func_module'],
-            "task_function_name": body['_func_name'],
-            "task_function_args": body['args'],
-            "task_function_kwargs": body['kwargs'],
-            "task_function_retries": body['retries'] + 1,
+            "task_function_module": body["_func_module"],
+            "task_function_name": body["_func_name"],
+            "task_function_args": body["args"],
+            "task_function_kwargs": body["kwargs"],
+            "task_function_retries": body["retries"] + 1,
             "task_queue_url": "",
             "task_response": None,
         }

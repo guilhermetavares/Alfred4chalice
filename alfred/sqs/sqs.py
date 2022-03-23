@@ -1,5 +1,6 @@
 import importlib
 import json
+import logging
 
 import boto3
 from botocore.exceptions import ClientError
@@ -7,9 +8,6 @@ from botocore.exceptions import ClientError
 from alfred.sentry import sentry_sdk
 from alfred.settings import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, SQS_QUEUE_URL
 from alfred.sqs.models import DeadTask
-
-from .exceptions import SQSTaskMaxRetriesExceededError
-import logging
 
 logger = logging.getLogger("base")
 
@@ -96,7 +94,8 @@ class SQSTask:
             logger.error(
                 {
                     "task_has_succeeded": False,
-                    "task_error_message": f"Task achieve the max retries possible: {max_retries}",
+                    "task_error_message": f"Task achieve the max retries possible:\
+                     {max_retries}",
                     "task_function_module": self.func.__module__,
                     "task_function_name": self.func.__name__,
                     "task_function_args": self.request_args,
@@ -107,12 +106,12 @@ class SQSTask:
                 }
             )
             DeadTask(
-                function_module = self.func.__module__,
-                function_name = self.func.__name__,
-                function_args = self.request_args,
-                function_kwargs = self.request_kwargs,
-                function_retries = self.retries,
-                queue_url = self.queue_url,
+                function_module=self.func.__module__,
+                function_name=self.func.__name__,
+                function_args=self.request_args,
+                function_kwargs=self.request_kwargs,
+                function_retries=self.retries,
+                queue_url=self.queue_url,
             ).save()
 
             return None

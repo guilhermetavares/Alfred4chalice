@@ -12,6 +12,7 @@ def db_setup():
     yield
     dynamodb_delete_table()
 
+
 @pytest.fixture(autouse=True)
 def sqs_stub():
     with Stubber(sqs_client) as stubber:

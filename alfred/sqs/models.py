@@ -1,8 +1,14 @@
-from pynamodb.models import Model
-from alfred.settings import DYNAMODB_HOST, DYNAMODB_PREFIX
-from pynamodb.attributes import UnicodeAttribute, JSONAttribute, ListAttribute, NumberAttribute
-from pynamodb.exceptions import DoesNotExist, GetError
 from uuid import uuid4
+
+from pynamodb.attributes import (
+    JSONAttribute,
+    ListAttribute,
+    NumberAttribute,
+    UnicodeAttribute,
+)
+from pynamodb.models import Model
+
+from alfred.settings import DYNAMODB_HOST, DYNAMODB_PREFIX
 
 
 class DeadTask(Model):

@@ -1,9 +1,10 @@
-from alfred.cache.walrus_cache import Cache
 from functools import wraps
 from hashlib import md5
 
+from alfred.cache.walrus_cache import Cache
 
-def cache_memoize(cache_time=60*60):
+
+def cache_memoize(cache_time=60 * 60):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):

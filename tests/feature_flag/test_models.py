@@ -13,10 +13,7 @@ def test_feature_flag_tablename():
 
 
 def test_feature_flag_get_date_with_sucess():
-    FeatureFlag(
-        id=1,
-        data={"foo": "bar"},
-    ).save()
+    FeatureFlag(id=1, data={"foo": "bar"},).save()
 
     flag = FeatureFlag.get_data(id=1)
 
@@ -24,20 +21,14 @@ def test_feature_flag_get_date_with_sucess():
 
 
 def test_feature_flag_get_date_with_none():
-    FeatureFlag(
-        id=1,
-        data={"foo": "bar"},
-    ).save()
+    FeatureFlag(id=1, data={"foo": "bar"},).save()
     flag = FeatureFlag.get_data(id=None)
 
     assert flag is None
 
 
 def test_feature_flag_get_date_with_wrong_id():
-    FeatureFlag(
-        id=1,
-        data={"foo": "bar"},
-    ).save()
+    FeatureFlag(id=1, data={"foo": "bar"},).save()
     flag = FeatureFlag.get_data(id=6)
 
     assert flag is None

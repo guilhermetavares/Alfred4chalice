@@ -16,21 +16,20 @@ def dynamodb_create_tables():
         BasicAuthUser.create_table(
             read_capacity_units=1, write_capacity_units=1, wait=True
         )
-        
+
     if not FeatureFlag.exists():
         FeatureFlag.create_table(
             read_capacity_units=1, write_capacity_units=1, wait=True
         )
 
     if not DeadTask.exists():
-        DeadTask.create_table(
-            read_capacity_units=1, write_capacity_units=1, wait=True
-        )
+        DeadTask.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
+
 
 def dynamodb_delete_table():
     if BasicAuthUser.exists():
         BasicAuthUser.delete_table()
-        
+
     if FeatureFlag.exists():
         FeatureFlag.delete_table()
 
