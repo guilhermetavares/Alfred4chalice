@@ -86,6 +86,7 @@ class SQSTask:
         self.retries += 1
 
         if self.retries >= max_retries:
+            sentry_sdk.capture_message(str(err))
             raise SQSTaskMaxRetriesExceededError(
                 f"Task achieve the max retries possible: {max_retries}"
             )
@@ -97,7 +98,6 @@ class SQSTask:
             queue_url=queue_url,
             countdown=countdown,
         )
-        sentry_sdk.capture_message(str(err))
         return
 
 
