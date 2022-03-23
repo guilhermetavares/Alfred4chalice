@@ -39,7 +39,7 @@ def test_cardnumber_valid_without_mask():
 
 
 @pytest.mark.parametrize(
-    "masked_document, document",
+    "masked_number, number",
     [
         ("5299.4476.7940.2836", "5299447679402836"),
         ("5299 4476 7940 2836", "5299447679402836"),
@@ -47,9 +47,16 @@ def test_cardnumber_valid_without_mask():
         ("52994476.79402836", "5299447679402836"),
     ],
 )
-def test_cardnumber_valid_with_mask(masked_document, document):
+def test_cardnumber_valid_with_mask(masked_number, number):
     field = CardNumberField()
 
-    value = field._deserialize(masked_document, "number", {"number": masked_document})
+    value = field._deserialize(masked_number, "number", {"number": masked_number})
 
-    assert value == document
+    assert value == number
+
+
+def test_cardnumber_from_whitelist_cards():
+    card_number = "1111111111111111"
+    field = CardNumberField(whitelist_cards=[card_number])
+    value = field._deserialize(card_number, "number", {"number": card_number})
+    assert value == card_number
