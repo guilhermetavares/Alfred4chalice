@@ -163,8 +163,7 @@ def foo_with_retry(self, param_a, param_b):
     return resp
 
 
-@patch("alfred.sqs.sqs.sentry_sdk")
-def test_sqs_task_retry(sentry_sdk, sqs_stub):
+def test_sqs_task_retry(sqs_stub):
     expected_params_send_sms = sqs_expected_params(
         foo_with_retry,
         task_args=["fubar"],
@@ -189,12 +188,9 @@ def test_sqs_task_retry(sentry_sdk, sqs_stub):
     response = handler.apply()
 
     assert response is None
-    sentry_sdk.capture_message.assert_called_once_with(
-        "unsupported operand type(s) for +: 'int' and 'str'"
-    )
 
 
-@patch("alfred.sqs.sqs.sentry_sdk")
+@patch("alfred.sqs.sqs.sentry_sdk.capture_message")
 def test_sqs_task_retry_raise_max_retries_exceeded(sentry_sdk, sqs_stub):
     body = {
         "_func_module": foo_with_retry.func.__module__,
@@ -207,4 +203,4 @@ def test_sqs_task_retry_raise_max_retries_exceeded(sentry_sdk, sqs_stub):
     with pytest.raises(SQSTaskMaxRetriesExceededError):
         handler.apply()
 
-    sentry_sdk.assert_not_called()
+    sentry_sdk.assert_called_once()
