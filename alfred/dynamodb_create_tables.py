@@ -27,5 +27,16 @@ def dynamodb_create_tables():
             read_capacity_units=1, write_capacity_units=1, wait=True
         )
 
+def dynamodb_delete_table():
+    if BasicAuthUser.exists():
+        BasicAuthUser.delete_table()
+        
+    if FeatureFlag.exists():
+        FeatureFlag.delete_table()
+
+    if DeadTask.exists():
+        DeadTask.delete_table()
+
+
 if __name__ == "__main__":
     dynamodb_create_tables()
