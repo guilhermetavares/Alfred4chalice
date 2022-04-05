@@ -1,7 +1,7 @@
 import logging
 
 from alfred.settings import SQS_QUEUE_URL
-from alfred.sqs.sqs import SQSHandler
+from alfred.sqs.handlers import SQSHandler
 
 logger = logging.getLogger("base")
 

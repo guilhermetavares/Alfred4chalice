@@ -6,7 +6,9 @@ from botocore.exceptions import ClientError
 
 from alfred.settings import SQS_QUEUE_URL
 from alfred.sqs.exceptions import SQSTaskError, SQSTaskMaxRetriesExceededError
-from alfred.sqs.sqs import SQSHandler, SQSTask
+from alfred.sqs.handlers import SQSHandler
+from alfred.sqs.models import DeadTask
+from alfred.sqs.sqs import SQSTask
 from tests.tools import sqs_expected_params
 
 
@@ -142,7 +144,7 @@ def test_sqs_handler_apply():
     assert response == "bar"
 
 
-@patch("alfred.sqs.sqs.sqs_client")
+@patch("alfred.sqs.handlers.sqs_client")
 def test_sqs_handler_sqs_delete_message(mock_sqs_client):
     body = {"foo": "bar"}
     handler = SQSHandler(json.dumps(body))
@@ -189,9 +191,8 @@ def test_sqs_task_retry(sqs_stub):
     assert response is None
 
 
-@patch("alfred.sqs.sqs.DeadTask.save")
 @patch("alfred.sqs.sqs.logger.error")
-def test_sqs_task_retry_raise_max_retries_exceeded(mock_logger, mock_save, sqs_stub):
+def test_sqs_task_retry_raise_max_retries_exceeded(mock_logger, sqs_stub):
 
     body = {
         "_func_module": foo_with_retry.func.__module__,
@@ -217,4 +218,11 @@ def test_sqs_task_retry_raise_max_retries_exceeded(mock_logger, mock_save, sqs_s
         }
     )
 
-    mock_save.assert_called_once()
+    dead_task = DeadTask.scan().__next__()
+
+    assert dead_task.function_module == body["_func_module"]
+    assert dead_task.function_name == body["_func_name"]
+    assert dead_task.function_args == body["args"]
+    assert dead_task.function_kwargs == body["kwargs"]
+    assert dead_task.function_retries == body["retries"] + 1
+    assert dead_task.queue_url == ""

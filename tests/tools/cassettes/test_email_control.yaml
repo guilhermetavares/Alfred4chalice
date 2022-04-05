@@ -1,0 +1,795 @@
+interactions:
+- request:
+    body: '{"TableName": "alfred_basicauth_user"}'
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPWF3c19hY2Nlc3Nfa2V5LzIwMjIwNDA1L3VzLWVh
+        c3QtMS9keW5hbW9kYi9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9Y29udGVudC10eXBlO2hv
+        c3Q7eC1hbXotZGF0ZTt4LWFtei10YXJnZXQsIFNpZ25hdHVyZT1kYWNiNjk1YjhjOWM5MTQ3NDAw
+        NjRhZDIyYmFhZmM1NWE1MTJiNTY4ZTY0Zjk2NTIwM2ZkY2MyODViMzM0MGRm
+      Content-Length:
+      - '38'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90b2NvcmUvMS4yMy40MiBQeXRob24vMy44LjExIExpbnV4LzUuMTMuMC0zOS1nZW5lcmlj
+      X-Amz-Date:
+      - !!binary |
+        MjAyMjA0MDVUMjEwNjM3Wg==
+      X-Amz-Target:
+      - !!binary |
+        RHluYW1vREJfMjAxMjA4MTAuRGVzY3JpYmVUYWJsZQ==
+    method: POST
+    uri: http://dynamodb-test:8000/
+  response:
+    body:
+      string: '{"__type":"com.amazonaws.dynamodb.v20120810#ResourceNotFoundException","Message":"Cannot
+        do operations on a non-existent table"}'
+    headers:
+      Content-Length:
+      - '128'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Tue, 05 Apr 2022 21:06:37 GMT
+      Server:
+      - Jetty(9.4.18.v20190429)
+      x-amzn-RequestId:
+      - 35b31894-fb7d-4858-b3dc-4f80b0b8b6c8
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"TableName": "alfred_basicauth_user"}'
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPWF3c19hY2Nlc3Nfa2V5LzIwMjIwNDA1L3VzLWVh
+        c3QtMS9keW5hbW9kYi9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9Y29udGVudC10eXBlO2hv
+        c3Q7eC1hbXotZGF0ZTt4LWFtei10YXJnZXQsIFNpZ25hdHVyZT1kYWNiNjk1YjhjOWM5MTQ3NDAw
+        NjRhZDIyYmFhZmM1NWE1MTJiNTY4ZTY0Zjk2NTIwM2ZkY2MyODViMzM0MGRm
+      Content-Length:
+      - '38'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90b2NvcmUvMS4yMy40MiBQeXRob24vMy44LjExIExpbnV4LzUuMTMuMC0zOS1nZW5lcmlj
+      X-Amz-Date:
+      - !!binary |
+        MjAyMjA0MDVUMjEwNjM3Wg==
+      X-Amz-Target:
+      - !!binary |
+        RHluYW1vREJfMjAxMjA4MTAuRGVzY3JpYmVUYWJsZQ==
+    method: POST
+    uri: http://dynamodb-test:8000/
+  response:
+    body:
+      string: '{"__type":"com.amazonaws.dynamodb.v20120810#ResourceNotFoundException","Message":"Cannot
+        do operations on a non-existent table"}'
+    headers:
+      Content-Length:
+      - '128'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Tue, 05 Apr 2022 21:06:37 GMT
+      Server:
+      - Jetty(9.4.18.v20190429)
+      x-amzn-RequestId:
+      - 66e32ebc-19f9-4c09-a75b-4cd1e107a53c
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"TableName": "alfred_basicauth_user", "ProvisionedThroughput": {"ReadCapacityUnits":
+      1, "WriteCapacityUnits": 1}, "AttributeDefinitions": [{"AttributeName": "username",
+      "AttributeType": "S"}], "KeySchema": [{"AttributeName": "username", "KeyType":
+      "HASH"}]}'
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPWF3c19hY2Nlc3Nfa2V5LzIwMjIwNDA1L3VzLWVh
+        c3QtMS9keW5hbW9kYi9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9Y29udGVudC10eXBlO2hv
+        c3Q7eC1hbXotZGF0ZTt4LWFtei10YXJnZXQsIFNpZ25hdHVyZT0zMWJhNTBkZGJhMjlhOWE3ZjJj
+        ZWE4MTEwNzQ0OGYwMTc4MzYzZWI3YTk1ZTE3Y2MxZjJhYzBmMTE0ZjRjNDBl
+      Content-Length:
+      - '258'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90b2NvcmUvMS4yMy40MiBQeXRob24vMy44LjExIExpbnV4LzUuMTMuMC0zOS1nZW5lcmlj
+      X-Amz-Date:
+      - !!binary |
+        MjAyMjA0MDVUMjEwNjM3Wg==
+      X-Amz-Target:
+      - !!binary |
+        RHluYW1vREJfMjAxMjA4MTAuQ3JlYXRlVGFibGU=
+    method: POST
+    uri: http://dynamodb-test:8000/
+  response:
+    body:
+      string: '{"TableDescription":{"AttributeDefinitions":[{"AttributeName":"username","AttributeType":"S"}],"TableName":"alfred_basicauth_user","KeySchema":[{"AttributeName":"username","KeyType":"HASH"}],"TableStatus":"ACTIVE","CreationDateTime":1649192797.047,"ProvisionedThroughput":{"LastIncreaseDateTime":0.000,"LastDecreaseDateTime":0.000,"NumberOfDecreasesToday":0,"ReadCapacityUnits":1,"WriteCapacityUnits":1},"TableSizeBytes":0,"ItemCount":0,"TableArn":"arn:aws:dynamodb:ddblocal:000000000000:table/alfred_basicauth_user"}}'
+    headers:
+      Content-Length:
+      - '518'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Tue, 05 Apr 2022 21:06:37 GMT
+      Server:
+      - Jetty(9.4.18.v20190429)
+      x-amz-crc32:
+      - '2135726363'
+      x-amzn-RequestId:
+      - 8e198e11-f4cd-49b4-8a41-04ea39051721
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"TableName": "alfred_basicauth_user"}'
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPWF3c19hY2Nlc3Nfa2V5LzIwMjIwNDA1L3VzLWVh
+        c3QtMS9keW5hbW9kYi9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9Y29udGVudC10eXBlO2hv
+        c3Q7eC1hbXotZGF0ZTt4LWFtei10YXJnZXQsIFNpZ25hdHVyZT1kYWNiNjk1YjhjOWM5MTQ3NDAw
+        NjRhZDIyYmFhZmM1NWE1MTJiNTY4ZTY0Zjk2NTIwM2ZkY2MyODViMzM0MGRm
+      Content-Length:
+      - '38'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90b2NvcmUvMS4yMy40MiBQeXRob24vMy44LjExIExpbnV4LzUuMTMuMC0zOS1nZW5lcmlj
+      X-Amz-Date:
+      - !!binary |
+        MjAyMjA0MDVUMjEwNjM3Wg==
+      X-Amz-Target:
+      - !!binary |
+        RHluYW1vREJfMjAxMjA4MTAuRGVzY3JpYmVUYWJsZQ==
+    method: POST
+    uri: http://dynamodb-test:8000/
+  response:
+    body:
+      string: '{"Table":{"AttributeDefinitions":[{"AttributeName":"username","AttributeType":"S"}],"TableName":"alfred_basicauth_user","KeySchema":[{"AttributeName":"username","KeyType":"HASH"}],"TableStatus":"ACTIVE","CreationDateTime":1649192797.047,"ProvisionedThroughput":{"LastIncreaseDateTime":0.000,"LastDecreaseDateTime":0.000,"NumberOfDecreasesToday":0,"ReadCapacityUnits":1,"WriteCapacityUnits":1},"TableSizeBytes":0,"ItemCount":0,"TableArn":"arn:aws:dynamodb:ddblocal:000000000000:table/alfred_basicauth_user"}}'
+    headers:
+      Content-Length:
+      - '507'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Tue, 05 Apr 2022 21:06:37 GMT
+      Server:
+      - Jetty(9.4.18.v20190429)
+      x-amz-crc32:
+      - '1230041435'
+      x-amzn-RequestId:
+      - 25c16008-c7c0-4567-8dad-1b0d7b48748c
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"TableName": "alfred_feature_flag"}'
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPWF3c19hY2Nlc3Nfa2V5LzIwMjIwNDA1L3VzLWVh
+        c3QtMS9keW5hbW9kYi9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9Y29udGVudC10eXBlO2hv
+        c3Q7eC1hbXotZGF0ZTt4LWFtei10YXJnZXQsIFNpZ25hdHVyZT05YjAzYmM1YTI0Njc0NDQ2ZWI2
+        MzIyOWEwZDdhMzg2MWI0OGQyZjllNDA1OGQxZDZlMGRhYzFlNDk0ZGEwMzE4
+      Content-Length:
+      - '36'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90b2NvcmUvMS4yMy40MiBQeXRob24vMy44LjExIExpbnV4LzUuMTMuMC0zOS1nZW5lcmlj
+      X-Amz-Date:
+      - !!binary |
+        MjAyMjA0MDVUMjEwNjM3Wg==
+      X-Amz-Target:
+      - !!binary |
+        RHluYW1vREJfMjAxMjA4MTAuRGVzY3JpYmVUYWJsZQ==
+    method: POST
+    uri: http://dynamodb-test:8000/
+  response:
+    body:
+      string: '{"__type":"com.amazonaws.dynamodb.v20120810#ResourceNotFoundException","Message":"Cannot
+        do operations on a non-existent table"}'
+    headers:
+      Content-Length:
+      - '128'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Tue, 05 Apr 2022 21:06:37 GMT
+      Server:
+      - Jetty(9.4.18.v20190429)
+      x-amzn-RequestId:
+      - 787741fa-4766-4dec-b126-fa86d2bbda94
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"TableName": "alfred_feature_flag"}'
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPWF3c19hY2Nlc3Nfa2V5LzIwMjIwNDA1L3VzLWVh
+        c3QtMS9keW5hbW9kYi9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9Y29udGVudC10eXBlO2hv
+        c3Q7eC1hbXotZGF0ZTt4LWFtei10YXJnZXQsIFNpZ25hdHVyZT05YjAzYmM1YTI0Njc0NDQ2ZWI2
+        MzIyOWEwZDdhMzg2MWI0OGQyZjllNDA1OGQxZDZlMGRhYzFlNDk0ZGEwMzE4
+      Content-Length:
+      - '36'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90b2NvcmUvMS4yMy40MiBQeXRob24vMy44LjExIExpbnV4LzUuMTMuMC0zOS1nZW5lcmlj
+      X-Amz-Date:
+      - !!binary |
+        MjAyMjA0MDVUMjEwNjM3Wg==
+      X-Amz-Target:
+      - !!binary |
+        RHluYW1vREJfMjAxMjA4MTAuRGVzY3JpYmVUYWJsZQ==
+    method: POST
+    uri: http://dynamodb-test:8000/
+  response:
+    body:
+      string: '{"__type":"com.amazonaws.dynamodb.v20120810#ResourceNotFoundException","Message":"Cannot
+        do operations on a non-existent table"}'
+    headers:
+      Content-Length:
+      - '128'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Tue, 05 Apr 2022 21:06:37 GMT
+      Server:
+      - Jetty(9.4.18.v20190429)
+      x-amzn-RequestId:
+      - e9a11c83-e8cc-4fcb-8049-d09e570a2f86
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"TableName": "alfred_feature_flag", "ProvisionedThroughput": {"ReadCapacityUnits":
+      1, "WriteCapacityUnits": 1}, "AttributeDefinitions": [{"AttributeName": "id",
+      "AttributeType": "S"}], "KeySchema": [{"AttributeName": "id", "KeyType": "HASH"}]}'
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPWF3c19hY2Nlc3Nfa2V5LzIwMjIwNDA1L3VzLWVh
+        c3QtMS9keW5hbW9kYi9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9Y29udGVudC10eXBlO2hv
+        c3Q7eC1hbXotZGF0ZTt4LWFtei10YXJnZXQsIFNpZ25hdHVyZT1lNzVjYzZhYzRkZGI1YmJjY2U0
+        ZDRmMzdjODRkMTlkMjM4NTIzOWY3MmYwMGM0YjEzNzhlNzljMGQ4NThjNzY4
+      Content-Length:
+      - '244'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90b2NvcmUvMS4yMy40MiBQeXRob24vMy44LjExIExpbnV4LzUuMTMuMC0zOS1nZW5lcmlj
+      X-Amz-Date:
+      - !!binary |
+        MjAyMjA0MDVUMjEwNjM3Wg==
+      X-Amz-Target:
+      - !!binary |
+        RHluYW1vREJfMjAxMjA4MTAuQ3JlYXRlVGFibGU=
+    method: POST
+    uri: http://dynamodb-test:8000/
+  response:
+    body:
+      string: '{"TableDescription":{"AttributeDefinitions":[{"AttributeName":"id","AttributeType":"S"}],"TableName":"alfred_feature_flag","KeySchema":[{"AttributeName":"id","KeyType":"HASH"}],"TableStatus":"ACTIVE","CreationDateTime":1649192797.064,"ProvisionedThroughput":{"LastIncreaseDateTime":0.000,"LastDecreaseDateTime":0.000,"NumberOfDecreasesToday":0,"ReadCapacityUnits":1,"WriteCapacityUnits":1},"TableSizeBytes":0,"ItemCount":0,"TableArn":"arn:aws:dynamodb:ddblocal:000000000000:table/alfred_feature_flag"}}'
+    headers:
+      Content-Length:
+      - '502'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Tue, 05 Apr 2022 21:06:37 GMT
+      Server:
+      - Jetty(9.4.18.v20190429)
+      x-amz-crc32:
+      - '4268531254'
+      x-amzn-RequestId:
+      - 35305043-cd7a-402b-af45-39246825cbf9
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"TableName": "alfred_feature_flag"}'
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPWF3c19hY2Nlc3Nfa2V5LzIwMjIwNDA1L3VzLWVh
+        c3QtMS9keW5hbW9kYi9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9Y29udGVudC10eXBlO2hv
+        c3Q7eC1hbXotZGF0ZTt4LWFtei10YXJnZXQsIFNpZ25hdHVyZT05YjAzYmM1YTI0Njc0NDQ2ZWI2
+        MzIyOWEwZDdhMzg2MWI0OGQyZjllNDA1OGQxZDZlMGRhYzFlNDk0ZGEwMzE4
+      Content-Length:
+      - '36'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90b2NvcmUvMS4yMy40MiBQeXRob24vMy44LjExIExpbnV4LzUuMTMuMC0zOS1nZW5lcmlj
+      X-Amz-Date:
+      - !!binary |
+        MjAyMjA0MDVUMjEwNjM3Wg==
+      X-Amz-Target:
+      - !!binary |
+        RHluYW1vREJfMjAxMjA4MTAuRGVzY3JpYmVUYWJsZQ==
+    method: POST
+    uri: http://dynamodb-test:8000/
+  response:
+    body:
+      string: '{"Table":{"AttributeDefinitions":[{"AttributeName":"id","AttributeType":"S"}],"TableName":"alfred_feature_flag","KeySchema":[{"AttributeName":"id","KeyType":"HASH"}],"TableStatus":"ACTIVE","CreationDateTime":1649192797.064,"ProvisionedThroughput":{"LastIncreaseDateTime":0.000,"LastDecreaseDateTime":0.000,"NumberOfDecreasesToday":0,"ReadCapacityUnits":1,"WriteCapacityUnits":1},"TableSizeBytes":0,"ItemCount":0,"TableArn":"arn:aws:dynamodb:ddblocal:000000000000:table/alfred_feature_flag"}}'
+    headers:
+      Content-Length:
+      - '491'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Tue, 05 Apr 2022 21:06:37 GMT
+      Server:
+      - Jetty(9.4.18.v20190429)
+      x-amz-crc32:
+      - '4113502308'
+      x-amzn-RequestId:
+      - ba143977-0ba5-437f-98b0-7146623e2396
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"TableName": "alfred_dead_task"}'
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPWF3c19hY2Nlc3Nfa2V5LzIwMjIwNDA1L3VzLWVh
+        c3QtMS9keW5hbW9kYi9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9Y29udGVudC10eXBlO2hv
+        c3Q7eC1hbXotZGF0ZTt4LWFtei10YXJnZXQsIFNpZ25hdHVyZT03MGRjOWE3ZGU2Njk4NTM2ZWQ2
+        Zjk3OTk5MDMyODI5ODAwNTIyM2MyNjEyYTI3Y2M3MTU1YTE1OWU0ZDUxNTY5
+      Content-Length:
+      - '33'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90b2NvcmUvMS4yMy40MiBQeXRob24vMy44LjExIExpbnV4LzUuMTMuMC0zOS1nZW5lcmlj
+      X-Amz-Date:
+      - !!binary |
+        MjAyMjA0MDVUMjEwNjM3Wg==
+      X-Amz-Target:
+      - !!binary |
+        RHluYW1vREJfMjAxMjA4MTAuRGVzY3JpYmVUYWJsZQ==
+    method: POST
+    uri: http://dynamodb-test:8000/
+  response:
+    body:
+      string: '{"__type":"com.amazonaws.dynamodb.v20120810#ResourceNotFoundException","Message":"Cannot
+        do operations on a non-existent table"}'
+    headers:
+      Content-Length:
+      - '128'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Tue, 05 Apr 2022 21:06:37 GMT
+      Server:
+      - Jetty(9.4.18.v20190429)
+      x-amzn-RequestId:
+      - b45950cc-b6e6-4605-9335-c27bf4985cbc
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"TableName": "alfred_dead_task"}'
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPWF3c19hY2Nlc3Nfa2V5LzIwMjIwNDA1L3VzLWVh
+        c3QtMS9keW5hbW9kYi9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9Y29udGVudC10eXBlO2hv
+        c3Q7eC1hbXotZGF0ZTt4LWFtei10YXJnZXQsIFNpZ25hdHVyZT03MGRjOWE3ZGU2Njk4NTM2ZWQ2
+        Zjk3OTk5MDMyODI5ODAwNTIyM2MyNjEyYTI3Y2M3MTU1YTE1OWU0ZDUxNTY5
+      Content-Length:
+      - '33'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90b2NvcmUvMS4yMy40MiBQeXRob24vMy44LjExIExpbnV4LzUuMTMuMC0zOS1nZW5lcmlj
+      X-Amz-Date:
+      - !!binary |
+        MjAyMjA0MDVUMjEwNjM3Wg==
+      X-Amz-Target:
+      - !!binary |
+        RHluYW1vREJfMjAxMjA4MTAuRGVzY3JpYmVUYWJsZQ==
+    method: POST
+    uri: http://dynamodb-test:8000/
+  response:
+    body:
+      string: '{"__type":"com.amazonaws.dynamodb.v20120810#ResourceNotFoundException","Message":"Cannot
+        do operations on a non-existent table"}'
+    headers:
+      Content-Length:
+      - '128'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Tue, 05 Apr 2022 21:06:37 GMT
+      Server:
+      - Jetty(9.4.18.v20190429)
+      x-amzn-RequestId:
+      - 3317630e-a756-442f-bb31-6ff832439ead
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"TableName": "alfred_dead_task", "ProvisionedThroughput": {"ReadCapacityUnits":
+      1, "WriteCapacityUnits": 1}, "AttributeDefinitions": [{"AttributeName": "id",
+      "AttributeType": "S"}], "KeySchema": [{"AttributeName": "id", "KeyType": "HASH"}]}'
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPWF3c19hY2Nlc3Nfa2V5LzIwMjIwNDA1L3VzLWVh
+        c3QtMS9keW5hbW9kYi9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9Y29udGVudC10eXBlO2hv
+        c3Q7eC1hbXotZGF0ZTt4LWFtei10YXJnZXQsIFNpZ25hdHVyZT04YTYzYTE4NmI3MTNhOWQ1M2Nm
+        ZTExNzkyNWJmYzkwODJjMTc1ODYxNDNmODEzMzg1MWY5ZDFjMzIzZGE2OGY2
+      Content-Length:
+      - '241'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90b2NvcmUvMS4yMy40MiBQeXRob24vMy44LjExIExpbnV4LzUuMTMuMC0zOS1nZW5lcmlj
+      X-Amz-Date:
+      - !!binary |
+        MjAyMjA0MDVUMjEwNjM3Wg==
+      X-Amz-Target:
+      - !!binary |
+        RHluYW1vREJfMjAxMjA4MTAuQ3JlYXRlVGFibGU=
+    method: POST
+    uri: http://dynamodb-test:8000/
+  response:
+    body:
+      string: '{"TableDescription":{"AttributeDefinitions":[{"AttributeName":"id","AttributeType":"S"}],"TableName":"alfred_dead_task","KeySchema":[{"AttributeName":"id","KeyType":"HASH"}],"TableStatus":"ACTIVE","CreationDateTime":1649192797.079,"ProvisionedThroughput":{"LastIncreaseDateTime":0.000,"LastDecreaseDateTime":0.000,"NumberOfDecreasesToday":0,"ReadCapacityUnits":1,"WriteCapacityUnits":1},"TableSizeBytes":0,"ItemCount":0,"TableArn":"arn:aws:dynamodb:ddblocal:000000000000:table/alfred_dead_task"}}'
+    headers:
+      Content-Length:
+      - '496'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Tue, 05 Apr 2022 21:06:37 GMT
+      Server:
+      - Jetty(9.4.18.v20190429)
+      x-amz-crc32:
+      - '1566468521'
+      x-amzn-RequestId:
+      - 76ee359d-b4b0-4f52-8c85-fde448e8b2a1
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"TableName": "alfred_dead_task"}'
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPWF3c19hY2Nlc3Nfa2V5LzIwMjIwNDA1L3VzLWVh
+        c3QtMS9keW5hbW9kYi9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9Y29udGVudC10eXBlO2hv
+        c3Q7eC1hbXotZGF0ZTt4LWFtei10YXJnZXQsIFNpZ25hdHVyZT03MGRjOWE3ZGU2Njk4NTM2ZWQ2
+        Zjk3OTk5MDMyODI5ODAwNTIyM2MyNjEyYTI3Y2M3MTU1YTE1OWU0ZDUxNTY5
+      Content-Length:
+      - '33'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90b2NvcmUvMS4yMy40MiBQeXRob24vMy44LjExIExpbnV4LzUuMTMuMC0zOS1nZW5lcmlj
+      X-Amz-Date:
+      - !!binary |
+        MjAyMjA0MDVUMjEwNjM3Wg==
+      X-Amz-Target:
+      - !!binary |
+        RHluYW1vREJfMjAxMjA4MTAuRGVzY3JpYmVUYWJsZQ==
+    method: POST
+    uri: http://dynamodb-test:8000/
+  response:
+    body:
+      string: '{"Table":{"AttributeDefinitions":[{"AttributeName":"id","AttributeType":"S"}],"TableName":"alfred_dead_task","KeySchema":[{"AttributeName":"id","KeyType":"HASH"}],"TableStatus":"ACTIVE","CreationDateTime":1649192797.079,"ProvisionedThroughput":{"LastIncreaseDateTime":0.000,"LastDecreaseDateTime":0.000,"NumberOfDecreasesToday":0,"ReadCapacityUnits":1,"WriteCapacityUnits":1},"TableSizeBytes":0,"ItemCount":0,"TableArn":"arn:aws:dynamodb:ddblocal:000000000000:table/alfred_dead_task"}}'
+    headers:
+      Content-Length:
+      - '485'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Tue, 05 Apr 2022 21:06:37 GMT
+      Server:
+      - Jetty(9.4.18.v20190429)
+      x-amz-crc32:
+      - '1885395820'
+      x-amzn-RequestId:
+      - e7d0338d-c87a-4a55-b9e7-1cc8a8c02840
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"TableName": "alfred_basicauth_user"}'
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPWF3c19hY2Nlc3Nfa2V5LzIwMjIwNDA1L3VzLWVh
+        c3QtMS9keW5hbW9kYi9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9Y29udGVudC10eXBlO2hv
+        c3Q7eC1hbXotZGF0ZTt4LWFtei10YXJnZXQsIFNpZ25hdHVyZT1kYWNiNjk1YjhjOWM5MTQ3NDAw
+        NjRhZDIyYmFhZmM1NWE1MTJiNTY4ZTY0Zjk2NTIwM2ZkY2MyODViMzM0MGRm
+      Content-Length:
+      - '38'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90b2NvcmUvMS4yMy40MiBQeXRob24vMy44LjExIExpbnV4LzUuMTMuMC0zOS1nZW5lcmlj
+      X-Amz-Date:
+      - !!binary |
+        MjAyMjA0MDVUMjEwNjM3Wg==
+      X-Amz-Target:
+      - !!binary |
+        RHluYW1vREJfMjAxMjA4MTAuRGVzY3JpYmVUYWJsZQ==
+    method: POST
+    uri: http://dynamodb-test:8000/
+  response:
+    body:
+      string: '{"Table":{"AttributeDefinitions":[{"AttributeName":"username","AttributeType":"S"}],"TableName":"alfred_basicauth_user","KeySchema":[{"AttributeName":"username","KeyType":"HASH"}],"TableStatus":"ACTIVE","CreationDateTime":1649192797.047,"ProvisionedThroughput":{"LastIncreaseDateTime":0.000,"LastDecreaseDateTime":0.000,"NumberOfDecreasesToday":0,"ReadCapacityUnits":1,"WriteCapacityUnits":1},"TableSizeBytes":0,"ItemCount":0,"TableArn":"arn:aws:dynamodb:ddblocal:000000000000:table/alfred_basicauth_user"}}'
+    headers:
+      Content-Length:
+      - '507'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Tue, 05 Apr 2022 21:06:37 GMT
+      Server:
+      - Jetty(9.4.18.v20190429)
+      x-amz-crc32:
+      - '1230041435'
+      x-amzn-RequestId:
+      - fcebe121-50a1-45ac-b764-06f3b8661c93
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"TableName": "alfred_basicauth_user"}'
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPWF3c19hY2Nlc3Nfa2V5LzIwMjIwNDA1L3VzLWVh
+        c3QtMS9keW5hbW9kYi9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9Y29udGVudC10eXBlO2hv
+        c3Q7eC1hbXotZGF0ZTt4LWFtei10YXJnZXQsIFNpZ25hdHVyZT0wYmQ4MTg5ZjhkZWNlZDA2Zjgz
+        MzZlMjlmNjk4MDhmOTA3YWNiZDI0N2Y4NWMyYTliNWRjMTU2NmVjNjdlZDU5
+      Content-Length:
+      - '38'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90b2NvcmUvMS4yMy40MiBQeXRob24vMy44LjExIExpbnV4LzUuMTMuMC0zOS1nZW5lcmlj
+      X-Amz-Date:
+      - !!binary |
+        MjAyMjA0MDVUMjEwNjM3Wg==
+      X-Amz-Target:
+      - !!binary |
+        RHluYW1vREJfMjAxMjA4MTAuRGVsZXRlVGFibGU=
+    method: POST
+    uri: http://dynamodb-test:8000/
+  response:
+    body:
+      string: '{"TableDescription":{"AttributeDefinitions":[{"AttributeName":"username","AttributeType":"S"}],"TableName":"alfred_basicauth_user","KeySchema":[{"AttributeName":"username","KeyType":"HASH"}],"TableStatus":"ACTIVE","CreationDateTime":1649192797.047,"ProvisionedThroughput":{"LastIncreaseDateTime":0.000,"LastDecreaseDateTime":0.000,"NumberOfDecreasesToday":0,"ReadCapacityUnits":1,"WriteCapacityUnits":1},"TableSizeBytes":0,"ItemCount":0,"TableArn":"arn:aws:dynamodb:ddblocal:000000000000:table/alfred_basicauth_user"}}'
+    headers:
+      Content-Length:
+      - '518'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Tue, 05 Apr 2022 21:06:37 GMT
+      Server:
+      - Jetty(9.4.18.v20190429)
+      x-amz-crc32:
+      - '2135726363'
+      x-amzn-RequestId:
+      - 8d6180f1-a730-459d-b145-75c0a05d8074
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"TableName": "alfred_feature_flag"}'
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPWF3c19hY2Nlc3Nfa2V5LzIwMjIwNDA1L3VzLWVh
+        c3QtMS9keW5hbW9kYi9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9Y29udGVudC10eXBlO2hv
+        c3Q7eC1hbXotZGF0ZTt4LWFtei10YXJnZXQsIFNpZ25hdHVyZT05YjAzYmM1YTI0Njc0NDQ2ZWI2
+        MzIyOWEwZDdhMzg2MWI0OGQyZjllNDA1OGQxZDZlMGRhYzFlNDk0ZGEwMzE4
+      Content-Length:
+      - '36'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90b2NvcmUvMS4yMy40MiBQeXRob24vMy44LjExIExpbnV4LzUuMTMuMC0zOS1nZW5lcmlj
+      X-Amz-Date:
+      - !!binary |
+        MjAyMjA0MDVUMjEwNjM3Wg==
+      X-Amz-Target:
+      - !!binary |
+        RHluYW1vREJfMjAxMjA4MTAuRGVzY3JpYmVUYWJsZQ==
+    method: POST
+    uri: http://dynamodb-test:8000/
+  response:
+    body:
+      string: '{"Table":{"AttributeDefinitions":[{"AttributeName":"id","AttributeType":"S"}],"TableName":"alfred_feature_flag","KeySchema":[{"AttributeName":"id","KeyType":"HASH"}],"TableStatus":"ACTIVE","CreationDateTime":1649192797.064,"ProvisionedThroughput":{"LastIncreaseDateTime":0.000,"LastDecreaseDateTime":0.000,"NumberOfDecreasesToday":0,"ReadCapacityUnits":1,"WriteCapacityUnits":1},"TableSizeBytes":0,"ItemCount":0,"TableArn":"arn:aws:dynamodb:ddblocal:000000000000:table/alfred_feature_flag"}}'
+    headers:
+      Content-Length:
+      - '491'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Tue, 05 Apr 2022 21:06:37 GMT
+      Server:
+      - Jetty(9.4.18.v20190429)
+      x-amz-crc32:
+      - '4113502308'
+      x-amzn-RequestId:
+      - 2f2de806-f15b-41fd-82e4-54429df6585b
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"TableName": "alfred_feature_flag"}'
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPWF3c19hY2Nlc3Nfa2V5LzIwMjIwNDA1L3VzLWVh
+        c3QtMS9keW5hbW9kYi9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9Y29udGVudC10eXBlO2hv
+        c3Q7eC1hbXotZGF0ZTt4LWFtei10YXJnZXQsIFNpZ25hdHVyZT03NTMzZTk0ZTMxMzBiYWE4YWZi
+        Y2U5N2IyMzY3ODFlNjZlY2M4ODliYmJjNzY4OWM2MWM1NWMyOTVkNjM3NTZi
+      Content-Length:
+      - '36'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90b2NvcmUvMS4yMy40MiBQeXRob24vMy44LjExIExpbnV4LzUuMTMuMC0zOS1nZW5lcmlj
+      X-Amz-Date:
+      - !!binary |
+        MjAyMjA0MDVUMjEwNjM3Wg==
+      X-Amz-Target:
+      - !!binary |
+        RHluYW1vREJfMjAxMjA4MTAuRGVsZXRlVGFibGU=
+    method: POST
+    uri: http://dynamodb-test:8000/
+  response:
+    body:
+      string: '{"TableDescription":{"AttributeDefinitions":[{"AttributeName":"id","AttributeType":"S"}],"TableName":"alfred_feature_flag","KeySchema":[{"AttributeName":"id","KeyType":"HASH"}],"TableStatus":"ACTIVE","CreationDateTime":1649192797.064,"ProvisionedThroughput":{"LastIncreaseDateTime":0.000,"LastDecreaseDateTime":0.000,"NumberOfDecreasesToday":0,"ReadCapacityUnits":1,"WriteCapacityUnits":1},"TableSizeBytes":0,"ItemCount":0,"TableArn":"arn:aws:dynamodb:ddblocal:000000000000:table/alfred_feature_flag"}}'
+    headers:
+      Content-Length:
+      - '502'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Tue, 05 Apr 2022 21:06:37 GMT
+      Server:
+      - Jetty(9.4.18.v20190429)
+      x-amz-crc32:
+      - '4268531254'
+      x-amzn-RequestId:
+      - 11ba5e3d-eee8-4332-a27d-e66ed6d87dd1
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"TableName": "alfred_dead_task"}'
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPWF3c19hY2Nlc3Nfa2V5LzIwMjIwNDA1L3VzLWVh
+        c3QtMS9keW5hbW9kYi9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9Y29udGVudC10eXBlO2hv
+        c3Q7eC1hbXotZGF0ZTt4LWFtei10YXJnZXQsIFNpZ25hdHVyZT03MGRjOWE3ZGU2Njk4NTM2ZWQ2
+        Zjk3OTk5MDMyODI5ODAwNTIyM2MyNjEyYTI3Y2M3MTU1YTE1OWU0ZDUxNTY5
+      Content-Length:
+      - '33'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90b2NvcmUvMS4yMy40MiBQeXRob24vMy44LjExIExpbnV4LzUuMTMuMC0zOS1nZW5lcmlj
+      X-Amz-Date:
+      - !!binary |
+        MjAyMjA0MDVUMjEwNjM3Wg==
+      X-Amz-Target:
+      - !!binary |
+        RHluYW1vREJfMjAxMjA4MTAuRGVzY3JpYmVUYWJsZQ==
+    method: POST
+    uri: http://dynamodb-test:8000/
+  response:
+    body:
+      string: '{"Table":{"AttributeDefinitions":[{"AttributeName":"id","AttributeType":"S"}],"TableName":"alfred_dead_task","KeySchema":[{"AttributeName":"id","KeyType":"HASH"}],"TableStatus":"ACTIVE","CreationDateTime":1649192797.079,"ProvisionedThroughput":{"LastIncreaseDateTime":0.000,"LastDecreaseDateTime":0.000,"NumberOfDecreasesToday":0,"ReadCapacityUnits":1,"WriteCapacityUnits":1},"TableSizeBytes":0,"ItemCount":0,"TableArn":"arn:aws:dynamodb:ddblocal:000000000000:table/alfred_dead_task"}}'
+    headers:
+      Content-Length:
+      - '485'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Tue, 05 Apr 2022 21:06:37 GMT
+      Server:
+      - Jetty(9.4.18.v20190429)
+      x-amz-crc32:
+      - '1885395820'
+      x-amzn-RequestId:
+      - b01ca39b-55a0-4521-8601-2def5d5c6f4e
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"TableName": "alfred_dead_task"}'
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPWF3c19hY2Nlc3Nfa2V5LzIwMjIwNDA1L3VzLWVh
+        c3QtMS9keW5hbW9kYi9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9Y29udGVudC10eXBlO2hv
+        c3Q7eC1hbXotZGF0ZTt4LWFtei10YXJnZXQsIFNpZ25hdHVyZT1lZGEzOGVjOGYwZGY0ZTU2NWMw
+        MWY5ZTc2MGU0YWMxNmI3ZTBkNDk4ZDQzYWI0NWE3OTc2YTNhY2M5OTc5NWY3
+      Content-Length:
+      - '33'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC1hbXotanNvbi0xLjA=
+      User-Agent:
+      - !!binary |
+        Qm90b2NvcmUvMS4yMy40MiBQeXRob24vMy44LjExIExpbnV4LzUuMTMuMC0zOS1nZW5lcmlj
+      X-Amz-Date:
+      - !!binary |
+        MjAyMjA0MDVUMjEwNjM3Wg==
+      X-Amz-Target:
+      - !!binary |
+        RHluYW1vREJfMjAxMjA4MTAuRGVsZXRlVGFibGU=
+    method: POST
+    uri: http://dynamodb-test:8000/
+  response:
+    body:
+      string: '{"TableDescription":{"AttributeDefinitions":[{"AttributeName":"id","AttributeType":"S"}],"TableName":"alfred_dead_task","KeySchema":[{"AttributeName":"id","KeyType":"HASH"}],"TableStatus":"ACTIVE","CreationDateTime":1649192797.079,"ProvisionedThroughput":{"LastIncreaseDateTime":0.000,"LastDecreaseDateTime":0.000,"NumberOfDecreasesToday":0,"ReadCapacityUnits":1,"WriteCapacityUnits":1},"TableSizeBytes":0,"ItemCount":0,"TableArn":"arn:aws:dynamodb:ddblocal:000000000000:table/alfred_dead_task"}}'
+    headers:
+      Content-Length:
+      - '496'
+      Content-Type:
+      - application/x-amz-json-1.0
+      Date:
+      - Tue, 05 Apr 2022 21:06:37 GMT
+      Server:
+      - Jetty(9.4.18.v20190429)
+      x-amz-crc32:
+      - '1566468521'
+      x-amzn-RequestId:
+      - 02637e39-d31a-4df6-bb5d-18d529299569
+    status:
+      code: 200
+      message: OK
+version: 1

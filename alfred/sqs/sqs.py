@@ -1,21 +1,16 @@
-import importlib
 import json
 import logging
 
-import boto3
 from botocore.exceptions import ClientError
 
 from alfred.sentry import sentry_sdk
 from alfred.settings import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, SQS_QUEUE_URL
 from alfred.sqs.models import DeadTask
 
+from . import sqs_client
+
 logger = logging.getLogger("base")
 
-sqs_client = boto3.client(
-    "sqs",
-    aws_access_key_id=AWS_ACCESS_KEY_ID,
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-)
 
 DEFAULT_QUEUE_URL = SQS_QUEUE_URL
 DEFAULT_DELAY = 1
@@ -29,7 +24,8 @@ class SQSTask:
     max_retries = DEFAULT_MAX_RETRIES
     default_retry_delay = DEFAULT_RETRY_DELAY
 
-    def __init__(self, bind=False, retries=0, queue_url=None):
+    def __init__(self, bind=False, retries=0, queue_url=None, dead_retry=False):
+        self.dead_retry = (dead_retry,)
         self.retries = retries
         self.bind = bind
         self.queue_url = queue_url or DEFAULT_QUEUE_URL
@@ -94,8 +90,7 @@ class SQSTask:
             logger.error(
                 {
                     "task_has_succeeded": False,
-                    "task_error_message": f"Task achieve the max retries possible:\
-                     {max_retries}",
+                    "task_error_message": f"Task achieve the max retries possible: {max_retries}",  # noqa: E501
                     "task_function_module": self.func.__module__,
                     "task_function_name": self.func.__name__,
                     "task_function_args": self.request_args,
@@ -105,14 +100,15 @@ class SQSTask:
                     "task_response": None,
                 }
             )
-            DeadTask(
-                function_module=self.func.__module__,
-                function_name=self.func.__name__,
-                function_args=self.request_args,
-                function_kwargs=self.request_kwargs,
-                function_retries=self.retries,
-                queue_url=self.queue_url,
-            ).save()
+            if self.dead_retry:
+                DeadTask(
+                    function_module=self.func.__module__,
+                    function_name=self.func.__name__,
+                    function_args=self.request_args,
+                    function_kwargs=self.request_kwargs,
+                    function_retries=self.retries,
+                    queue_url=self.queue_url,
+                ).save()
 
             return None
 
@@ -124,19 +120,3 @@ class SQSTask:
             countdown=countdown,
         )
         return
-
-
-class SQSHandler:
-    def __init__(self, body):
-        self.body = json.loads(body)
-
-    def apply(self):
-        module = importlib.import_module(self.body["_func_module"])
-        sqs_task = getattr(module, self.body["_func_name"])
-
-        return sqs_task._run(
-            self.body["retries"], *self.body["args"], **self.body["kwargs"]
-        )
-
-    def sqs_delete_message(self, queue_url, receipt_handle):
-        sqs_client.delete_message(QueueUrl=queue_url, ReceiptHandle=receipt_handle)
