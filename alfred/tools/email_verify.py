@@ -11,6 +11,7 @@ APPROVE_LIST = [
     "unknown",
     "key_not_valid",
     "missing parameter",
+    "error_credit",
 ]
 
 
