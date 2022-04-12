@@ -8,6 +8,7 @@ from .utils import get_credentials
 
 def basic_auth_cached_authorizer(auth_request):
     auth64 = auth_request.token.replace("Basic ", "")
+    
     username, password = get_credentials(auth64)
 
     CACHE_KEY = f"alfred_basic_auth_{username}"

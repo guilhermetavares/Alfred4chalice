@@ -11,11 +11,16 @@ from alfred.settings import (
     JWT_SECRET,
 )
 
-from .exceptions import JWTException
+from .exceptions import JWTException, NotAuthorized
+import binascii 
 
 
 def get_credentials(auth64):
-    decoded = base64.b64decode(auth64).decode("utf-8")
+    try:
+        decoded = base64.b64decode(auth64).decode("utf-8")
+    except binascii.Error:
+        raise NotAuthorized(401, "Não autorizado")
+
     username, password = decoded.split(":")
     return username, password
 

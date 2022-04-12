@@ -8,3 +8,7 @@ class InvalidMetadataException(Exception):
 
 class JWTException(Exception):
     pass
+
+
+class NotAuthorized(Exception):
+    pass
