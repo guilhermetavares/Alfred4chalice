@@ -1,8 +1,6 @@
-import pytest
 from chalice.app import AuthRequest
 
 from alfred.auth.basic_auth_authorizer import basic_auth_authorizer
-from alfred.auth.exceptions import NotAuthorized
 
 
 def test_basic_auth_authorizer_authorized(basic_auth_token_valid, basic_auth_user):
@@ -34,6 +32,6 @@ def test_basic_auth_authorizer_not_authorized_error():
     "AiOjE2NDk5Mzc5MDJ9.ByytFVSuR8y8cWkZMJMl8R6gsXfSS57Hh8mHJYFVvl0'"
 
     auth_request = AuthRequest(auth_type="GET", token=token, method_arn="")
-
-    with pytest.raises(NotAuthorized):
-        basic_auth_authorizer(auth_request=auth_request)
+    response = basic_auth_authorizer(auth_request=auth_request)
+    assert response.routes == []
+    assert response.principal_id is None
