@@ -1,4 +1,5 @@
 import base64
+import binascii
 from datetime import datetime, timedelta
 
 import jwt
@@ -11,17 +12,17 @@ from alfred.settings import (
     JWT_SECRET,
 )
 
-from .exceptions import JWTException, NotAuthorized
-import binascii 
+from .exceptions import JWTException
 
 
 def get_credentials(auth64):
     try:
         decoded = base64.b64decode(auth64).decode("utf-8")
+        username, password = decoded.split(":")
     except binascii.Error:
-        raise NotAuthorized(401, "Não autorizado")
+        username = None
+        password = None
 
-    username, password = decoded.split(":")
     return username, password
 
 

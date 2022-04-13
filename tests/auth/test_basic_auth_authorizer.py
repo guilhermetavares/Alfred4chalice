@@ -29,7 +29,11 @@ def test_basic_auth_authorizer_unauthorized(
 
 
 def test_basic_auth_authorizer_not_authorized_error():
-    auth_request = AuthRequest(auth_type="GET", token="fake token", method_arn="")
+    token = "b'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjIxYmRhZ"
+    "mZjLWU1OTAtNGUyYy05ZjQxLTBlMzJmODAyYWVjNSIsInRva2VuIjpudWxsLCJleH"
+    "AiOjE2NDk5Mzc5MDJ9.ByytFVSuR8y8cWkZMJMl8R6gsXfSS57Hh8mHJYFVvl0'"
+
+    auth_request = AuthRequest(auth_type="GET", token=token, method_arn="")
 
     with pytest.raises(NotAuthorized):
         basic_auth_authorizer(auth_request=auth_request)

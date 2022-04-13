@@ -4,8 +4,10 @@ from unittest.mock import patch
 import pytest
 from chalice.app import AuthRequest
 
-from alfred.auth.basic_auth_cached_authorizer import basic_auth_cached_authorizer
-from alfred.auth.exceptions import NotAuthorized
+from alfred.auth.basic_auth_cached_authorizer import (
+    NotAuthorized,
+    basic_auth_cached_authorizer,
+)
 
 
 def test_basic_auth_cached_authorizer_authorized(
@@ -100,10 +102,12 @@ def test_basic_auth_cached_authorizer_has_no_cache(
     assert auth_response.principal_id == basic_auth_user.username
 
 
-def test_basic_auth_cached_authorizer_not_authorized_error(
-    basic_auth_token_valid, basic_auth_user
-):
-    auth_request = AuthRequest(auth_type="GET", token="Fake Token", method_arn="")
+def test_basic_auth_cached_authorizer_not_authorized_error():
+    token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjI4YzIzNjY4LT"
+    "U1ZDYtNDVlMS05MGZhLTc2NDI5NWY4MjE2OSIsInRva2VuIjpudWxsLCJleHAiOjE2NT"
+    "A0MDc0NzJ9.1T_JPXDoMTwNN7ZMdkNiNzFRC8pv_47xBSXTG7Xc2l8"
+
+    auth_request = AuthRequest(auth_type="GET", token=token, method_arn="")
 
     with pytest.raises(NotAuthorized):
         basic_auth_cached_authorizer(auth_request=auth_request)
