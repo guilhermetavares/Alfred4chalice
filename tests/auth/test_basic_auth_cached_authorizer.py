@@ -19,7 +19,9 @@ def test_basic_auth_cached_authorizer_authorized(
     assert auth_response.principal_id == basic_auth_user.username
 
 
-def test_basic_auth_cached_authorizer_unauthorized(basic_auth_token_invalid,):
+def test_basic_auth_cached_authorizer_unauthorized(
+    basic_auth_token_invalid,
+):
     auth_request = AuthRequest(
         auth_type="GET", token=basic_auth_token_invalid, method_arn=""
     )
@@ -94,3 +96,15 @@ def test_basic_auth_cached_authorizer_has_no_cache(
     )
     assert auth_response.routes == basic_auth_user.routes
     assert auth_response.principal_id == basic_auth_user.username
+
+
+def test_basic_auth_cached_authorizer_decode_error_token():
+    token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjI4YzIzNjY4LT"
+    "U1ZDYtNDVlMS05MGZhLTc2NDI5NWY4MjE2OSIsInRva2VuIjpudWxsLCJleHAiOjE2NT"
+    "A0MDc0NzJ9.1T_JPXDoMTwNN7ZMdkNiNzFRC8pv_47xBSXTG7Xc2l8"
+
+    auth_request = AuthRequest(auth_type="GET", token=token, method_arn="")
+    response = basic_auth_cached_authorizer(auth_request=auth_request)
+
+    assert response.routes == []
+    assert response.principal_id is None

@@ -13,11 +13,11 @@ def basic_auth_cached_authorizer(auth_request):
     CACHE_KEY = f"alfred_basic_auth_{username}"
     data = Cache.get(CACHE_KEY, None)
 
-    if data and password == data["password"]:
-        return AuthResponse(routes=data["routes"], principal_id=data["username"])
+    if data and password:
+        if password == data["password"]:
+            return AuthResponse(routes=data["routes"], principal_id=data["username"])
 
     routes = BasicAuthUser.login(username, password)
-
     cached_auth = {"username": username, "password": password, "routes": routes}
     cache_time = 60 * 60
     Cache.set(CACHE_KEY, cached_auth, cache_time)

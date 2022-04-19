@@ -37,7 +37,8 @@ class BasicAuthUser(Model):
     @classmethod
     def login(self, username, password):
         routes = []
-
+        if not username:
+            return routes
         try:
             user = self.get(username)
             routes = user.routes if user.password == password else []
