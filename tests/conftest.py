@@ -6,7 +6,7 @@ from alfred.dynamodb_create_tables import dynamodb_create_tables, dynamodb_delet
 from alfred.sqs.sqs import sqs_client
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture()
 def dynamo_setup():
     dynamodb_create_tables()
     yield

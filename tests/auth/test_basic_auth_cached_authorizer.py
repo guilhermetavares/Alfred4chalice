@@ -7,7 +7,7 @@ from alfred.auth.basic_auth_cached_authorizer import basic_auth_cached_authorize
 
 
 def test_basic_auth_cached_authorizer_authorized(
-    basic_auth_token_valid, basic_auth_user
+    dynamo_setup, basic_auth_token_valid, basic_auth_user
 ):
     auth_request = AuthRequest(
         auth_type="GET", token=basic_auth_token_valid, method_arn=""
@@ -20,7 +20,7 @@ def test_basic_auth_cached_authorizer_authorized(
 
 
 def test_basic_auth_cached_authorizer_unauthorized(
-    basic_auth_token_invalid,
+    dynamo_setup, basic_auth_token_invalid
 ):
     auth_request = AuthRequest(
         auth_type="GET", token=basic_auth_token_invalid, method_arn=""
@@ -33,7 +33,7 @@ def test_basic_auth_cached_authorizer_unauthorized(
 
 @patch("alfred.auth.basic_auth_cached_authorizer.Cache.get")
 def test_basic_auth_cached_authorizer_cached_key(
-    mock_cache_get, basic_auth_token_valid, basic_auth_user
+    mock_cache_get, dynamo_setup, basic_auth_token_valid, basic_auth_user
 ):
     mock_cache_get.return_value = {
         "username": basic_auth_user.username,
@@ -53,7 +53,9 @@ def test_basic_auth_cached_authorizer_cached_key(
 
 
 @patch("alfred.auth.basic_auth_cached_authorizer.Cache.get")
-def test_basic_auth_cached_authorizer_wrong_password(mock_cache_get, basic_auth_user):
+def test_basic_auth_cached_authorizer_wrong_password(
+    mock_cache_get, dynamo_setup, basic_auth_user
+):
     basic_auth = f"{basic_auth_user.username}:0000"
     auth64 = base64.b64encode(bytes(basic_auth, "utf-8"))
     token = f"Basic {auth64.decode('utf-8')}"
@@ -75,7 +77,7 @@ def test_basic_auth_cached_authorizer_wrong_password(mock_cache_get, basic_auth_
 
 @patch("alfred.auth.basic_auth_cached_authorizer.Cache")
 def test_basic_auth_cached_authorizer_has_no_cache(
-    mock_cache, basic_auth_token_valid, basic_auth_user
+    mock_cache, dynamo_setup, basic_auth_token_valid, basic_auth_user
 ):
     mock_cache.get.return_value = None
 

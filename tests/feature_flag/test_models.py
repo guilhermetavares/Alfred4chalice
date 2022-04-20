@@ -12,7 +12,7 @@ def test_feature_flag_tablename():
     assert FeatureFlag.Meta.table_name == f"{DYNAMODB_PREFIX}_feature_flag"
 
 
-def test_feature_flag_get_date_with_sucess():
+def test_feature_flag_get_date_with_sucess(dynamo_setup):
     FeatureFlag(id=1, data={"foo": "bar"},).save()
 
     flag = FeatureFlag.get_data(id=1)
@@ -20,21 +20,21 @@ def test_feature_flag_get_date_with_sucess():
     assert flag == {"foo": "bar"}
 
 
-def test_feature_flag_get_date_with_none():
+def test_feature_flag_get_date_with_none(dynamo_setup):
     FeatureFlag(id=1, data={"foo": "bar"},).save()
     flag = FeatureFlag.get_data(id=None)
 
     assert flag is None
 
 
-def test_feature_flag_get_date_with_wrong_id():
+def test_feature_flag_get_date_with_wrong_id(dynamo_setup):
     FeatureFlag(id=1, data={"foo": "bar"},).save()
     flag = FeatureFlag.get_data(id=6)
 
     assert flag is None
 
 
-def test_feature_flag_get_batch():
+def test_feature_flag_get_batch(dynamo_setup):
 
     with FeatureFlag.batch_write() as batch:
         for i in range(5):

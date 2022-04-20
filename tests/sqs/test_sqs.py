@@ -229,7 +229,7 @@ def foo_with_dead_retry(self, param_a, param_b):
 
 
 @patch("alfred.sqs.sqs.logger.error")
-def test_sqs_task_with_flag_dead_retry(mock_logger, sqs_stub):
+def test_sqs_task_with_flag_dead_retry(mock_logger, sqs_stub, dynamo_setup):
 
     body = {
         "_func_module": foo_with_dead_retry.func.__module__,
@@ -265,7 +265,7 @@ def test_sqs_task_with_flag_dead_retry(mock_logger, sqs_stub):
     assert dead_task.queue_url == ""
 
 
-def test_sqs_send_dead_task():
+def test_sqs_send_dead_task(dynamo_setup):
     body = {
         "_func_module": foo_with_dead_retry.func.__module__,
         "_func_name": foo_with_dead_retry.func.__name__,
