@@ -218,6 +218,43 @@ def test_sqs_task_retry_raise_max_retries_exceeded(mock_logger, sqs_stub):
         }
     )
 
+
+@SQSTask(bind=True, dead_retry=True)
+def foo_with_dead_retry(self, param_a, param_b):
+    try:
+        resp = 10 + "bar"
+    except TypeError as err:
+        return self.retry(err=err, max_retries=3, countdown=500)
+    return resp
+
+
+@patch("alfred.sqs.sqs.logger.error")
+def test_sqs_task_with_flag_dead_retry(mock_logger, sqs_stub):
+
+    body = {
+        "_func_module": foo_with_dead_retry.func.__module__,
+        "_func_name": foo_with_dead_retry.func.__name__,
+        "args": ["fubar"],
+        "kwargs": {"param_b": 10},
+        "retries": 2,
+    }
+    handler = SQSHandler(json.dumps(body))
+    handler.apply()
+
+    mock_logger.assert_called_once_with(
+        {
+            "task_has_succeeded": False,
+            "task_error_message": "Task achieve the max retries possible: 3",
+            "task_function_module": body["_func_module"],
+            "task_function_name": body["_func_name"],
+            "task_function_args": body["args"],
+            "task_function_kwargs": body["kwargs"],
+            "task_function_retries": body["retries"] + 1,
+            "task_queue_url": "",
+            "task_response": None,
+        }
+    )
+
     dead_task = DeadTask.scan().__next__()
 
     assert dead_task.function_module == body["_func_module"]
@@ -226,3 +263,19 @@ def test_sqs_task_retry_raise_max_retries_exceeded(mock_logger, sqs_stub):
     assert dead_task.function_kwargs == body["kwargs"]
     assert dead_task.function_retries == body["retries"] + 1
     assert dead_task.queue_url == ""
+
+
+def test_sqs_send_dead_task():
+    body = {
+        "_func_module": foo_with_dead_retry.func.__module__,
+        "_func_name": foo_with_dead_retry.func.__name__,
+        "args": ["fubar"],
+        "kwargs": {"param_b": 10},
+        "retries": 2,
+    }
+    handler = SQSHandler(json.dumps(body))
+    handler.apply()
+
+    dead_task = DeadTask.scan().__next__()
+
+    dead_task.run()

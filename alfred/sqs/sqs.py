@@ -25,7 +25,7 @@ class SQSTask:
     default_retry_delay = DEFAULT_RETRY_DELAY
 
     def __init__(self, bind=False, retries=0, queue_url=None, dead_retry=False):
-        self.dead_retry = (dead_retry,)
+        self.dead_retry = dead_retry
         self.retries = retries
         self.bind = bind
         self.queue_url = queue_url or DEFAULT_QUEUE_URL
