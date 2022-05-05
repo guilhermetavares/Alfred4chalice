@@ -17,7 +17,7 @@ from .exceptions import JWTException
 
 def get_credentials(auth64):
     try:
-        decoded = base64.b64decode(auth64).decode("utf-8")
+        decoded = base64.b64decode(auth64).decode("utf-8", "ignore")
         username, password = decoded.split(":")
     except binascii.Error:
         username = None
