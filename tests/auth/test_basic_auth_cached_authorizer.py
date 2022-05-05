@@ -108,5 +108,3 @@ def test_basic_auth_cached_authorizer_decode_error_token():
 
     assert response.routes == []
     assert response.principal_id is None
-
-
