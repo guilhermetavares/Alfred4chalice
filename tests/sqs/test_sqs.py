@@ -2,12 +2,13 @@ import json
 import uuid
 from unittest.mock import patch
 
-import pytest
 from botocore.exceptions import ClientError
 
 from alfred.settings import SQS_QUEUE_URL
 from alfred.sqs.exceptions import SQSTaskError, SQSTaskMaxRetriesExceededError
-from alfred.sqs.sqs import SQSHandler, SQSTask
+from alfred.sqs.handlers import SQSHandler
+from alfred.sqs.models import DeadTask
+from alfred.sqs.sqs import SQSTask
 from tests.tools import sqs_expected_params
 
 
@@ -143,7 +144,7 @@ def test_sqs_handler_apply():
     assert response == "bar"
 
 
-@patch("alfred.sqs.sqs.sqs_client")
+@patch("alfred.sqs.handlers.sqs_client")
 def test_sqs_handler_sqs_delete_message(mock_sqs_client):
     body = {"foo": "bar"}
     handler = SQSHandler(json.dumps(body))
@@ -190,8 +191,9 @@ def test_sqs_task_retry(sqs_stub):
     assert response is None
 
 
-@patch("alfred.sqs.sqs.sentry_sdk.capture_message")
-def test_sqs_task_retry_raise_max_retries_exceeded(sentry_sdk, sqs_stub):
+@patch("alfred.sqs.sqs.logger.error")
+def test_sqs_task_retry_raise_max_retries_exceeded(mock_logger, sqs_stub):
+
     body = {
         "_func_module": foo_with_retry.func.__module__,
         "_func_name": foo_with_retry.func.__name__,
@@ -200,7 +202,80 @@ def test_sqs_task_retry_raise_max_retries_exceeded(sentry_sdk, sqs_stub):
         "retries": 2,
     }
     handler = SQSHandler(json.dumps(body))
-    with pytest.raises(SQSTaskMaxRetriesExceededError):
-        handler.apply()
+    handler.apply()
 
-    sentry_sdk.assert_called_once()
+    mock_logger.assert_called_once_with(
+        {
+            "task_has_succeeded": False,
+            "task_error_message": "Task achieve the max retries possible: 3",
+            "task_function_module": body["_func_module"],
+            "task_function_name": body["_func_name"],
+            "task_function_args": body["args"],
+            "task_function_kwargs": body["kwargs"],
+            "task_function_retries": body["retries"] + 1,
+            "task_queue_url": "",
+            "task_response": None,
+        }
+    )
+
+
+@SQSTask(bind=True, dead_retry=True)
+def foo_with_dead_retry(self, param_a, param_b):
+    try:
+        resp = 10 + "bar"
+    except TypeError as err:
+        return self.retry(err=err, max_retries=3, countdown=500)
+    return resp
+
+
+@patch("alfred.sqs.sqs.logger.error")
+def test_sqs_task_with_flag_dead_retry(mock_logger, sqs_stub, dynamo_setup):
+
+    body = {
+        "_func_module": foo_with_dead_retry.func.__module__,
+        "_func_name": foo_with_dead_retry.func.__name__,
+        "args": ["fubar"],
+        "kwargs": {"param_b": 10},
+        "retries": 2,
+    }
+    handler = SQSHandler(json.dumps(body))
+    handler.apply()
+
+    mock_logger.assert_called_once_with(
+        {
+            "task_has_succeeded": False,
+            "task_error_message": "Task achieve the max retries possible: 3",
+            "task_function_module": body["_func_module"],
+            "task_function_name": body["_func_name"],
+            "task_function_args": body["args"],
+            "task_function_kwargs": body["kwargs"],
+            "task_function_retries": body["retries"] + 1,
+            "task_queue_url": "",
+            "task_response": None,
+        }
+    )
+
+    dead_task = DeadTask.scan().__next__()
+
+    assert dead_task.function_module == body["_func_module"]
+    assert dead_task.function_name == body["_func_name"]
+    assert dead_task.function_args == body["args"]
+    assert dead_task.function_kwargs == body["kwargs"]
+    assert dead_task.function_retries == body["retries"] + 1
+    assert dead_task.queue_url == ""
+
+
+def test_sqs_send_dead_task(dynamo_setup):
+    body = {
+        "_func_module": foo_with_dead_retry.func.__module__,
+        "_func_name": foo_with_dead_retry.func.__name__,
+        "args": ["fubar"],
+        "kwargs": {"param_b": 10},
+        "retries": 2,
+    }
+    handler = SQSHandler(json.dumps(body))
+    handler.apply()
+
+    dead_task = DeadTask.scan().__next__()
+
+    dead_task.run()

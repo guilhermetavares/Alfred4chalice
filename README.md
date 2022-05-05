@@ -110,8 +110,60 @@ print(flag)
 
 - Caso o parâmetro `id` seja **Nulo** ou **id que não existe** o método irá retornar **None**.
 
+## Fila Morta
 
-# Tools
+Objetivo da fila morta é de fazer o reenvio das mensagens que não foram enviadas nas primeiras tentativas.
+
+### **Anteriormente**
+
+Utilizando o sqs, após a ultima tentativa do retry adicionamos um erro e nunca mais viamos estes casos.
+
+### **Atualmente**
+
+Após implementado esta função de fila morta, conseguimos salvar as mensagens em uma tabela do dynamo para ser feito o reenvio em uma data futura. Você pode querer utilizar esta feature quando o que você esta enviando é algo importante. Vou mostrar 2 opções, uma de como utilizar e a outra de como `não` utilizar a fila morta
+
+> Exemplo de como fazer o uso da fila morta:
+
+```python
+# Só adicionar a flag dead_retry=True
+@SQSTask(bind=True, queue_url=SQS_SECOND_QUEUE_URL, dead_retry=True)
+def task_very_important(self, charge_id):
+     ...
+
+```
+
+> Exemplo de quando você `não` quer utilizar a fila morta:
+
+```python
+# Por padrão a flag dead_retry=False
+@SQSTask(bind=True, queue_url=SQS_SECOND_QUEUE_URL)
+def task_very_important(self, charge_id):
+     ...
+
+```
+
+Caso você queira saber mais sobre como as mensagens são salvas na tabela, vocẽ poderá acessar a classe [DeadTask](alfred/sqs/models.py)
+
+Agora que aprendemos o objetivo da fila morta e como salvar as mensagens em uma tabela, veremos como fazer o envio delas.
+
+Na nossa classe, temos um método para fazer o envio das mensagens salvas no banco. Sendo assim, precisamos da instancia para fazer o envio.
+
+```python
+# Importando a Classe
+from alfred.sqs.models import DeadTask
+
+
+# Pegando uma mensagem que foi salva no banco
+dead_task = DeadTask.scan().__next__()
+
+
+# Fazendo o envio da mensagem salva no banco utilizando o método run
+dead_task.run()
+
+```
+
+## Tools
 
 Verificação de e-mail:
+
 - [EmailListVerifyOne](/docs/tools/email_verify.md)

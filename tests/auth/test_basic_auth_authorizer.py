@@ -3,7 +3,9 @@ from chalice.app import AuthRequest
 from alfred.auth.basic_auth_authorizer import basic_auth_authorizer
 
 
-def test_basic_auth_authorizer_authorized(basic_auth_token_valid, basic_auth_user):
+def test_basic_auth_authorizer_authorized(
+    dynamo_setup, basic_auth_token_valid, basic_auth_user
+):
     auth_request = AuthRequest(
         auth_type="GET", token=basic_auth_token_valid, method_arn=""
     )
@@ -15,6 +17,7 @@ def test_basic_auth_authorizer_authorized(basic_auth_token_valid, basic_auth_use
 
 
 def test_basic_auth_authorizer_unauthorized(
+    dynamo_setup,
     basic_auth_token_invalid,
 ):
     auth_request = AuthRequest(

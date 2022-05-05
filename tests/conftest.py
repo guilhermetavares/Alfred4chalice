@@ -2,12 +2,15 @@ import pytest
 from botocore.stub import Stubber
 
 from alfred.aws.s3 import s3_client
-from alfred.dynamodb_create_tables import dynamodb_create_tables
+from alfred.dynamodb_create_tables import dynamodb_create_tables, dynamodb_delete_table
 from alfred.sqs.sqs import sqs_client
 
 
-def pytest_configure(config):
+@pytest.fixture()
+def dynamo_setup():
     dynamodb_create_tables()
+    yield
+    dynamodb_delete_table()
 
 
 @pytest.fixture(autouse=True)

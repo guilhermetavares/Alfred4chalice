@@ -18,7 +18,7 @@ def test_user_tablename():
 
 
 @freeze_time("2021-01-01 00:00:01")
-def test_user_to_json():
+def test_user_to_json(dynamo_setup):
     user = BasicAuthUser(
         username="Esquilo",
         password="1234",
@@ -38,7 +38,7 @@ def test_user_to_json():
 
 
 @freeze_time("2021-01-01 00:00:01")
-def test_user_to_json_without_metadata():
+def test_user_to_json_without_metadata(dynamo_setup):
     user = BasicAuthUser(
         username="Esquilo",
         password="1234",
@@ -56,31 +56,31 @@ def test_user_to_json_without_metadata():
     assert user.to_json == expected_json
 
 
-def test_user_login_success(basic_auth_user):
+def test_user_login_success(dynamo_setup, basic_auth_user):
     password = basic_auth_user.password
     username = basic_auth_user.username
     assert BasicAuthUser.login(username, password) == basic_auth_user.routes
 
 
-def test_user_login_wrong_password(basic_auth_user):
+def test_user_login_wrong_password(dynamo_setup, basic_auth_user):
     username = basic_auth_user.username
     assert BasicAuthUser.login(username, "wrong_pass") == []
 
 
-def test_user_login_empty_username(basic_auth_user):
+def test_user_login_empty_username(dynamo_setup, basic_auth_user):
     assert BasicAuthUser.login(None, "wrong_pass") == []
 
 
-def test_user_login_empty_password(basic_auth_user):
+def test_user_login_empty_password(dynamo_setup, basic_auth_user):
     username = basic_auth_user.username
     assert BasicAuthUser.login(username, None) == []
 
 
-def test_user_login_does_not_exist():
+def test_user_login_does_not_exist(dynamo_setup):
     assert BasicAuthUser.login("fakeuser", "wrong_pass") == []
 
 
-def test_user_add_routes_success(basic_auth_user):
+def test_user_add_routes_success(dynamo_setup, basic_auth_user):
     new_routes = ["foo", "bar"]
     basic_auth_user.add_routes(new_routes)
 
@@ -88,7 +88,7 @@ def test_user_add_routes_success(basic_auth_user):
     assert new_routes[1] in basic_auth_user.routes
 
 
-def test_user_add_routes_empty(basic_auth_user):
+def test_user_add_routes_empty(dynamo_setup, basic_auth_user):
     new_routes = []
     with pytest.raises(InvalidRoutesException) as err:
         basic_auth_user.add_routes(new_routes)
@@ -96,7 +96,7 @@ def test_user_add_routes_empty(basic_auth_user):
     assert err.value.args[0] == "New routes must be a valid list of routes"
 
 
-def test_user_add_routes_invalid_routes(basic_auth_user):
+def test_user_add_routes_invalid_routes(dynamo_setup, basic_auth_user):
     new_routes = {}
     with pytest.raises(InvalidRoutesException) as err:
         basic_auth_user.add_routes(new_routes)
@@ -104,7 +104,7 @@ def test_user_add_routes_invalid_routes(basic_auth_user):
     assert err.value.args[0] == "New routes must be a valid list of routes"
 
 
-def test_user_empty_metadata_add_metadata_success(basic_auth_user):
+def test_user_empty_metadata_add_metadata_success(dynamo_setup, basic_auth_user):
     assert basic_auth_user.metadata is None
 
     new_metadata = {"foo": "bar"}
@@ -113,7 +113,7 @@ def test_user_empty_metadata_add_metadata_success(basic_auth_user):
     assert basic_auth_user.metadata["foo"] == "bar"
 
 
-def test_user_has_metadata_add_metadata_success(basic_auth_user):
+def test_user_has_metadata_add_metadata_success(dynamo_setup, basic_auth_user):
     basic_auth_user.metadata = {"key": "value"}
     assert basic_auth_user.metadata is not None
 
@@ -123,7 +123,7 @@ def test_user_has_metadata_add_metadata_success(basic_auth_user):
     assert basic_auth_user.metadata["foo"] == "bar"
 
 
-def test_user_add_metadata_invalid_metadata(basic_auth_user):
+def test_user_add_metadata_invalid_metadata(dynamo_setup, basic_auth_user):
     new_metadata = []
     with pytest.raises(InvalidMetadataException) as err:
         basic_auth_user.add_metadata(new_metadata)

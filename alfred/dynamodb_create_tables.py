@@ -1,6 +1,7 @@
 from alfred.auth.models import BasicAuthUser
 from alfred.feature_flag.models import FeatureFlag
 from alfred.settings import DYNAMODB_PREFIX
+from alfred.sqs.models import DeadTask
 
 
 class DynamoDBException(Exception):
@@ -15,11 +16,25 @@ def dynamodb_create_tables():
         BasicAuthUser.create_table(
             read_capacity_units=1, write_capacity_units=1, wait=True
         )
-        
+
     if not FeatureFlag.exists():
         FeatureFlag.create_table(
             read_capacity_units=1, write_capacity_units=1, wait=True
         )
+
+    if not DeadTask.exists():
+        DeadTask.create_table(read_capacity_units=1, write_capacity_units=1, wait=True)
+
+
+def dynamodb_delete_table():
+    if BasicAuthUser.exists():
+        BasicAuthUser.delete_table()
+
+    if FeatureFlag.exists():
+        FeatureFlag.delete_table()
+
+    if DeadTask.exists():
+        DeadTask.delete_table()
 
 
 if __name__ == "__main__":
