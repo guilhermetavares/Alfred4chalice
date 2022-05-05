@@ -15,7 +15,7 @@ def test_get_credentials_success():
 
 @pytest.mark.parametrize(
     "auth64",
-    ["ibnnacoiamçlsmocc", base64.b64encode(b"foo")],
+    ["ibnnacoiamçlsmoc", base64.b64encode(b"foo")],
 )
 def test_get_credentials_error(auth64):
     username, password = get_credentials(auth64)
