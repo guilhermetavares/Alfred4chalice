@@ -1,8 +1,10 @@
 import json
 import logging
+from hashlib import md5
 
 from botocore.exceptions import ClientError
 
+from alfred.cache.walrus_cache import Cache
 from alfred.sentry import sentry_sdk
 from alfred.settings import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, SQS_QUEUE_URL
 from alfred.sqs.models import DeadTask
@@ -24,11 +26,14 @@ class SQSTask:
     max_retries = DEFAULT_MAX_RETRIES
     default_retry_delay = DEFAULT_RETRY_DELAY
 
-    def __init__(self, bind=False, retries=0, queue_url=None, dead_retry=False):
+    def __init__(
+        self, bind=False, retries=0, queue_url=None, dead_retry=False, once_time=60
+    ):
         self.dead_retry = dead_retry
         self.retries = retries
         self.bind = bind
         self.queue_url = queue_url or DEFAULT_QUEUE_URL
+        self.once_time = once_time
 
     def __call__(self, func):
         self.func = func
@@ -60,6 +65,16 @@ class SQSTask:
             sentry_sdk.capture_message(str(data_exception))
 
     def apply(self, args=[], kwargs={}):
+        cache_key = f"{self.func.__module__}.{self.func.__name__}:{args}_{kwargs}"
+        hash_key = md5(cache_key.encode()).hexdigest()
+
+        cache = Cache()
+        cached = cache.get(hash_key)
+
+        if cached:
+            return None
+
+        cache.set(hash_key, cache_key, self.once_time)
         return self._run(0, *args, **kwargs)
 
     def _save_request(self, *args, **kwargs):
