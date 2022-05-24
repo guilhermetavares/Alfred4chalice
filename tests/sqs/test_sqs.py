@@ -292,7 +292,7 @@ def test_sqs_send_dead_task(dynamo_setup):
     dead_task.run()
 
 
-@SQSTask(bind=True)
+@SQSTask(bind=True, once_time=60)
 def foo_return_bar(self, *args, **kwargs):
     return "bar"
 

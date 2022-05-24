@@ -65,17 +65,23 @@ class SQSTask:
             sentry_sdk.capture_message(str(data_exception))
 
     def apply(self, args=[], kwargs={}):
-        cache_key = f"{self.func.__module__}.{self.func.__name__}:{args}_{kwargs}"
-        hash_key = md5(cache_key.encode()).hexdigest()
-
-        cache = Cache()
-        cached = cache.get(hash_key)
-
-        if cached:
+        if self._assert_once_apply(args, kwargs):
             return None
-
-        cache.set(hash_key, cache_key, self.once_time)
         return self._run(0, *args, **kwargs)
+
+    def _assert_once_apply(self, args=[], kwargs={}):
+        if self.once_time:
+            cache_key = f"{self.func.__module__}.{self.func.__name__}:{args}_{kwargs}"
+            hash_key = md5(cache_key.encode()).hexdigest()
+
+            cache = Cache()
+            cached = cache.get(hash_key)
+
+            if cached:
+                return True
+
+            cache.set(hash_key, cache_key, self.once_time)
+            return False
 
     def _save_request(self, *args, **kwargs):
         self.request_args = [*args]
