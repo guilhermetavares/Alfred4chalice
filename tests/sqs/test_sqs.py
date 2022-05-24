@@ -293,15 +293,25 @@ def test_sqs_send_dead_task(dynamo_setup):
 
 
 @SQSTask(bind=True)
-def foo_return_bar(self, args, kwargs):
+def foo_return_bar(self, *args, **kwargs):
     return "bar"
 
 
 @patch("alfred.cache.walrus_cache.Cache.get")
 @patch("alfred.cache.walrus_cache.Cache.set")
-def test_check_cache_already_existed(mock_cache_set, mock_cache_get):
+def test_check_sqs_with_cache(mock_cache_set, mock_cache_get):
     mock_cache_get.return_value = True
 
     foo_return_bar.apply(args=["foobar"], kwargs={"param_b": 10})
 
     mock_cache_set.assert_not_called()
+
+
+@patch("alfred.cache.walrus_cache.Cache.get")
+@patch("alfred.cache.walrus_cache.Cache.set")
+def test_check_sqs_without_cache(mock_cache_set, mock_cache_get):
+    mock_cache_get.return_value = False
+
+    foo_return_bar.apply(args=["foobar"], kwargs={"param_b": 10})
+
+    mock_cache_set.assert_called_once()
