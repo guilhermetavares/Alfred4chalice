@@ -167,3 +167,27 @@ dead_task.run()
 Verificação de e-mail:
 
 - [EmailListVerifyOne](/docs/tools/email_verify.md)
+
+## Gestão de Cache em processamento de Task com SQSTask
+
+Objetivo do cache na classe `SQSTask` é evitar duplicidade de processamento de tasks, através de uma verificação de `cache` a classe consegue identificar se determinada task foi ou não processada. Abaixo um exemplo de aplicação:
+
+> Exemplo de como fazer o uso do cache
+
+```python
+@SQSTask(once_time=60*60)
+def foo(param_a, param_b):
+    return "bar"
+```
+
+O parâmetro `once_time` é a definição do tempo de cache de uma determinada task.
+
+> Exemplo de como `não` fazer o uso do cache
+
+```python
+@SQSTask()
+def foo(param_a, param_b):
+    return "bar"
+```
+
+Caso o parâmetro `once_time` não seja informado, quando chamar a task por `default` o valor será `None`. Dessa forma, não utilizando o `cache` da classe SQSTask.

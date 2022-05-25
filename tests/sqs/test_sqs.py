@@ -41,13 +41,18 @@ def foo(param_a, param_b):
     return "bar"
 
 
+@SQSTask()
+def foobar(param_a, param_b):
+    return "bar"
+
+
 def test_sqs_task_init():
     assert foo.bind is False
     assert foo.retries == 0
 
 
 def test_sqs_task_apply():
-    response = foo.apply(args=["fubar"], kwargs={"param_b": 10})
+    response = foobar.apply(args=["fubar"], kwargs={"param_b": 10})
     assert response == "bar"
 
 
@@ -83,7 +88,11 @@ def test_apply_async(mock_sqs_client):
 
 @patch("alfred.sqs.sqs.sqs_client")
 def test_apply_async_with_countdown(mock_sqs_client):
-    response = foo.apply_async(args=["fubar"], kwargs={"param_b": 10}, countdown=30,)
+    response = foo.apply_async(
+        args=["fubar"],
+        kwargs={"param_b": 10},
+        countdown=30,
+    )
 
     mock_sqs_client.send_message.assert_called_once_with(
         QueueUrl=foo.queue_url,
@@ -104,7 +113,9 @@ def test_apply_async_with_countdown(mock_sqs_client):
 @patch("alfred.sqs.sqs.sqs_client")
 def test_apply_async_with_queue_url(mock_sqs_client):
     response = foo.apply_async(
-        args=["fubar"], kwargs={"param_b": 10}, queue_url="fake-queue",
+        args=["fubar"],
+        kwargs={"param_b": 10},
+        queue_url="fake-queue",
     )
 
     mock_sqs_client.send_message.assert_called_once_with(
@@ -279,3 +290,28 @@ def test_sqs_send_dead_task(dynamo_setup):
     dead_task = DeadTask.scan().__next__()
 
     dead_task.run()
+
+
+@SQSTask(bind=True, once_time=60)
+def foo_return_bar(self, *args, **kwargs):
+    return "bar"
+
+
+@patch("alfred.cache.walrus_cache.Cache.get")
+@patch("alfred.cache.walrus_cache.Cache.set")
+def test_check_sqs_with_cache(mock_cache_set, mock_cache_get):
+    mock_cache_get.return_value = True
+
+    foo_return_bar.apply(args=["foobar"], kwargs={"param_b": 10})
+
+    mock_cache_set.assert_not_called()
+
+
+@patch("alfred.cache.walrus_cache.Cache.get")
+@patch("alfred.cache.walrus_cache.Cache.set")
+def test_check_sqs_without_cache(mock_cache_set, mock_cache_get):
+    mock_cache_get.return_value = False
+
+    foo_return_bar.apply(args=["foobar"], kwargs={"param_b": 10})
+
+    mock_cache_set.assert_called_once()
