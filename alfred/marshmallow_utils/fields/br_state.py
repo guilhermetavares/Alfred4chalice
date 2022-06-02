@@ -1,5 +1,6 @@
 from marshmallow import ValidationError, fields
-from tools.br_state_valid import is_br_state_valid
+
+from alfred.tools.br_state_valid import is_br_state_valid
 
 
 class BRStateField(fields.String):
