@@ -1,5 +1,5 @@
 from marshmallow import ValidationError, fields
-from tools.br_state_valid import is_br_state_valid, is_state_format_valid
+from tools.br_state_valid import is_br_state_valid
 
 
 class BRStateField(fields.String):
@@ -7,7 +7,7 @@ class BRStateField(fields.String):
 
         state = value.upper()
 
-        if not is_state_format_valid(state):
+        if len(state) > 2:
             raise ValidationError(self.error_messages["format_error_msg"])
 
         if not is_br_state_valid(state):
