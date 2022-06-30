@@ -36,8 +36,8 @@ def test_sqs_task_default_retry_delay_property():
     assert SQSTask.default_retry_delay == 60 * 3
 
 
-@SQSTask()
-def foo(param_a, param_b):
+@SQSTask(bind=True)
+def foo(self, param_a, param_b):
     return "bar"
 
 
@@ -47,7 +47,7 @@ def foobar(param_a, param_b):
 
 
 def test_sqs_task_init():
-    assert foo.bind is False
+    assert foo.bind is True
     assert foo.retries == 0
 
 
@@ -139,6 +139,20 @@ def test_sqs_handler_init():
     handler = SQSHandler(json.dumps(body))
 
     assert handler.body == body
+    assert handler.aws_request_id is None
+    assert handler.message_id is None
+
+
+def test_sqs_handler_init_with_request_and_message_id():
+    body = {"foo": "bar"}
+    aws_request_id = "fake_aws_request_id"
+    message_id = "fake_message_id"
+
+    handler = SQSHandler(json.dumps(body), aws_request_id, message_id)
+
+    assert handler.body == body
+    assert handler.aws_request_id == aws_request_id
+    assert handler.message_id == message_id
 
 
 def test_sqs_handler_apply():
@@ -188,7 +202,6 @@ def test_sqs_task_retry(sqs_stub):
         service_response={"MessageId": str(uuid.uuid4())},
         expected_params=expected_params_send_sms,
     )
-
     body = {
         "_func_module": foo_with_retry.func.__module__,
         "_func_name": foo_with_retry.func.__name__,
@@ -196,6 +209,7 @@ def test_sqs_task_retry(sqs_stub):
         "kwargs": {"param_b": 10},
         "retries": 0,
     }
+
     handler = SQSHandler(json.dumps(body))
     response = handler.apply()
 
@@ -204,7 +218,6 @@ def test_sqs_task_retry(sqs_stub):
 
 @patch("alfred.sqs.sqs.logger.error")
 def test_sqs_task_retry_raise_max_retries_exceeded(mock_logger, sqs_stub):
-
     body = {
         "_func_module": foo_with_retry.func.__module__,
         "_func_name": foo_with_retry.func.__name__,
@@ -212,6 +225,7 @@ def test_sqs_task_retry_raise_max_retries_exceeded(mock_logger, sqs_stub):
         "kwargs": {"param_b": 10},
         "retries": 2,
     }
+
     handler = SQSHandler(json.dumps(body))
     handler.apply()
 
@@ -241,7 +255,6 @@ def foo_with_dead_retry(self, param_a, param_b):
 
 @patch("alfred.sqs.sqs.logger.error")
 def test_sqs_task_with_flag_dead_retry(mock_logger, sqs_stub, dynamo_setup):
-
     body = {
         "_func_module": foo_with_dead_retry.func.__module__,
         "_func_name": foo_with_dead_retry.func.__name__,
@@ -249,6 +262,7 @@ def test_sqs_task_with_flag_dead_retry(mock_logger, sqs_stub, dynamo_setup):
         "kwargs": {"param_b": 10},
         "retries": 2,
     }
+
     handler = SQSHandler(json.dumps(body))
     handler.apply()
 
@@ -284,6 +298,7 @@ def test_sqs_send_dead_task(dynamo_setup):
         "kwargs": {"param_b": 10},
         "retries": 2,
     }
+
     handler = SQSHandler(json.dumps(body))
     handler.apply()
 
