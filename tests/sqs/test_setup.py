@@ -1,5 +1,5 @@
 import json
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 import pytest
 from chalice.app import SQSEvent
@@ -24,17 +24,24 @@ def test_handle_sqs_message_successful(mock_logger, sqs_stub):
             "args": [123],
             "kwargs": {"param_b": "bar"},
             "retries": 0,
-        }
+        },
     )
-    record = {"body": body, "receiptHandle": "foo-receipt-handle"}
-    event_dict = {"Records": [record]}
+    record_dict = {
+        "messageId": "fake_message_id",
+        "body": body,
+        "receiptHandle": "foo-receipt-handle",
+    }
+    event_dict = {"Records": [record_dict]}
 
-    event = SQSEvent(event_dict=event_dict, context="")
+    context = MagicMock(aws_request_id="fake_aws_request_id")
+    event = SQSEvent(event_dict=event_dict, context=context)
 
     handle_sqs_message(event)
 
     mock_logger.debug.assert_called_once_with(
         {
+            "sqs_message_id": record_dict["messageId"],
+            "aws_request_id": context.aws_request_id,
             "task_has_succeeded": True,
             "task_error_message": None,
             "task_function_module": "tests.sqs.test_setup",
@@ -64,16 +71,23 @@ def test_handle_sqs_message_unsuccessful(mock_logger, sqs_stub):
             "retries": 0,
         }
     )
-    record = {"body": body, "receiptHandle": "foo-receipt-handle"}
-    event_dict = {"Records": [record]}
+    record_dict = {
+        "messageId": "fake_message_id",
+        "body": body,
+        "receiptHandle": "foo-receipt-handle",
+    }
+    event_dict = {"Records": [record_dict]}
 
-    event = SQSEvent(event_dict=event_dict, context="")
+    context = MagicMock(aws_request_id="fake_aws_request_id")
+    event = SQSEvent(event_dict=event_dict, context=context)
 
     with pytest.raises(SQSTaskError):
         handle_sqs_message(event)
 
     mock_logger.debug.assert_called_once_with(
         {
+            "sqs_message_id": record_dict["messageId"],
+            "aws_request_id": context.aws_request_id,
             "task_has_succeeded": False,
             "task_error_message": "Error message",
             "task_function_module": "tests.sqs.test_setup",
