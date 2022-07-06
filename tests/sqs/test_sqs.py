@@ -330,3 +330,41 @@ def test_check_sqs_without_cache(mock_cache_set, mock_cache_get):
     foo_return_bar.apply(args=["foobar"], kwargs={"param_b": 10})
 
     mock_cache_set.assert_called_once()
+
+
+@SQSTask(bind=True, fail_silently=True)
+def foo_silently(self, param_a, param_b):
+    try:
+        resp = 10 + "bar"
+    except TypeError as err:
+        return self.retry(err=err, max_retries=3, countdown=500)
+    return resp
+
+
+@patch("alfred.sqs.sqs.logger.info")
+def test_sqs_task_retry_raise_max_retries_exceeded_with_fail_silently(
+    mock_logger, sqs_stub
+):
+    body = {
+        "_func_module": foo_silently.func.__module__,
+        "_func_name": foo_silently.func.__name__,
+        "args": ["fubar"],
+        "kwargs": {"param_b": 10},
+        "retries": 2,
+    }
+    handler = SQSHandler(json.dumps(body))
+    handler.apply()
+
+    mock_logger.assert_called_once_with(
+        {
+            "task_has_succeeded": False,
+            "task_error_message": "Task achieve the max retries possible: 3",
+            "task_function_module": body["_func_module"],
+            "task_function_name": body["_func_name"],
+            "task_function_args": body["args"],
+            "task_function_kwargs": body["kwargs"],
+            "task_function_retries": body["retries"] + 1,
+            "task_queue_url": "",
+            "task_response": None,
+        }
+    )
