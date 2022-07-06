@@ -114,34 +114,21 @@ class SQSTask:
         self.retries += 1
 
         if self.retries >= max_retries:
-            if self.fail_silently:
-                logger.info(
-                    {
-                        "task_has_succeeded": False,
-                        "task_error_message": f"Task achieve the max retries possible: {max_retries}",  # noqa: E501
-                        "task_function_module": self.func.__module__,
-                        "task_function_name": self.func.__name__,
-                        "task_function_args": self.request_args,
-                        "task_function_kwargs": self.request_kwargs,
-                        "task_function_retries": self.retries,
-                        "task_queue_url": self.queue_url,
-                        "task_response": None,
-                    }
-                )
-            else:
-                logger.error(
-                    {
-                        "task_has_succeeded": False,
-                        "task_error_message": f"Task achieve the max retries possible: {max_retries}",  # noqa: E501
-                        "task_function_module": self.func.__module__,
-                        "task_function_name": self.func.__name__,
-                        "task_function_args": self.request_args,
-                        "task_function_kwargs": self.request_kwargs,
-                        "task_function_retries": self.retries,
-                        "task_queue_url": self.queue_url,
-                        "task_response": None,
-                    }
-                )
+            log_function = logger.info if self.fail_silently else logger.error
+            log_function(
+                {
+                    "task_has_succeeded": False,
+                    "task_error_message": f"Task achieve the max retries possible: {max_retries}",  # noqa: E501
+                    "task_function_module": self.func.__module__,
+                    "task_function_name": self.func.__name__,
+                    "task_function_args": self.request_args,
+                    "task_function_kwargs": self.request_kwargs,
+                    "task_function_retries": self.retries,
+                    "task_queue_url": self.queue_url,
+                    "task_response": None,
+                }
+            )
+
             if self.dead_retry:
                 DeadTask(
                     function_module=self.func.__module__,
