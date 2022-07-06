@@ -1,14 +1,11 @@
 import uuid
 from datetime import datetime
-from unittest.mock import call, patch
+from unittest.mock import Mock, call, patch
 
 import pytest
 from freezegun import freeze_time
 
 from alfred.pipelines.base import Pipeline, PipelineStep
-from tests.db import Session
-
-from .test_exceptions import PipelineException
 
 
 class DummyStep(PipelineStep):
@@ -28,7 +25,7 @@ def test_pipeline_init():
 @freeze_time("2022-07-06 15:50:00")
 @patch("alfred.pipelines.base.logger.info")
 def test_pipeline_run_without_exception(mock_log):
-    session = Session()
+    session = Mock()
 
     step = DummyStep
     pipeline = Pipeline()
@@ -67,22 +64,8 @@ def test_pipeline_run_without_exception(mock_log):
     mock_log.assert_has_calls(calls)
 
 
-def test_pipeline_run_with_exception():
-    class DummyStep(PipelineStep):
-        def run(self):
-            raise PipelineException
-
-    session = Session()
-
-    step = DummyStep
-    pipeline = Pipeline()
-    pipeline.steps = [step]
-    with pytest.raises(PipelineException):
-        pipeline.run(session=session)
-
-
 def test_pipeline_step_run_with_exception():
-    session = Session()
+    session = Mock()
 
     step = PipelineStep
     pipeline = Pipeline()

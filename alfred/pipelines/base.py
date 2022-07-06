@@ -3,8 +3,6 @@ import logging
 import uuid
 from datetime import datetime
 
-from .exceptions import PipelineException
-
 logger = logging.getLogger("base")
 
 
@@ -50,7 +48,7 @@ class Pipeline(PipeLog):
         self.uuid = uuid.uuid4()
         self.started_at = datetime.utcnow()
 
-    def run(self, session, close_session=True):
+    def run(self, session):
         self.session = session
         self.log(hierarchy="pipeline")
 
@@ -59,9 +57,6 @@ class Pipeline(PipeLog):
             try:
                 step.run()
                 step.log(hierarchy="pipeline_step")
-            except (PipelineException, NotImplementedError) as err:
+            except (NotImplementedError) as err:
                 self.session.rollback()
                 raise err
-
-        if close_session:
-            self.session.close()
