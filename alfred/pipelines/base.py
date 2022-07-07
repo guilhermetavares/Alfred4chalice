@@ -44,12 +44,12 @@ class PipelineStep(PipeLog):
 class Pipeline(PipeLog):
     steps = []
 
-    def __init__(self):
+    def __init__(self, session):
         self.uuid = uuid.uuid4()
         self.started_at = datetime.utcnow()
-
-    def run(self, session):
         self.session = session
+
+    def run(self):
         self.log(hierarchy="pipeline")
 
         for step_class in self.steps:

@@ -15,7 +15,8 @@ class DummyStep(PipelineStep):
 
 @freeze_time("2022-07-06 15:50:00")
 def test_pipeline_init():
-    pipeline = Pipeline()
+    session = Mock()
+    pipeline = Pipeline(session=session)
 
     assert type(pipeline.uuid) is uuid.UUID
     assert pipeline.started_at == datetime(2022, 7, 6, 15, 50, 0)
@@ -28,9 +29,9 @@ def test_pipeline_run_without_exception(mock_log):
     session = Mock()
 
     step = DummyStep
-    pipeline = Pipeline()
+    pipeline = Pipeline(session=session)
     pipeline.steps = [step]
-    pipeline.run(session=session)
+    pipeline.run()
 
     calls = [
         call(
@@ -68,7 +69,7 @@ def test_pipeline_step_run_with_exception():
     session = Mock()
 
     step = PipelineStep
-    pipeline = Pipeline()
+    pipeline = Pipeline(session=session)
     pipeline.steps = [step]
     with pytest.raises(NotImplementedError):
-        pipeline.run(session=session)
+        pipeline.run()
