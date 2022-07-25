@@ -1,51 +1,57 @@
-import datetime
+from unittest.mock import Mock
+from sqlalchemy import or_
+from alfred.sqlalchemy_utils.filters.operators import OPERATORS
 
-from alfred.sqlalchemy_utils.filters.fields import DateFilterField, StringFilterField
-from alfred.auth.models import BasicAuthUser
-from marshmallow import fields
-
-
-def test_stringfilter_is_subclass():
-    assert issubclass(StringFilterField, fields.String)
+from alfred.sqlalchemy_utils.filters.schemas import FilterSchema
+from marshmallow import Schema
 
 
-def test_stringfilter_success():
-    field = StringFilterField(model=BasicAuthUser, op="==")
-    document = "12309845687"
+def test_filter_schema_parent_class():
+    assert issubclass(FilterSchema, Schema) is True
 
-    value = field._deserialize(document, "document", {"document": document})
 
-    assert value == {
-        "model": BasicAuthUser,
-        "field_name": "document",
-        "filter_type": "sqlalchemy.and_",
-        "op": "==",
-        "value": "12309845687",
+def test_filter_schema_build_filter_commom_filter():
+    model = Mock()
+    query = Mock()
+    operator = OPERATORS["=="]
+
+    data = {
+        "username": {
+            "model": model,
+            "field_name": "username",
+            "op": "==",
+            "value": "Esquilo",
+            "filter_type": "sqlalchemy.and_",
+        }
+    }
+    expected_operator = operator("username", "Esquilo")
+    expected_query = query.filter(expected_operator)
+
+    schema = FilterSchema(query=query)
+    filtered_query = schema.make_object(data)
+
+    assert filtered_query == expected_query
+
+
+def test_filter_schema_build_filter_logical_filter():
+    model = Mock()
+    query = Mock()
+    operator = OPERATORS["=="]
+
+    data = {
+        "username": {
+            "model": model,
+            "field_name": "username",
+            "op": "==",
+            "value": "Esquilo",
+            "filter_type": "sqlalchemy.or_",
+        }
     }
 
+    expected_operator = or_(operator("username", "Esquilo"))
+    expected_query = query.filter(expected_operator)
 
-def test_datefilter_is_subclass():
-    assert issubclass(DateFilterField, fields.Date)
+    schema = FilterSchema(query=query)
+    filtered_query = schema.make_object(data)
 
-
-def test_datefilter_success():
-    field = DateFilterField(
-        model=BasicAuthUser,
-        field_name="created_at",
-        op=">=",
-    )
-    created_at_start = "2022-05-10"
-
-    value = field._deserialize(
-        created_at_start, "created_at_start", {"created_at_start": created_at_start}
-    )
-
-    assert value == {
-        "model": BasicAuthUser,
-        "field_name": "created_at",
-        "filter_type": "sqlalchemy.and_",
-        "op": ">=",
-        "value": datetime.date(2022, 5, 10),
-    }
-
-# testes
+    assert filtered_query == expected_query

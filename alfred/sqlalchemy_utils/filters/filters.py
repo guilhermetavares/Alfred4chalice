@@ -12,7 +12,6 @@ class Filter(object):
         self.filter_type = filter["filter_type"]
 
     def format_for_sqlalchemy(self):
-
         if self.filter_type == "sqlalchemy.or_":
             return or_(
                 self.operator(self.sqlalchemy_field, item) for item in self.value
