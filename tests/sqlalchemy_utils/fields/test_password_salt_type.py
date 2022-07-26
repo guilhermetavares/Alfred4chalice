@@ -5,7 +5,7 @@ from alfred.sqlalchemy_utils.fields.utils import hash_password
 
 
 def test_password_salt_type_impl():
-    assert type(PasswordSaltType.impl) is types.VARBINARY
+    assert type(PasswordSaltType.impl) is types.Unicode
     assert PasswordSaltType.impl.length == 255
 
 

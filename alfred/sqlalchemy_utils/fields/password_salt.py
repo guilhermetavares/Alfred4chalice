@@ -7,7 +7,7 @@ from .utils import hash_password
 
 
 class PasswordSaltType(types.TypeDecorator):
-    impl = types.VARBINARY(255)
+    impl = types.Unicode(255)
 
     def process_bind_param(self, value, dialect):
         try:
