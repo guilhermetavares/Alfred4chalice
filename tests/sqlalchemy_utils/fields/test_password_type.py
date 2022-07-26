@@ -2,7 +2,7 @@ from alfred.sqlalchemy_utils.fields.password import PasswordType, types
 
 
 def test_password_type_impl():
-    assert type(PasswordType.impl) is types.VARBINARY
+    assert type(PasswordType.impl) is types.Unicode
     assert PasswordType.impl.length == 128
 
 
