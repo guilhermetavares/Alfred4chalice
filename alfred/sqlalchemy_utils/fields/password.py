@@ -12,10 +12,4 @@ class PasswordType(types.TypeDecorator):
         except AttributeError:
             return None
 
-        return password.encode()
-
-    def process_result_value(self, value, dialect):
-        try:
-            return value.decode()
-        except AttributeError:
-            return None
+        return password
