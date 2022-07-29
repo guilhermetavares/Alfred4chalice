@@ -12,16 +12,9 @@ class PasswordSaltType(types.TypeDecorator):
     def process_bind_param(self, value, dialect):
         try:
             salt = uuid.uuid4().hex
-            interations = randint(90000, 99999)
-            password = hash_password(value, salt, interations)
+            iterations = randint(90000, 99999)
+            password = hash_password(value, salt, iterations)
         except AttributeError:
             return None
 
-        foo = f"{salt}-{interations}-{password}"
-        return foo.encode()
-
-    def process_result_value(self, value, dialect):
-        try:
-            return value.decode()
-        except AttributeError:
-            return None
+        return f"{salt}-{iterations}-{password}"
