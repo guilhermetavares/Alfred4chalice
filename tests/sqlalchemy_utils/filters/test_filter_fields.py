@@ -1,5 +1,4 @@
 import datetime
-from ipaddress import ip_address
 
 from alfred.auth.models import BasicAuthUser
 from marshmallow import fields
