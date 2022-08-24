@@ -120,14 +120,14 @@ def test_boolean_filter_field_is_subclass():
 def test_boolean_filter_field_type():
     field = BooleanFilterField(
         model=BasicAuthUser,
-        op="in",
+        op="==",
     )
-    field_value = True
-    value = field._deserialize(field_value, True, {"field_value": True})
+    is_active = True
+    value = field._deserialize(is_active, "is_active", {"field_value": True})
 
     assert value == {
         'model': BasicAuthUser,
-        'field_name': True,
-        'op': 'in', 'value': True,
+        'field_name': "is_active",
+        'op': '==', 'value': True,
         'filter_type': 'sqlalchemy.and_'
         }
