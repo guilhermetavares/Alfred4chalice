@@ -40,3 +40,7 @@ class ListFilterField(FilterFieldMixin, fields.List):
 
 class LogicalFilterField(ListFilterField):
     filter_type = "sqlalchemy.or_"
+
+
+class BooleanFilterField(FilterFieldMixin, fields.Boolean):
+    pass

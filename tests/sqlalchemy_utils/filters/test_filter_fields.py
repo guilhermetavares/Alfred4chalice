@@ -7,7 +7,8 @@ from alfred.sqlalchemy_utils.filters.fields import (
     StringFilterField,
     ListFilterField,
     FilterFieldMixin,
-    LogicalFilterField
+    LogicalFilterField,
+    BooleanFilterField,
 )
 
 
@@ -108,4 +109,25 @@ def test_logicalfilter_type():
         'field_name': 'document',
         'op': 'in', 'value': ['12309845687'],
         'filter_type': 'sqlalchemy.or_'
+        }
+
+
+def test_boolean_filter_field_is_subclass():
+    assert issubclass(BooleanFilterField, FilterFieldMixin)
+    assert issubclass(BooleanFilterField, fields.Boolean)
+
+
+def test_boolean_filter_field_type():
+    field = BooleanFilterField(
+        model=BasicAuthUser,
+        op="==",
+    )
+    is_active = True
+    value = field._deserialize(is_active, "is_active", {"field_value": True})
+
+    assert value == {
+        'model': BasicAuthUser,
+        'field_name': "is_active",
+        'op': '==', 'value': True,
+        'filter_type': 'sqlalchemy.and_'
         }
