@@ -29,4 +29,4 @@ class FilterSchema(Schema):
         filters_spec = clean_data.values()
         sqlalchemy_filters = self.build_filter(filters_spec)
         self.filtered_query = self.query.filter(*sqlalchemy_filters)
-        return self.query.filter(*sqlalchemy_filters)
+        return self.filtered_query
