@@ -28,4 +28,5 @@ class FilterSchema(Schema):
         clean_data = self.remove_skip_values(data)
         filters_spec = clean_data.values()
         sqlalchemy_filters = self.build_filter(filters_spec)
-        return self.query.filter(*sqlalchemy_filters)
+        self.filtered_query = self.query.filter(*sqlalchemy_filters)
+        return self.filtered_query
