@@ -83,7 +83,7 @@ def test_return_query_response_with_next_page():
     query.count.return_value = len(query.all.return_value)
 
     response = Response(
-        200, headers={"header": "value"}, query=query, per_page=2, page=3
+        200, headers={"header": "value"}, query=query, per_page=2, page=2
     )
 
     assert response.body["next_page"] is not None
