@@ -74,12 +74,8 @@ def test_query_response_whith_custom_pagination(mock_chalice_response):
 
 def test_return_query_response_with_next_page():
     query = MagicMock()
-    obj1 = MagicMock(to_json={"obj": "1"})
-    obj2 = MagicMock(to_json={"obj": "2"})
-    obj3 = MagicMock(to_json={"obj": "3"})
-    obj4 = MagicMock(to_json={"obj": "4"})
-    obj5 = MagicMock(to_json={"obj": "5"})
-    query.all.return_value = [obj1, obj2, obj3, obj4, obj5]
+
+    query.all.return_value = ["obj1", "obj2", "obj3", "obj4", "obj5"]
     query.count.return_value = len(query.all.return_value)
 
     response = Response(
@@ -91,12 +87,8 @@ def test_return_query_response_with_next_page():
 
 def test_return_query_response_without_next_page():
     query = MagicMock()
-    obj1 = MagicMock(to_json={"obj": "1"})
-    obj2 = MagicMock(to_json={"obj": "2"})
-    obj3 = MagicMock(to_json={"obj": "3"})
-    obj4 = MagicMock(to_json={"obj": "4"})
-    obj5 = MagicMock(to_json={"obj": "5"})
-    query.all.return_value = [obj1, obj2, obj3, obj4, obj5]
+
+    query.all.return_value = ["obj1", "obj2", "obj3", "obj4", "obj5"]
     query.count.return_value = len(query.all.return_value)
 
     response = Response(
