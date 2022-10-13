@@ -47,11 +47,15 @@ class Response:
         page = int(page)
         total = query.count()
         total_pages = math.ceil(total / per_page)
-
+        next_page = None
+        has_another_page = total_pages - page
+        if has_another_page > 0:
+            next_page = page + 1
         data = query.limit(per_page).offset((page - 1) * per_page).all()
 
         body = {
             "data": [instance.__getattribute__(model_property) for instance in data],
+            "next_page": next_page,
             "page": page,
             "per_page": per_page,
             "total": total,

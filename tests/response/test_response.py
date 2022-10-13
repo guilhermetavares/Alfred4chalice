@@ -67,9 +67,35 @@ def test_query_response_whith_custom_pagination(mock_chalice_response):
     query.count.return_value = len(query.all.return_value)
 
     response = Response(
-        200, headers={"header": "value"}, query=query, per_page=2, page=2
+        200, headers={"header": "value"}, query=query, per_page=2, page=5
     )
     assert response is not None
+
+
+def test_return_query_response_with_next_page():
+    query = MagicMock()
+
+    query.all.return_value = ["obj1", "obj2", "obj3", "obj4", "obj5"]
+    query.count.return_value = len(query.all.return_value)
+
+    response = Response(
+        200, headers={"header": "value"}, query=query, per_page=2, page=2
+    )
+
+    assert response.body["next_page"] is not None
+
+
+def test_return_query_response_without_next_page():
+    query = MagicMock()
+
+    query.all.return_value = ["obj1", "obj2", "obj3", "obj4", "obj5"]
+    query.count.return_value = len(query.all.return_value)
+
+    response = Response(
+        200, headers={"header": "value"}, query=query, per_page=2, page=5
+    )
+
+    assert response.body["next_page"] is None
 
 
 @patch("alfred.response.response.ChaliceResponse")
@@ -77,7 +103,9 @@ def test_simple_response(mock_chalice_response):
     response = Response(200, headers={"header": "value"}, body={"foo": "bar"})
 
     mock_chalice_response.assert_called_once_with(
-        status_code=200, body={"foo": "bar"}, headers={"header": "value"},
+        status_code=200,
+        body={"foo": "bar"},
+        headers={"header": "value"},
     )
 
     assert response == mock_chalice_response.return_value
