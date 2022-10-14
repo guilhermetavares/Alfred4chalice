@@ -1,14 +1,16 @@
 import datetime
 
-from alfred.auth.models import BasicAuthUser
 from marshmallow import fields
+
+from alfred.auth.models import BasicAuthUser
 from alfred.sqlalchemy_utils.filters.fields import (
-    DateFilterField,
-    StringFilterField,
-    ListFilterField,
-    FilterFieldMixin,
-    LogicalFilterField,
     BooleanFilterField,
+    DateFilterField,
+    DateTimeFilterField,
+    FilterFieldMixin,
+    ListFilterField,
+    LogicalFilterField,
+    StringFilterField,
 )
 
 
@@ -58,6 +60,32 @@ def test_datefilter_success():
     }
 
 
+def test_datetimefilter_is_subclass():
+    assert issubclass(DateTimeFilterField, fields.DateTime)
+    assert issubclass(DateTimeFilterField, FilterFieldMixin)
+
+
+def test_datetimefilter_success():
+    field = DateTimeFilterField(
+        model=BasicAuthUser,
+        field_name="created_at",
+        op=">=",
+    )
+    created_at_start = "2022-05-10 00:00:01"
+
+    value = field._deserialize(
+        created_at_start, "created_at_start", {"created_at_start": created_at_start}
+    )
+
+    assert value == {
+        "model": BasicAuthUser,
+        "field_name": "created_at",
+        "filter_type": "sqlalchemy.and_",
+        "op": ">=",
+        "value": datetime.datetime(2022, 5, 10, 00, 00, 1),
+    }
+
+
 def test_listfilter_is_subclass():
     assert issubclass(ListFilterField, fields.List)
     assert issubclass(ListFilterField, FilterFieldMixin)
@@ -72,20 +100,17 @@ def test_listfilter_sucess_empty():
 
 
 def test_listfilter_sucess_not_empty():
-    field = ListFilterField(
-        model=BasicAuthUser,
-        op="in",
-        cls_or_instance=fields.Str()
-    )
+    field = ListFilterField(model=BasicAuthUser, op="in", cls_or_instance=fields.Str())
     document = "12309845687"
     value = field._deserialize([document], "document", {"document": document})
 
     assert value == {
-        'model': BasicAuthUser,
-        'field_name': 'document',
-        'op': 'in', 'value': ['12309845687'],
-        'filter_type': 'sqlalchemy.and_'
-        }
+        "model": BasicAuthUser,
+        "field_name": "document",
+        "op": "in",
+        "value": ["12309845687"],
+        "filter_type": "sqlalchemy.and_",
+    }
 
 
 def test_logicalfilter_is_subclass():
@@ -94,22 +119,18 @@ def test_logicalfilter_is_subclass():
 
 def test_logicalfilter_type():
     field = LogicalFilterField(
-        model=BasicAuthUser,
-        op="in",
-        cls_or_instance=fields.Str()
+        model=BasicAuthUser, op="in", cls_or_instance=fields.Str()
     )
     document = "12309845687"
-    value = field._deserialize(
-        [document], "document",
-        {"document": document}
-    )
+    value = field._deserialize([document], "document", {"document": document})
 
     assert value == {
-        'model': BasicAuthUser,
-        'field_name': 'document',
-        'op': 'in', 'value': ['12309845687'],
-        'filter_type': 'sqlalchemy.or_'
-        }
+        "model": BasicAuthUser,
+        "field_name": "document",
+        "op": "in",
+        "value": ["12309845687"],
+        "filter_type": "sqlalchemy.or_",
+    }
 
 
 def test_boolean_filter_field_is_subclass():
@@ -126,8 +147,9 @@ def test_boolean_filter_field_type():
     value = field._deserialize(is_active, "is_active", {"field_value": True})
 
     assert value == {
-        'model': BasicAuthUser,
-        'field_name': "is_active",
-        'op': '==', 'value': True,
-        'filter_type': 'sqlalchemy.and_'
-        }
+        "model": BasicAuthUser,
+        "field_name": "is_active",
+        "op": "==",
+        "value": True,
+        "filter_type": "sqlalchemy.and_",
+    }

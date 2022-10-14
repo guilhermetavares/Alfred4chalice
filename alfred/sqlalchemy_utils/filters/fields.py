@@ -31,6 +31,10 @@ class DateFilterField(FilterFieldMixin, fields.Date):
     pass
 
 
+class DateTimeFilterField(FilterFieldMixin, fields.DateTime):
+    pass
+
+
 class ListFilterField(FilterFieldMixin, fields.List):
     def _deserialize(self, value, attr, data, **kwargs):
         if value == []:
